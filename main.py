@@ -10,9 +10,8 @@ from MainWindowImpl import MainWindowImpl
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    mw = QMainWindow()
-    mwImpl = MainWindowImpl(mw)
-    mw.show()
+    mwImpl = MainWindowImpl()
+    mwImpl.show()
 
     sys.exit(app.exec())
     

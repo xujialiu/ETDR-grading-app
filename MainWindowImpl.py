@@ -165,7 +165,7 @@ from PySide6.QtWidgets import (
 from dataclasses import dataclass
 import sys
 
-import MainWindow
+from MainWindow import Ui_MainWindow
 
 
 class HoverLabel(QLabel):
@@ -218,11 +218,12 @@ class OptionItem:
     path: str | Path
 
 
-class MainWindowImpl(MainWindow.Ui_MainWindow):
-    def __init__(self, MainWindow):
+class MainWindowImpl(QMainWindow):
+    def __init__(self):
         super().__init__()
 
-        self.setupUi(MainWindow)
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
         self.InitUI()
 
     def InitUI(self):
@@ -333,20 +334,20 @@ class MainWindowImpl(MainWindow.Ui_MainWindow):
         }
 
         dict_options = {
-            self.comboBox_HMA: HMA_options,
-            self.comboBox_HE: HE_options,
-            self.comboBox_SE: SE_options,
-            self.comboBox_IRMA: IRMA_options,
-            self.comboBox_VB: VB_options,
-            self.comboBox_NVD: NVD_options,
-            self.comboBox_NVE: NVE_options,
-            self.comboBox_FP: FP_options,
-            self.comboBox_PRH_VH: PRH_VH_options,
-            self.comboBox_EDEMA: EDEMA_options,
-            self.comboBox_CTR: CTR_options,
-            self.comboBox_VEN: VEN_options,
-            self.comboBox_LASER: LASER_options,
-            self.comboBox_RX: RX_options,
+            self.ui.comboBox_HMA: HMA_options,
+            self.ui.comboBox_HE: HE_options,
+            self.ui.comboBox_SE: SE_options,
+            self.ui.comboBox_IRMA: IRMA_options,
+            self.ui.comboBox_VB: VB_options,
+            self.ui.comboBox_NVD: NVD_options,
+            self.ui.comboBox_NVE: NVE_options,
+            self.ui.comboBox_FP: FP_options,
+            self.ui.comboBox_PRH_VH: PRH_VH_options,
+            self.ui.comboBox_EDEMA: EDEMA_options,
+            self.ui.comboBox_CTR: CTR_options,
+            self.ui.comboBox_VEN: VEN_options,
+            self.ui.comboBox_LASER: LASER_options,
+            self.ui.comboBox_RX: RX_options,
         }
 
         self.hover_label = HoverLabel()
