@@ -155,6 +155,7 @@ from pathlib import Path
 from PySide6.QtCore import QRect, QSize, Qt, QPoint, QEvent
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import (
+    QFileDialog,
     QPushButton,
     QLabel,
     QComboBox,
@@ -225,6 +226,15 @@ class MainWindowImpl(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.InitUI()
+        
+        self.ui.folder_button.clicked.connect(self.select_folder)
+        
+        
+        
+    def select_folder(self):
+        folder_path = QFileDialog.getExistingDirectory(self, "选择文件夹")
+        if folder_path:
+            self.ui.folder_line.setText(folder_path)
 
     def InitUI(self):
         HMA_options = {
@@ -363,3 +373,4 @@ class MainWindowImpl(QMainWindow):
             # Update reference to the new combo box
             setattr(self, comboBox.objectName(), hover_combo_box)
             
+
