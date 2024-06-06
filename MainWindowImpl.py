@@ -239,30 +239,28 @@ class MainWindowImpl(QMainWindow):
         self._init_option_button()
         self._init_menu()
         self._init_app()
-        
+
         # g1 = QButtonGroup(self.ui.radioButton.parent())
         # g1.addButton(self.ui.radioButton)
         # g1.addButton(self.ui.radioButton_2)
-        
+
         # g2 = QButtonGroup(self.ui.radioButton_3.parent())
         # g2.addButton(self.ui.radioButton_3)
         # g2.addButton(self.ui.radioButton_4)
-        
-        
 
     def _init_menu(self):
         self.ui.menu = self.menuBar()
-        self.ui.menu_file = self.ui.menu.addMenu('File')
-        
+        self.ui.menu_file = self.ui.menu.addMenu("File")
+
         # 重构成使用addActions和QAction
-        self.ui.menu_file_openfolder = self.ui.menu_file.addAction('Open Folder...')
-        self.ui.menu_file_save = self.ui.menu_file.addAction('Save...')
-        self.ui.menu_file_exit = self.ui.menu_file.addAction('Exit...')
-        
-        self.ui.menu_help = self.ui.menu.addMenu('help')
+        self.ui.menu_file_openfolder = self.ui.menu_file.addAction("Open Folder...")
+        self.ui.menu_file_save = self.ui.menu_file.addAction("Save...")
+        self.ui.menu_file_exit = self.ui.menu_file.addAction("Exit...")
+
+        self.ui.menu_help = self.ui.menu.addMenu("help")
         self.ui.menu_help_about = self.ui.menu_help.addAction("About")
         self.ui.menu_file_openfolder.triggered.connect(self.select_folder)
-        
+
     def _init_app(self):
         app = QApplication.instance()
-        app.setStyle('fusion')
+        app.setStyle("fusion")
