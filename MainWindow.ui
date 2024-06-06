@@ -109,6 +109,9 @@
             <property name="displayFormat">
              <string>yyyy/M/d</string>
             </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
          </layout>
@@ -196,7 +199,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>question.png</normaloff>question.png</iconset>
+              <normaloff>../../../.designer/backup/question.png</normaloff>../../../.designer/backup/question.png</iconset>
             </property>
            </widget>
           </item>
@@ -234,7 +237,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>question.png</normaloff>question.png</iconset>
+              <normaloff>../../../.designer/backup/question.png</normaloff>../../../.designer/backup/question.png</iconset>
             </property>
            </widget>
           </item>
@@ -272,7 +275,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>question.png</normaloff>question.png</iconset>
+              <normaloff>../../../.designer/backup/question.png</normaloff>../../../.designer/backup/question.png</iconset>
             </property>
            </widget>
           </item>
@@ -310,7 +313,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>question.png</normaloff>question.png</iconset>
+              <normaloff>../../../.designer/backup/question.png</normaloff>../../../.designer/backup/question.png</iconset>
             </property>
            </widget>
           </item>
@@ -348,7 +351,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>question.png</normaloff>question.png</iconset>
+              <normaloff>../../../.designer/backup/question.png</normaloff>../../../.designer/backup/question.png</iconset>
             </property>
            </widget>
           </item>
@@ -386,7 +389,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>question.png</normaloff>question.png</iconset>
+              <normaloff>../../../.designer/backup/question.png</normaloff>../../../.designer/backup/question.png</iconset>
             </property>
            </widget>
           </item>
@@ -424,7 +427,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>question.png</normaloff>question.png</iconset>
+              <normaloff>../../../.designer/backup/question.png</normaloff>../../../.designer/backup/question.png</iconset>
             </property>
            </widget>
           </item>
@@ -462,7 +465,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>question.png</normaloff>question.png</iconset>
+              <normaloff>../../../.designer/backup/question.png</normaloff>../../../.designer/backup/question.png</iconset>
             </property>
            </widget>
           </item>
@@ -500,7 +503,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>question.png</normaloff>question.png</iconset>
+              <normaloff>../../../.designer/backup/question.png</normaloff>../../../.designer/backup/question.png</iconset>
             </property>
            </widget>
           </item>
@@ -544,7 +547,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>question.png</normaloff>question.png</iconset>
+              <normaloff>../../../.designer/backup/question.png</normaloff>../../../.designer/backup/question.png</iconset>
             </property>
            </widget>
           </item>
@@ -582,7 +585,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>question.png</normaloff>question.png</iconset>
+              <normaloff>../../../.designer/backup/question.png</normaloff>../../../.designer/backup/question.png</iconset>
             </property>
            </widget>
           </item>
@@ -620,7 +623,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>question.png</normaloff>question.png</iconset>
+              <normaloff>../../../.designer/backup/question.png</normaloff>../../../.designer/backup/question.png</iconset>
             </property>
            </widget>
           </item>
@@ -658,7 +661,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>question.png</normaloff>question.png</iconset>
+              <normaloff>../../../.designer/backup/question.png</normaloff>../../../.designer/backup/question.png</iconset>
             </property>
            </widget>
           </item>
@@ -696,7 +699,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>question.png</normaloff>question.png</iconset>
+              <normaloff>../../../.designer/backup/question.png</normaloff>../../../.designer/backup/question.png</iconset>
             </property>
            </widget>
           </item>

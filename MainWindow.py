@@ -105,6 +105,7 @@ class Ui_MainWindow(object):
         self.dateEdit_Visit_data.setEnabled(True)
         self.dateEdit_Visit_data.setMinimumSize(QSize(120, 0))
         self.dateEdit_Visit_data.setFrame(True)
+        self.dateEdit_Visit_data.setCalendarPopup(True)
 
         self.horizontalLayout_18.addWidget(self.dateEdit_Visit_data)
 
@@ -180,7 +181,7 @@ class Ui_MainWindow(object):
         self.pushButton_HMA = QPushButton(self.centralwidget)
         self.pushButton_HMA.setObjectName(u"pushButton_HMA")
         icon = QIcon()
-        icon.addFile(u"question.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u"../../../.designer/backup/question.png", QSize(), QIcon.Normal, QIcon.Off)
         self.pushButton_HMA.setIcon(icon)
 
         self.horizontalLayout_21.addWidget(self.pushButton_HMA)
