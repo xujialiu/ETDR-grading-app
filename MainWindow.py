@@ -534,12 +534,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_20 = QHBoxLayout()
         self.horizontalLayout_20.setObjectName(u"horizontalLayout_20")
-        self.pushButton = QPushButton(self.centralwidget)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setAutoDefault(False)
-        self.pushButton.setFlat(False)
+        self.pushButton_clear = QPushButton(self.centralwidget)
+        self.pushButton_clear.setObjectName(u"pushButton_clear")
+        self.pushButton_clear.setAutoDefault(False)
+        self.pushButton_clear.setFlat(False)
 
-        self.horizontalLayout_20.addWidget(self.pushButton)
+        self.horizontalLayout_20.addWidget(self.pushButton_clear)
 
         self.horizontalSpacer_15 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -576,7 +576,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.pushButton.setDefault(False)
+        self.pushButton_clear.setDefault(False)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -624,7 +624,7 @@ class Ui_MainWindow(object):
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"FOCAL/GRID RX", None))
         self.pushButton_14.setText("")
         self.label_18.setText(QCoreApplication.translate("MainWindow", u"Comments:", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
+        self.pushButton_clear.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Save", None))
         self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"Export", None))
     # retranslateUi

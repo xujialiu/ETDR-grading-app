@@ -721,7 +721,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_20">
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="pushButton_clear">
           <property name="text">
            <string>Clear</string>
           </property>

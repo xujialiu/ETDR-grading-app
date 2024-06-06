@@ -25,7 +25,6 @@ class HoverLabel(QLabel):
         pixmap = QPixmap(image_path)
         self.setPixmap(pixmap)
         self.adjustSize()
-        # self.move(pos)
         self.move(pos - QPoint(self.width() + 20, 0))
         self.setVisible(True)
 
@@ -191,7 +190,7 @@ class MainWindowImpl(QMainWindow):
         self.ui.folder_button.clicked.connect(self.select_folder)
 
     def select_folder(self):
-        folder_path = QFileDialog.getExistingDirectory(self, "选择文件夹")
+        folder_path = QFileDialog.getExistingDirectory(self, "Select the data folder")
         if folder_path:
             self.ui.folder_line.setText(folder_path)
 
@@ -204,7 +203,7 @@ class MainWindowImpl(QMainWindow):
         self.setWindowIcon(QIcon("icon.png"))
 
     def _init_option_button(self):
-        dict_options = {
+        dict_comboboxes = {
             self.ui.comboBox_HMA: self.HMA_OPTIONS,
             self.ui.comboBox_HE: self.HE_OPTIONS,
             self.ui.comboBox_SE: self.SE_OPTIONS,
@@ -223,7 +222,8 @@ class MainWindowImpl(QMainWindow):
 
         self.hover_label = HoverLabel()
 
-        for comboBox, options in dict_options.items():
+        self.ui.list_comboboxes = []
+        for comboBox, options in dict_comboboxes.items():
             hover_combo_box = ComboBoxWithHover(self.hover_label, options)
             hover_combo_box.addItems(list(options.keys()))
 
@@ -233,13 +233,17 @@ class MainWindowImpl(QMainWindow):
 
             # Update reference to the new combo box
             setattr(self, comboBox.objectName(), hover_combo_box)
+            hover_combo_box.setCurrentIndex(-1)
+            self.ui.list_comboboxes.append(hover_combo_box)
 
     def init_ui(self):
+        """init the application UI"""
         self._init_tip_button()
         self._init_window()
         self._init_option_button()
         self._init_menu()
         self._init_app()
+        self._init_clear_button()
 
         # g1 = QButtonGroup(self.ui.radioButton.parent())
         # g1.addButton(self.ui.radioButton)
@@ -265,3 +269,16 @@ class MainWindowImpl(QMainWindow):
     def _init_app(self):
         app = QApplication.instance()
         app.setStyle("fusion")
+
+    def _init_clear_button(self):
+        self.ui.pushButton_clear.clicked.connect(self.click_clear_button)
+        self.ui.pushButton_clear
+
+    def click_clear_button(self):
+
+        # clear comboboxes selection
+        for combobox in self.ui.list_comboboxes:
+            combobox.setCurrentIndex(-1)
+
+        # clear comment box text
+        self.ui.textEdit_comment.clear()
