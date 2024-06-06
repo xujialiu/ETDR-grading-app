@@ -63,123 +63,7 @@ class OptionScoreImgPath:
     path: str | Path
 
 
-# @dataclass(frozen=True)
-# class ComboBoxOptionsItem:
-#     labels: str
-#     score_img_path: OptionScoreImgPath
-
-# @dataclass(frozen=True)
-# class ComboBoxOptions:
-#     labels:
-
-
 class MainWindowImpl(QMainWindow):
-    HMA_OPTIONS = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "<std 1": OptionScoreImgPath(2, "question.png"),
-        "≥std 1": OptionScoreImgPath(3, "question.png"),
-        "≥std 2A": OptionScoreImgPath(4, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-    HE_OPTIONS = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "<std 3": OptionScoreImgPath(2, "question.png"),
-        "≥std 3 - <std 4": OptionScoreImgPath(2, "question.png"),
-        "≥std 4": OptionScoreImgPath(4, "question.png"),
-    }
-    SE_OPTIONS = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "Definite": OptionScoreImgPath(2, "question.png"),
-    }
-    IRMA_OPTIONS = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "Definite": OptionScoreImgPath(2, "question.png"),
-        "Definite (all fields)": OptionScoreImgPath(3, "question.png"),
-        "≥std 8A": OptionScoreImgPath(4, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-    VB_OPTIONS = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "Definite": OptionScoreImgPath(2, "question.png"),
-        "Definite (2+ fields)": OptionScoreImgPath(3, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-    NVD_OPTIONS = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "<std 10A": OptionScoreImgPath(2, "question.png"),
-        "≥std 10A": OptionScoreImgPath(3, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-    NVE_OPTIONS = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "<1/2 Disc area": OptionScoreImgPath(2, "question.png"),
-        "≥1/2 Disc area": OptionScoreImgPath(3, "question.png"),
-    }
-    FP_OPTIONS = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "FPE only": OptionScoreImgPath(2, "question.png"),
-        "FPD only": OptionScoreImgPath(3, "question.png"),
-        "FPD + FPE": OptionScoreImgPath(4, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-    PRH_VH_OPTIONS = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "PRH only": OptionScoreImgPath(2, "question.png"),
-        "VH only": OptionScoreImgPath(3, "question.png"),
-        "PRH+VH": OptionScoreImgPath(4, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-    EDEMA_OPTIONS = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "Present, not CSME": OptionScoreImgPath(2, "question.png"),
-        "Present, CSME": OptionScoreImgPath(3, "question.png"),
-        "Non-Diab": OptionScoreImgPath(4, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-
-    CTR_OPTIONS = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "Present, not CSME": OptionScoreImgPath(2, "question.png"),
-        "Present, CSME": OptionScoreImgPath(3, "question.png"),
-        "Non-Diab": OptionScoreImgPath(4, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-
-    VEN_OPTIONS = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "Definite": OptionScoreImgPath(2, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-
-    LASER_OPTIONS = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest/incomplete": OptionScoreImgPath(1, "question.png"),
-        "Focal": OptionScoreImgPath(2, "question.png"),
-        "Scatter only": OptionScoreImgPath(3, "question.png"),
-        "Scatter + Focal": OptionScoreImgPath(4, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-    RX_OPTIONS = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "Focal RX only": OptionScoreImgPath(2, "question.png"),
-        "Grid RX only": OptionScoreImgPath(3, "question.png"),
-        "Focal + Grid": OptionScoreImgPath(4, "question.png"),
-        "CG": OptionScoreImgPath(8, "question.png"),
-    }
-
     def __init__(self):
         super().__init__()
 
@@ -188,53 +72,6 @@ class MainWindowImpl(QMainWindow):
         self.init_ui()
 
         self.ui.folder_button.clicked.connect(self.select_folder)
-
-    def select_folder(self):
-        folder_path = QFileDialog.getExistingDirectory(self, "Select the data folder")
-        if folder_path:
-            self.ui.folder_line.setText(folder_path)
-
-    def _init_tip_button(self):
-        # 提示demo
-        self.ui.pushButton_HMA.setToolTip("introduction of HMA")
-
-    def _init_window(self):
-        self.setWindowTitle("Diabetic Retinopathy Grading App")
-        self.setWindowIcon(QIcon("icon.png"))
-
-    def _init_option_button(self):
-        dict_comboboxes = {
-            self.ui.comboBox_HMA: self.HMA_OPTIONS,
-            self.ui.comboBox_HE: self.HE_OPTIONS,
-            self.ui.comboBox_SE: self.SE_OPTIONS,
-            self.ui.comboBox_IRMA: self.IRMA_OPTIONS,
-            self.ui.comboBox_VB: self.VB_OPTIONS,
-            self.ui.comboBox_NVD: self.NVD_OPTIONS,
-            self.ui.comboBox_NVE: self.NVE_OPTIONS,
-            self.ui.comboBox_FP: self.FP_OPTIONS,
-            self.ui.comboBox_PRH_VH: self.PRH_VH_OPTIONS,
-            self.ui.comboBox_EDEMA: self.EDEMA_OPTIONS,
-            self.ui.comboBox_CTR: self.CTR_OPTIONS,
-            self.ui.comboBox_VEN: self.VEN_OPTIONS,
-            self.ui.comboBox_LASER: self.LASER_OPTIONS,
-            self.ui.comboBox_RX: self.RX_OPTIONS,
-        }
-
-        self.hover_label = HoverLabel()
-
-        self.ui.list_comboboxes = []
-        for comboBox, options in dict_comboboxes.items():
-            hover_combo_box = ComboBoxWithHover(self.hover_label, options)
-            hover_combo_box.addItems(list(options.keys()))
-
-            layout = comboBox.parentWidget().layout()
-            layout.replaceWidget(comboBox, hover_combo_box)
-            comboBox.deleteLater()
-
-            # Update reference to the new combo box
-            setattr(self, comboBox.objectName(), hover_combo_box)
-            hover_combo_box.setCurrentIndex(-1)
-            self.ui.list_comboboxes.append(hover_combo_box)
 
     def init_ui(self):
         """init the application UI"""
@@ -252,6 +89,161 @@ class MainWindowImpl(QMainWindow):
         # g2 = QButtonGroup(self.ui.radioButton_3.parent())
         # g2.addButton(self.ui.radioButton_3)
         # g2.addButton(self.ui.radioButton_4)
+
+    def select_folder(self):
+        folder_path = QFileDialog.getExistingDirectory(self, "Select the data folder")
+        if folder_path:
+            self.ui.folder_line.setText(folder_path)
+
+    def _init_comboboxes_options(self):
+        self.options_HMA = {
+            "None": OptionScoreImgPath(0, "question.png"),
+            "Quest": OptionScoreImgPath(1, "question.png"),
+            "<std 1": OptionScoreImgPath(2, "question.png"),
+            "≥std 1": OptionScoreImgPath(3, "question.png"),
+            "≥std 2A": OptionScoreImgPath(4, "question.png"),
+            "Could grade": OptionScoreImgPath(8, "question.png"),
+        }
+        self.options_HE = {
+            "None": OptionScoreImgPath(0, "question.png"),
+            "Quest": OptionScoreImgPath(1, "question.png"),
+            "<std 3": OptionScoreImgPath(2, "question.png"),
+            "≥std 3 - <std 4": OptionScoreImgPath(2, "question.png"),
+            "≥std 4": OptionScoreImgPath(4, "question.png"),
+        }
+        self.options_SE = {
+            "None": OptionScoreImgPath(0, "question.png"),
+            "Quest": OptionScoreImgPath(1, "question.png"),
+            "Definite": OptionScoreImgPath(2, "question.png"),
+        }
+        self.options_IRMA = {
+            "None": OptionScoreImgPath(0, "question.png"),
+            "Quest": OptionScoreImgPath(1, "question.png"),
+            "Definite": OptionScoreImgPath(2, "question.png"),
+            "Definite (all fields)": OptionScoreImgPath(3, "question.png"),
+            "≥std 8A": OptionScoreImgPath(4, "question.png"),
+            "Could grade": OptionScoreImgPath(8, "question.png"),
+        }
+        self.options_VB = {
+            "None": OptionScoreImgPath(0, "question.png"),
+            "Quest": OptionScoreImgPath(1, "question.png"),
+            "Definite": OptionScoreImgPath(2, "question.png"),
+            "Definite (2+ fields)": OptionScoreImgPath(3, "question.png"),
+            "Could grade": OptionScoreImgPath(8, "question.png"),
+        }
+        self.options_NVD = {
+            "None": OptionScoreImgPath(0, "question.png"),
+            "Quest": OptionScoreImgPath(1, "question.png"),
+            "<std 10A": OptionScoreImgPath(2, "question.png"),
+            "≥std 10A": OptionScoreImgPath(3, "question.png"),
+            "Could grade": OptionScoreImgPath(8, "question.png"),
+        }
+        self.options_NVE = {
+            "None": OptionScoreImgPath(0, "question.png"),
+            "Quest": OptionScoreImgPath(1, "question.png"),
+            "<1/2 Disc area": OptionScoreImgPath(2, "question.png"),
+            "≥1/2 Disc area": OptionScoreImgPath(3, "question.png"),
+        }
+        self.options_FP = {
+            "None": OptionScoreImgPath(0, "question.png"),
+            "Quest": OptionScoreImgPath(1, "question.png"),
+            "FPE only": OptionScoreImgPath(2, "question.png"),
+            "FPD only": OptionScoreImgPath(3, "question.png"),
+            "FPD + FPE": OptionScoreImgPath(4, "question.png"),
+            "Could grade": OptionScoreImgPath(8, "question.png"),
+        }
+        self.options_PRH_VH = {
+            "None": OptionScoreImgPath(0, "question.png"),
+            "Quest": OptionScoreImgPath(1, "question.png"),
+            "PRH only": OptionScoreImgPath(2, "question.png"),
+            "VH only": OptionScoreImgPath(3, "question.png"),
+            "PRH+VH": OptionScoreImgPath(4, "question.png"),
+            "Could grade": OptionScoreImgPath(8, "question.png"),
+        }
+        self.options_EDEMA = {
+            "None": OptionScoreImgPath(0, "question.png"),
+            "Quest": OptionScoreImgPath(1, "question.png"),
+            "Present, not CSME": OptionScoreImgPath(2, "question.png"),
+            "Present, CSME": OptionScoreImgPath(3, "question.png"),
+            "Non-Diab": OptionScoreImgPath(4, "question.png"),
+            "Could grade": OptionScoreImgPath(8, "question.png"),
+        }
+
+        self.options_CTR = {
+            "None": OptionScoreImgPath(0, "question.png"),
+            "Quest": OptionScoreImgPath(1, "question.png"),
+            "Present, not CSME": OptionScoreImgPath(2, "question.png"),
+            "Present, CSME": OptionScoreImgPath(3, "question.png"),
+            "Non-Diab": OptionScoreImgPath(4, "question.png"),
+            "Could grade": OptionScoreImgPath(8, "question.png"),
+        }
+
+        self.options_VEN = {
+            "None": OptionScoreImgPath(0, "question.png"),
+            "Quest": OptionScoreImgPath(1, "question.png"),
+            "Definite": OptionScoreImgPath(2, "question.png"),
+            "Could grade": OptionScoreImgPath(8, "question.png"),
+        }
+
+        self.options_LASER = {
+            "None": OptionScoreImgPath(0, "question.png"),
+            "Quest/incomplete": OptionScoreImgPath(1, "question.png"),
+            "Focal": OptionScoreImgPath(2, "question.png"),
+            "Scatter only": OptionScoreImgPath(3, "question.png"),
+            "Scatter + Focal": OptionScoreImgPath(4, "question.png"),
+            "Could grade": OptionScoreImgPath(8, "question.png"),
+        }
+        self.options_RX = {
+            "None": OptionScoreImgPath(0, "question.png"),
+            "Quest": OptionScoreImgPath(1, "question.png"),
+            "Focal RX only": OptionScoreImgPath(2, "question.png"),
+            "Grid RX only": OptionScoreImgPath(3, "question.png"),
+            "Focal + Grid": OptionScoreImgPath(4, "question.png"),
+            "CG": OptionScoreImgPath(8, "question.png"),
+        }
+
+    def _init_tip_button(self):
+        # 提示demo
+        self.ui.pushButton_HMA.setToolTip("introduction of HMA")
+
+    def _init_window(self):
+        self.setWindowTitle("Diabetic Retinopathy Grading App")
+        self.setWindowIcon(QIcon("icon.png"))
+
+    def _init_option_button(self):
+        self._init_comboboxes_options()
+        dict_comboboxes = {
+            self.ui.comboBox_HMA: self.options_HMA,
+            self.ui.comboBox_HE: self.options_HE,
+            self.ui.comboBox_SE: self.options_SE,
+            self.ui.comboBox_IRMA: self.options_IRMA,
+            self.ui.comboBox_VB: self.options_VB,
+            self.ui.comboBox_NVD: self.options_NVD,
+            self.ui.comboBox_NVE: self.options_NVE,
+            self.ui.comboBox_FP: self.options_FP,
+            self.ui.comboBox_PRH_VH: self.options_PRH_VH,
+            self.ui.comboBox_EDEMA: self.options_EDEMA,
+            self.ui.comboBox_CTR: self.options_CTR,
+            self.ui.comboBox_VEN: self.options_VEN,
+            self.ui.comboBox_LASER: self.options_LASER,
+            self.ui.comboBox_RX: self.options_RX,
+        }
+
+        self.hover_label = HoverLabel()
+
+        self.ui.list_comboboxes = []
+        for comboBox, options in dict_comboboxes.items():
+            hover_combo_box = ComboBoxWithHover(self.hover_label, options)
+            hover_combo_box.addItems(list(options.keys()))
+
+            layout = comboBox.parentWidget().layout()
+            layout.replaceWidget(comboBox, hover_combo_box)
+            comboBox.deleteLater()
+
+            # Update reference to the new combo box
+            setattr(self, comboBox.objectName(), hover_combo_box)
+            hover_combo_box.setCurrentIndex(-1)
+            self.ui.list_comboboxes.append(hover_combo_box)
 
     def _init_menu(self):
         self.ui.menu = self.menuBar()
