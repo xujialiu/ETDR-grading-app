@@ -1,7 +1,9 @@
 from pathlib import Path
 from PySide6.QtCore import Qt, QPoint, QEvent
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import (
+    QApplication,
+    QButtonGroup,
     QFileDialog,
     QLabel,
     QComboBox,
@@ -59,7 +61,7 @@ class ComboBoxWithHover(QComboBox):
 class OptionScoreImgPath:
     score: int
     path: str | Path
-    
+
 
 # @dataclass(frozen=True)
 # class ComboBoxOptionsItem:
@@ -68,8 +70,7 @@ class OptionScoreImgPath:
 
 # @dataclass(frozen=True)
 # class ComboBoxOptions:
-#     labels: 
-
+#     labels:
 
 
 class MainWindowImpl(QMainWindow):
@@ -184,7 +185,7 @@ class MainWindowImpl(QMainWindow):
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.InitUI()
+        self.init_ui()
 
         self.ui.folder_button.clicked.connect(self.select_folder)
 
@@ -193,7 +194,15 @@ class MainWindowImpl(QMainWindow):
         if folder_path:
             self.ui.folder_line.setText(folder_path)
 
-    def InitUI(self):
+    def _init_tip_button(self):
+        # 提示demo
+        self.ui.pushButton_HMA.setToolTip("introduction of HMA")
+
+    def _init_window(self):
+        self.setWindowTitle("Diabetic Retinopathy Grading App")
+        self.setWindowIcon(QIcon("icon.png"))
+
+    def _init_option_button(self):
         dict_options = {
             self.ui.comboBox_HMA: self.HMA_OPTIONS,
             self.ui.comboBox_HE: self.HE_OPTIONS,
@@ -223,3 +232,37 @@ class MainWindowImpl(QMainWindow):
 
             # Update reference to the new combo box
             setattr(self, comboBox.objectName(), hover_combo_box)
+
+    def init_ui(self):
+        self._init_tip_button()
+        self._init_window()
+        self._init_option_button()
+        self._init_menu()
+        self._init_app()
+        
+        # g1 = QButtonGroup(self.ui.radioButton.parent())
+        # g1.addButton(self.ui.radioButton)
+        # g1.addButton(self.ui.radioButton_2)
+        
+        # g2 = QButtonGroup(self.ui.radioButton_3.parent())
+        # g2.addButton(self.ui.radioButton_3)
+        # g2.addButton(self.ui.radioButton_4)
+        
+        
+
+    def _init_menu(self):
+        self.ui.menu = self.menuBar()
+        self.ui.menu_file = self.ui.menu.addMenu('File')
+        
+        # 重构成使用addActions和QAction
+        self.ui.menu_file_openfolder = self.ui.menu_file.addAction('Open Folder...')
+        self.ui.menu_file_save = self.ui.menu_file.addAction('Save...')
+        self.ui.menu_file_exit = self.ui.menu_file.addAction('Exit...')
+        
+        self.ui.menu_help = self.ui.menu.addMenu('help')
+        self.ui.menu_help_about = self.ui.menu_help.addAction("About")
+        self.ui.menu_file_openfolder.triggered.connect(self.select_folder)
+        
+    def _init_app(self):
+        app = QApplication.instance()
+        app.setStyle('fusion')
