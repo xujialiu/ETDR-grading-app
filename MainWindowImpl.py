@@ -25,7 +25,8 @@ class HoverLabel(QLabel):
         pixmap = QPixmap(image_path)
         self.setPixmap(pixmap)
         self.adjustSize()
-        self.move(pos)
+        # self.move(pos)
+        self.move(pos - QPoint(self.width() + 20, 0))
         self.setVisible(True)
 
     def hide_image(self):
