@@ -55,7 +55,7 @@ class MainWindow(QMainWindow):
         self.addDockWidget(Qt.TopDockWidgetArea, self.right_dock)
 
     def _init_tabs(self):
-
+        
         dummy_widget_1 = my_widget()
         dummy_widget_2 = my_widget()
         dummy_widget_3 = my_widget()
