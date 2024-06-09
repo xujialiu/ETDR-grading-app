@@ -1,43 +1,47 @@
 import sys
-from PySide6.QtWidgets import *
-from PySide6.QtGui import *
-from PySide6.QtCore import *
+from PySide6.QtWidgets import QApplication, QMainWindow, QDockWidget, QTextEdit, QHBoxLayout, QWidget
+from PySide6.QtCore import Qt
 
-
-class new_text(QTextEdit):
+class my_widget(QWidget):
     def __init__(self):
-        super(new_text, self).__init__()
-        self.setFrameShape(QFrame.NoFrame)
-        self.resize(QSize(100, 70))
+        super(my_widget, self).__init__()
+        text_edit = QTextEdit()
+        box = QHBoxLayout()
+        box.addWidget(text_edit)
+        self.setLayout(box)
 
-
-class Window(QMainWindow):
+class MainWindow(QMainWindow):
     def __init__(self):
-        super(Window, self).__init__()
-        self.window_ui()
+        super().__init__()
+        self.setWindowTitle("Diabetic Retinopathy Grading System")
+        self.setGeometry(100, 100, 800, 600)
+        self.init_ui()
 
-    def window_ui(self):
-        self.resize(QSize(500, 500))
-        dock1 = QDockWidget('the test dock1..')
-        dock2 = QDockWidget('the test dock2..')
-        dock1.setAllowedAreas(Qt.TopDockWidgetArea | Qt.BottomDockWidgetArea)
-        dock2.setAllowedAreas(Qt.AllDockWidgetAreas)
-        # dock1.setTitleBarWidget()
-        self.addDockWidget(Qt.TopDockWidgetArea, dock1)
-        self.addDockWidget(Qt.TopDockWidgetArea, dock2)
-        # dock1.setFeatures(QDockWidget.DockWidgetVerticalTitleBar)
-        # dock1.setFloating(True)
-        # cw = QWidget()
-        # self.setCentralWidget(cw)
+    def init_ui(self):
+        self._init_docks()
+        self._init_tabs()
 
-        text_edit1 = new_text()
-        text_edit2 = new_text()
-        dock1.setWidget(text_edit1)
-        dock2.setWidget(text_edit2)
+    def _init_docks(self):
+        # Left dock widget
+        self.left_dock = QDockWidget("Left Dock", self)
+        self.left_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        self.left_dock.setFeatures(QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetClosable)
+        self.addDockWidget(Qt.LeftDockWidgetArea, self.left_dock)
 
+        # Right dock widget
+        self.right_dock = QDockWidget("Right Dock", self)
+        self.right_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        self.right_dock.setFeatures(QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetClosable)
+        self.addDockWidget(Qt.RightDockWidgetArea, self.right_dock)
+        print("Right Dock Features:", self.right_dock.features())
+        print("Right Dock Allowed Areas:", self.right_dock.allowedAreas())
+
+    def _init_tabs(self):
+        dummy_widget = my_widget()
+        self.right_dock.setWidget(dummy_widget)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = Window()
-    window.show()
+    main_win = MainWindow()
+    main_win.show()
     sys.exit(app.exec())
