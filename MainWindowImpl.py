@@ -306,7 +306,7 @@ class HoverLabel(QLabel):
         self.setPixmap(pixmap)
         self.adjustSize()
         # Adjust position to show image on the left side of the item rectangle
-        self.move(item_rect_top_left - QPoint(self.width() + 10, 0))
+        self.move(item_rect_top_left - QPoint(self.width() + 5, 0))
         self.setVisible(True)
 
     def hide_image(self):
