@@ -1,4 +1,5 @@
 # mainwindowimpl.py
+from doctest import debug
 import json
 from pathlib import Path
 
@@ -11,6 +12,7 @@ from PySide6.QtWidgets import (
     QTreeWidgetItem,
     QWidget,
 )
+from networkx import dfs_edges
 from mainwindow import MainWindow
 import gradwidget, setwidget
 import sys
@@ -45,6 +47,7 @@ class MainWindowImpl(MainWindow):
         # 放在最后, 因为需要连接其他控件
         self._init_menu()
         self.islogin = False
+        self.debug_button(hide=False)
 
     def _init_setwidge(self):
         self.set = setwidget.Ui_MainWindow()
@@ -134,19 +137,19 @@ class MainWindowImpl(MainWindow):
     def get_df(self):
         self.df = get_folder_contents_df(self.set.folder_path)
 
-    def on_item_clicked(self, item, column):
-        if item.childCount() == 0:  # 如果点击的是 visit_date 项目
-            visit_date = item.data(0, 1)
-            self.show_file_path(visit_date)
+    # def on_item_clicked(self, item, column):
+    #     if item.childCount() == 0:  # 如果点击的是 visit_date 项目
+    #         visit_date = item.data(0, 1)
+    #         self.show_file_path(visit_date)
 
-    def show_file_path(self, visit_date):
-        self.set.listWidget_img_path.clear()
-        filtered_df = self.df[self.df["visit_date"] == visit_date]
+    # def show_file_path(self, visit_date):
+    #     self.set.listWidget_img_path.clear()
+    #     filtered_df = self.df[self.df["visit_date"] == visit_date]
 
-        for path in filtered_df.loc[:, "file_path"]:
-            item = QListWidgetItem(Path(path).name)
-            item.setToolTip(path)
-            self.set.listWidget_img_path.addItem(item)
+    #     for path in filtered_df.loc[:, "file_path"]:
+    #         item = QListWidgetItem(Path(path).name)
+    #         item.setToolTip(path)
+    #         self.set.listWidget_img_path.addItem(item)
 
     def login_user(self):
 
@@ -161,20 +164,50 @@ class MainWindowImpl(MainWindow):
             QMessageBox.warning(self, "Error", "Invalid username or password!")
 
     def show_patients_tree(self):
-
+        self.set.treeWidget_patient.clear()
+        # print(self.df)
         grouped = self.df.groupby("patient_id")
         for patient_id, group in grouped:
             # 创建顶级条目
             patient_item = QTreeWidgetItem([patient_id])
             self.set.treeWidget_patient.addTopLevelItem(patient_item)
 
-            # 添加 visit_date 条目
-            visit_dates = group["visit_date"].unique()
+            # # 添加 visit_date 条目
+            # visit_dates = group["visit_date"].unique()
 
-            for visit_date in visit_dates:
-                visit_date_item = QTreeWidgetItem([visit_date])
-                patient_item.addChild(visit_date_item)
-                visit_date_item.setData(0, 1, visit_date)
+            # for visit_date in visit_dates:
+            #     visit_date_item = QTreeWidgetItem([visit_date])
+            #     patient_item.addChild(visit_date_item)
+            #     visit_date_item.setData(0, 1, visit_date)
+            
+            # 获取 unique 的 visit_date 和 eye 组合
+            visit_date_eye_combinations = group[['visit_date', 'eye']].drop_duplicates().values
+
+            for visit_date, eye in visit_date_eye_combinations:
+                visit_date_eye_item = QTreeWidgetItem([f"{visit_date} {eye}"])
+                patient_item.addChild(visit_date_eye_item)
+                visit_date_eye_item.setData(0, 1, visit_date)
+                
+                
+    def on_item_clicked(self, item, column):
+        if item.childCount() == 0:  # 如果点击的是 visit_date (eye) 项目
+            
+
+            visit_date, eye = item.text(0).split()
+            print(visit_date, eye)
+            self.show_file_path(visit_date, eye)
+
+    def show_file_path(self, visit_date, eye):
+        self.set.listWidget_img_path.clear()
+        filtered_df = self.df[(self.df["visit_date"] == visit_date) & (self.df["eye"] == eye)]
+
+        for path in filtered_df.loc[:, "file_path"]:
+            item = QListWidgetItem(Path(path).name)
+            item.setToolTip(path)
+            self.set.listWidget_img_path.addItem(item)
+            
+
+            
 
     def popup_ask_to_login(self):
         QMessageBox.warning(self, "Error", "Please login!")
@@ -203,6 +236,18 @@ class MainWindowImpl(MainWindow):
             key: OptionScoreImgPath(value["score"], value["image"])
             for key, value in options_dict.items()
         }
+        
+        
+    # debug button
+    def debug_button(self, hide=True):
+        self.set.pushButton_debug.clicked.connect(self.debug_func)
+        if hide:
+            self.set.pushButton_debug.hide()
+        
+    def debug_func(self):
+        a = self.set.treeWidget_patient.currentItem()
+        print(a.text(0))
+        
 
 
 if __name__ == "__main__":

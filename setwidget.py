@@ -168,6 +168,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.gridLayout_2)
 
+        self.pushButton_debug = QPushButton(self.centralwidget)
+        self.pushButton_debug.setObjectName(u"pushButton_debug")
+
+        self.verticalLayout_2.addWidget(self.pushButton_debug)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -200,5 +205,6 @@ class Ui_MainWindow(object):
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Total score:", None))
         self.folder_button.setText(QCoreApplication.translate("MainWindow", u"Select folder", None))
         self.label_folder.setText("")
+        self.pushButton_debug.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
     # retranslateUi
 
