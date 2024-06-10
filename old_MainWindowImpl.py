@@ -1,5 +1,6 @@
 from datetime import datetime
 from pathlib import Path
+import sys
 from PySide6.QtCore import QDate, Qt, QPoint, QEvent
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import (
@@ -11,7 +12,7 @@ from PySide6.QtWidgets import (
     QMainWindow,
 )
 from dataclasses import dataclass
-from MainWindow_old import Ui_MainWindow
+from old_MainWindow import Ui_MainWindow
 
 
 @dataclass(frozen=True)
@@ -336,3 +337,12 @@ class ComboBoxWithHover(QComboBox):
         elif event.type() in (QEvent.HoverLeave, QEvent.Leave):
             self.hover_label.hide_image()
         return super().eventFilter(source, event)
+    
+    
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+
+    mwImpl = MainWindowImpl()
+    mwImpl.show()
+
+    sys.exit(app.exec())

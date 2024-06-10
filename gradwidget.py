@@ -111,6 +111,13 @@ class Ui_MainWindow(object):
 
         self.comboBox_HMA = QComboBox(self.centralwidget)
         self.comboBox_HMA.setObjectName(u"comboBox_HMA")
+        self.comboBox_HMA.setEnabled(True)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.comboBox_HMA.sizePolicy().hasHeightForWidth())
+        self.comboBox_HMA.setSizePolicy(sizePolicy)
+        self.comboBox_HMA.setMinimumSize(QSize(0, 0))
 
         self.horizontalLayout_21.addWidget(self.comboBox_HMA)
 
