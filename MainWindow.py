@@ -24,7 +24,6 @@ class my_widget(QWidget):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Diabetic Retinopathy Grading System")
         self.resize(1500, 800)
         self.init_ui()
 

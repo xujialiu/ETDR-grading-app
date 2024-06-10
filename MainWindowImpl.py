@@ -4,6 +4,7 @@ from doctest import debug
 import json
 from pathlib import Path
 
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
     QFileDialog,
     QHBoxLayout,
@@ -32,12 +33,12 @@ class MainWindowImpl(MainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.init_ui_impl()
-
+        self.setWindowIcon(QIcon("icon.png"))
+        self.setWindowTitle("Diabetic Retinopathy Grading System")
         # disable password
         self.islogin = True
 
     def init_ui_impl(self):
-        # self._init_grad_set()
         self._init_gradwidge()
         self._init_setwidge()
         self._init_comboboxes()
@@ -162,20 +163,6 @@ class MainWindowImpl(MainWindow):
     def get_df(self):
         self.df = get_df_folder_contents(self.set.folder_path)
 
-    # def on_visit_date_clicked(self, item, column):
-    #     if item.childCount() == 0:  # 如果点击的是 visit_date 项目
-    #         visit_date = item.data(0, 1)
-    #         self.show_file_path(visit_date)
-
-    # def show_file_path(self, visit_date):
-    #     self.set.listWidget_img_path.clear()
-    #     filtered_df = self.df[self.df["visit_date"] == visit_date]
-
-    #     for path in filtered_df.loc[:, "file_path"]:
-    #         item = QListWidgetItem(Path(path).name)
-    #         item.setToolTip(path)
-    #         self.set.listWidget_img_path.addItem(item)
-
     def login_user(self):
 
         user = self.set.lineEdit_user.text()
@@ -195,14 +182,6 @@ class MainWindowImpl(MainWindow):
             # 创建顶级条目
             patient_item = QTreeWidgetItem([patient_id])
             self.set.treeWidget_patient.addTopLevelItem(patient_item)
-
-            # # 添加 visit_date 条目
-            # visit_dates = group["visit_date"].unique()
-
-            # for visit_date in visit_dates:
-            #     visit_date_item = QTreeWidgetItem([visit_date])
-            #     patient_item.addChild(visit_date_item)
-            #     visit_date_item.setData(0, 1, visit_date)
 
             # 获取 unique 的 visit_date 和 eye 组合
             visit_date_eye_combinations = (
@@ -237,13 +216,14 @@ class MainWindowImpl(MainWindow):
     def _init_save_button(self):
         self.grad.pushButton_save.clicked.connect(self.on_save_click)
 
+
+
     def on_save_click(self):
 
         comboboxs_choices = [
             list_combobox[0].currentText()
             for list_combobox in self.dict_comboboxes.values()
         ]
-        # print(comboboxs_choices)
         if not self.islogin:
             QMessageBox.warning(self, "Error", "Please login!")
         elif not all(comboboxs_choices):
@@ -256,7 +236,7 @@ class MainWindowImpl(MainWindow):
         self.update_dict_results(dict_results)
 
         self.update_df_database(dict_results)
-        print(self.df_dataset)                # 写道这里
+        print(self.df_dataset)  # 写到这里
 
     def update_df_database(self, dict_results):
         df_data = pd.DataFrame([dict_results])
