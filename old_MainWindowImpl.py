@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (
     QMainWindow,
 )
 from dataclasses import dataclass
-from MainWindow import Ui_MainWindow
+from MainWindow_old import Ui_MainWindow
 
 
 @dataclass(frozen=True)

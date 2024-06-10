@@ -1,8 +1,11 @@
 # mainwindowimpl.py
 from PySide6.QtWidgets import QHBoxLayout, QTextEdit, QWidget
 from mainwindow import MainWindow
-import gradwidge
-import MainWindow_old
+import gradwidget, setwidget
+import sys
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
+
+# from mainwindowimpl import MainWindowImpl
 
 
 class my_widget(QWidget):
@@ -17,19 +20,28 @@ class my_widget(QWidget):
 class MainWindowImpl(MainWindow):
     def __init__(self) -> None:
         super().__init__()
-        self._init_grad_set()
+        self.init_ui_impl()
 
-    def _init_grad_set(self):
+    def init_ui_impl(self):
+        # self._init_grad_set()
+        self._init_gradwidge()
+        self._init_setwidge()
 
-        dummy_widget_1 = my_widget()
-        dummy_widget_2 = my_widget()
-        dummy_widget_3 = my_widget()
+    def _init_setwidge(self):
+        self.set = setwidget.Ui_MainWindow()
+        self.set.setupUi(self)
+        self.tabwidget.addTab(self.set.centralwidget, "Settings")
 
-        # self.grad = gradwidge.Ui_Form()
-        # self.grad.setupUi(self)
-
-        self.grad = MainWindow_old.Ui_MainWindow()
+    def _init_gradwidge(self):
+        self.grad = gradwidget.Ui_MainWindow()
         self.grad.setupUi(self)
-        
         self.tabwidget.addTab(self.grad.centralwidget, "Grading Area")
-        self.tabwidget.addTab(dummy_widget_3, "Settings")
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+
+    mwImpl = MainWindowImpl()
+    mwImpl.show()
+
+    sys.exit(app.exec())
