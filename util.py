@@ -12,16 +12,12 @@ class OptionScoreImgPath:
 
 
 def get_df_folder_contents(root_dir):
-    # Initialize lists to store the data
-    # series_id = []
     patient_id_list = []
     visit_date_list = []
     file_path_list = []
     eye_list = []
 
-    # Date pattern to match directories in the format YYYY-MM-DD
     date_pattern = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-
     eye_pattern = re.compile(r"_Color_(L|R)_")
 
     root_path = Path(root_dir)
@@ -57,36 +53,6 @@ def get_df_folder_contents(root_dir):
     )
 
     return df
-
-
-# def load_or_create_dataset_df(filename="dataset.hdf"):
-#     columns = [
-#         "patient_id",
-#         "visit_date",
-#         "HMA",
-#         "HE",
-#         "SE",
-#         "IRMA",
-#         "VB",
-#         "NVD",
-#         "NVE",
-#         "FP",
-#         "VH",
-#         "EDEMA",
-#         "CTR",
-#         "VEN",
-#         "LASER",
-#         "RX",
-#     ]
-
-#     file_path = Path(filename)
-
-#     if file_path.exists():
-#         df = pd.read_hdf(file_path)
-#     else:
-#         df = pd.DataFrame(columns=columns)
-
-#     return df
 
 
 def load_or_create_df_dataset(filename="dataset.hdf"):

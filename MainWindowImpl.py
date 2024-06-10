@@ -3,25 +3,19 @@ from copy import copy
 from doctest import debug
 import json
 from pathlib import Path
-
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
     QFileDialog,
-    QHBoxLayout,
     QListWidgetItem,
     QMessageBox,
-    QTextEdit,
     QTreeWidgetItem,
-    QWidget,
 )
 from networkx import dfs_edges
 from mainwindow import MainWindow
 import gradwidget, setwidget
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
+from PySide6.QtWidgets import QApplication
 from util import OptionScoreImgPath, get_df_folder_contents, load_or_create_df_dataset
-
-# from mainwindowimpl import MainWindowImpl
 from ComboboxWithHover import ComboBoxWithHover, HoverLabel
 import pandas as pd
 
@@ -164,7 +158,6 @@ class MainWindowImpl(MainWindow):
         self.df = get_df_folder_contents(self.set.folder_path)
 
     def login_user(self):
-
         user = self.set.lineEdit_user.text()
         password = self.set.lineEdit_password.text()
 
@@ -215,8 +208,6 @@ class MainWindowImpl(MainWindow):
 
     def _init_save_button(self):
         self.grad.pushButton_save.clicked.connect(self.on_save_click)
-
-
 
     def on_save_click(self):
 
@@ -294,7 +285,7 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
 
-    mwImpl = MainWindowImpl()
-    mwImpl.show()
+    mwimpl = MainWindowImpl()
+    mwimpl.show()
 
     sys.exit(app.exec())

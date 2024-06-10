@@ -31,7 +31,7 @@ class ComboBoxWithHover(QComboBox):
         self.view().setMouseTracking(True)
         self.view().viewport().installEventFilter(self)
         self.view().viewport().setAttribute(Qt.WA_Hover)
-        
+
         fixed_width = 150
         self.setMinimumWidth(fixed_width)
         self.setMaximumWidth(fixed_width)
