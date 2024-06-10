@@ -191,10 +191,8 @@ class MainWindowImpl(MainWindow):
                 
     def on_item_clicked(self, item, column):
         if item.childCount() == 0:  # 如果点击的是 visit_date (eye) 项目
-            
-
             visit_date, eye = item.text(0).split()
-            print(visit_date, eye)
+            # print(visit_date, eye)
             self.show_file_path(visit_date, eye)
 
     def show_file_path(self, visit_date, eye):
