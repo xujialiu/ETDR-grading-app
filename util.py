@@ -11,7 +11,7 @@ class OptionScoreImgPath:
     path: str | Path
 
 
-def get_folder_contents_df(root_dir):
+def get_df_folder_contents(root_dir):
     # Initialize lists to store the data
     # series_id = []
     patient_id_list = []
@@ -21,8 +21,8 @@ def get_folder_contents_df(root_dir):
 
     # Date pattern to match directories in the format YYYY-MM-DD
     date_pattern = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-    
-    eye_pattern = re.compile(r'_Color_(L|R)_')
+
+    eye_pattern = re.compile(r"_Color_(L|R)_")
 
     root_path = Path(root_dir)
 
@@ -38,7 +38,7 @@ def get_folder_contents_df(root_dir):
                     patient_id_list.append(dir1)
                     visit_date_list.append(dir2)
                     file_path_list.append(str(file_path))
-                    
+
                     # Extract 'L' or 'R' from the filename
                     match = eye_pattern.search(file_path.name)
                     if match:
@@ -52,8 +52,86 @@ def get_folder_contents_df(root_dir):
             "patient_id": patient_id_list,
             "visit_date": visit_date_list,
             "file_path": file_path_list,
-            "eye":eye_list
+            "eye": eye_list,
         }
     )
+
+    return df
+
+
+# def load_or_create_dataset_df(filename="dataset.hdf"):
+#     columns = [
+#         "patient_id",
+#         "visit_date",
+#         "HMA",
+#         "HE",
+#         "SE",
+#         "IRMA",
+#         "VB",
+#         "NVD",
+#         "NVE",
+#         "FP",
+#         "VH",
+#         "EDEMA",
+#         "CTR",
+#         "VEN",
+#         "LASER",
+#         "RX",
+#     ]
+
+#     file_path = Path(filename)
+
+#     if file_path.exists():
+#         df = pd.read_hdf(file_path)
+#     else:
+#         df = pd.DataFrame(columns=columns)
+
+#     return df
+
+
+def load_or_create_df_dataset(filename="dataset.hdf"):
+    columns = [
+        "patient_id",
+        "visit_date",
+        "eye",
+        "HMA",
+        "HE",
+        "SE",
+        "IRMA",
+        "VB",
+        "NVD",
+        "NVE",
+        "FP",
+        "PRH_VH",
+        "EDEMA",
+        "CTR",
+        "VEN",
+        "LASER",
+        "RX",
+        "comments",
+        "patient_id_score",
+        "visit_date_score",
+        "HMA_score",
+        "HE_score",
+        "SE_score",
+        "IRMA_score",
+        "VB_score",
+        "NVD_score",
+        "NVE_score",
+        "FP_score",
+        "PRH_VH_score",
+        "EDEMA_score",
+        "CTR_score",
+        "VEN_score",
+        "LASER_score",
+        "RX_score",
+    ]
+
+    file_path = Path(filename)
+
+    if file_path.exists():
+        df = pd.read_hdf(file_path)
+    else:
+        df = pd.DataFrame(columns=columns)
 
     return df

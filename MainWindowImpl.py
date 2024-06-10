@@ -1,4 +1,5 @@
 # mainwindowimpl.py
+from copy import copy
 from doctest import debug
 import json
 from pathlib import Path
@@ -17,7 +18,7 @@ from mainwindow import MainWindow
 import gradwidget, setwidget
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
-from util import OptionScoreImgPath, get_folder_contents_df
+from util import OptionScoreImgPath, get_df_folder_contents, load_or_create_df_dataset
 
 # from mainwindowimpl import MainWindowImpl
 from ComboboxWithHover import ComboBoxWithHover, HoverLabel
@@ -43,6 +44,9 @@ class MainWindowImpl(MainWindow):
         self._init_app()
         self._init_login_button()
         self._init_folder_button()
+        self._init_patients_tree()
+        self.get_df_dataset()
+        self._init_save_button()
 
         # 放在最后, 因为需要连接其他控件
         self._init_menu()
@@ -90,9 +94,28 @@ class MainWindowImpl(MainWindow):
             comboBox.deleteLater()
 
             # Update reference to the new combobox
-            setattr(self, comboBox.objectName(), hover_combobox)
+            setattr(
+                self.grad, comboBox.objectName(), hover_combobox
+            )  # 绑定到新的变量上
             hover_combobox.setCurrentIndex(-1)
             self.grad.list_comboboxes.append(hover_combobox)
+
+        self.dict_comboboxes = {
+            "HMA": [self.grad.comboBox_HMA, self.options_HMA],
+            "HE": [self.grad.comboBox_HE, self.options_HE],
+            "SE": [self.grad.comboBox_SE, self.options_SE],
+            "IRMA": [self.grad.comboBox_IRMA, self.options_IRMA],
+            "VB": [self.grad.comboBox_VB, self.options_VB],
+            "NVD": [self.grad.comboBox_NVD, self.options_NVD],
+            "NVE": [self.grad.comboBox_NVE, self.options_NVE],
+            "FP": [self.grad.comboBox_FP, self.options_FP],
+            "PRH_VH": [self.grad.comboBox_PRH_VH, self.options_PRH_VH],
+            "EDEMA": [self.grad.comboBox_EDEMA, self.options_EDEMA],
+            "CTR": [self.grad.comboBox_CTR, self.options_CTR],
+            "VEN": [self.grad.comboBox_VEN, self.options_VEN],
+            "LASER": [self.grad.comboBox_LASER, self.options_LASER],
+            "RX": [self.grad.comboBox_RX, self.options_RX],
+        }
 
     def _init_app(self):
         app = QApplication.instance()
@@ -120,24 +143,26 @@ class MainWindowImpl(MainWindow):
                 self.set.label_folder.setText(self.set.folder_path)
 
         else:
-            self.popup_ask_to_login()
+            QMessageBox.warning(self, "Error", "Please login!")
 
     def _init_folder_button(self):
         self.set.folder_button.clicked.connect(self.select_folder)
         self.set.folder_button.clicked.connect(self.get_df)
         self.set.folder_button.clicked.connect(self.show_patients_tree)
-        self.set.treeWidget_patient.itemClicked.connect(self.on_item_clicked)
+
+    def _init_patients_tree(self):
+        self.set.treeWidget_patient.itemClicked.connect(self.on_visit_date_clicked)
 
     def _init_login_button(self):
         self.set.pushButton_login.clicked.connect(self.login_user)
 
-    def load_patient_list(self):
-        self.set.treeWidget.addTopLevelItems(QTreeWidgetItem())
+    def get_df_dataset(self):
+        self.df_dataset = load_or_create_df_dataset()
 
     def get_df(self):
-        self.df = get_folder_contents_df(self.set.folder_path)
+        self.df = get_df_folder_contents(self.set.folder_path)
 
-    # def on_item_clicked(self, item, column):
+    # def on_visit_date_clicked(self, item, column):
     #     if item.childCount() == 0:  # 如果点击的是 visit_date 项目
     #         visit_date = item.data(0, 1)
     #         self.show_file_path(visit_date)
@@ -165,7 +190,6 @@ class MainWindowImpl(MainWindow):
 
     def show_patients_tree(self):
         self.set.treeWidget_patient.clear()
-        # print(self.df)
         grouped = self.df.groupby("patient_id")
         for patient_id, group in grouped:
             # 创建顶级条目
@@ -179,36 +203,76 @@ class MainWindowImpl(MainWindow):
             #     visit_date_item = QTreeWidgetItem([visit_date])
             #     patient_item.addChild(visit_date_item)
             #     visit_date_item.setData(0, 1, visit_date)
-            
+
             # 获取 unique 的 visit_date 和 eye 组合
-            visit_date_eye_combinations = group[['visit_date', 'eye']].drop_duplicates().values
+            visit_date_eye_combinations = (
+                group[["visit_date", "eye"]].drop_duplicates().values
+            )
 
             for visit_date, eye in visit_date_eye_combinations:
                 visit_date_eye_item = QTreeWidgetItem([f"{visit_date} {eye}"])
                 patient_item.addChild(visit_date_eye_item)
                 visit_date_eye_item.setData(0, 1, visit_date)
-                
-                
-    def on_item_clicked(self, item, column):
-        if item.childCount() == 0:  # 如果点击的是 visit_date (eye) 项目
-            visit_date, eye = item.text(0).split()
-            # print(visit_date, eye)
-            self.show_file_path(visit_date, eye)
+
+    def on_visit_date_clicked(self, item, column):
+        if item.childCount() == 0:  # 如果点击的是 visit_date (eye) item
+
+            # 获取点击的visit_date, eye和patient_id
+            self.visit_date, self.eye = item.text(0).split()
+            self.patien_id = item.parent().text(0)
+
+            self.show_file_path(self.visit_date, self.eye)
 
     def show_file_path(self, visit_date, eye):
         self.set.listWidget_img_path.clear()
-        filtered_df = self.df[(self.df["visit_date"] == visit_date) & (self.df["eye"] == eye)]
+        filtered_df = self.df[
+            (self.df["visit_date"] == visit_date) & (self.df["eye"] == eye)
+        ]
 
         for path in filtered_df.loc[:, "file_path"]:
             item = QListWidgetItem(Path(path).name)
             item.setToolTip(path)
             self.set.listWidget_img_path.addItem(item)
-            
 
-            
+    def _init_save_button(self):
+        self.grad.pushButton_save.clicked.connect(self.on_save_click)
 
-    def popup_ask_to_login(self):
-        QMessageBox.warning(self, "Error", "Please login!")
+    def on_save_click(self):
+
+        comboboxs_choices = [
+            list_combobox[0].currentText()
+            for list_combobox in self.dict_comboboxes.values()
+        ]
+        # print(comboboxs_choices)
+        if not self.islogin:
+            QMessageBox.warning(self, "Error", "Please login!")
+        elif not all(comboboxs_choices):
+            QMessageBox.warning(self, "Error", "Please fill all options!")
+
+        dict_results = {
+            label: list_combobox[0].currentText()
+            for label, list_combobox in self.dict_comboboxes.items()
+        }
+        self.update_dict_results(dict_results)
+
+        self.update_df_database(dict_results)
+        print(self.df_dataset)                # 写道这里
+
+    def update_df_database(self, dict_results):
+        df_data = pd.DataFrame([dict_results])
+        self.df_dataset = pd.concat([self.df_dataset, df_data])
+
+    def update_dict_results(self, dict_results):
+        dict_scores = {}
+        for key, label in dict_results.items():
+            options = getattr(self, f"options_{key}")
+            dict_scores[f"{key}_score"] = options[label].score
+        dict_results.update(dict_scores)
+
+        dict_results["comment"] = self.grad.textEdit_comment.toPlainText()
+        dict_results["patient_id"] = self.patien_id
+        dict_results["visit_date"] = self.visit_date
+        dict_results["eye"] = self.eye
 
     def comboboxes_options(self):
         with open("combobox_options.json", "r", encoding="utf-8") as f:
@@ -234,21 +298,20 @@ class MainWindowImpl(MainWindow):
             key: OptionScoreImgPath(value["score"], value["image"])
             for key, value in options_dict.items()
         }
-        
-        
+
     # debug button
     def debug_button(self, hide=True):
         self.set.pushButton_debug.clicked.connect(self.debug_func)
         if hide:
             self.set.pushButton_debug.hide()
-        
+
     def debug_func(self):
         a = self.set.treeWidget_patient.currentItem()
-        print(a.text(0))
-        
+        print(self.options_HE)
 
 
 if __name__ == "__main__":
+
     app = QApplication(sys.argv)
 
     mwImpl = MainWindowImpl()
