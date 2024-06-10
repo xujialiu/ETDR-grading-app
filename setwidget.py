@@ -16,9 +16,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
-    QHeaderView, QLabel, QLineEdit, QMainWindow,
-    QMenuBar, QPushButton, QSizePolicy, QSpacerItem,
-    QStatusBar, QTreeWidget, QTreeWidgetItem, QVBoxLayout,
+    QHeaderView, QLabel, QLineEdit, QListWidget,
+    QListWidgetItem, QMainWindow, QMenuBar, QPushButton,
+    QSizePolicy, QSpacerItem, QStatusBar, QTableWidget,
+    QTableWidgetItem, QTreeWidget, QTreeWidgetItem, QVBoxLayout,
     QWidget)
 
 class Ui_MainWindow(object):
@@ -28,10 +29,10 @@ class Ui_MainWindow(object):
         MainWindow.resize(1234, 881)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_3 = QVBoxLayout(self.centralwidget)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.gridLayout_2 = QGridLayout()
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
         self.label = QLabel(self.centralwidget)
@@ -78,20 +79,69 @@ class Ui_MainWindow(object):
         self.gridLayout.addItem(self.horizontalSpacer_3, 1, 3, 1, 1)
 
 
-        self.verticalLayout_2.addLayout(self.gridLayout)
+        self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
+
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.treeWidget_patient = QTreeWidget(self.centralwidget)
+        self.treeWidget_patient.setObjectName(u"treeWidget_patient")
+        self.treeWidget_patient.setSortingEnabled(True)
+
+        self.horizontalLayout_3.addWidget(self.treeWidget_patient)
 
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.horizontalLayout_4 = QHBoxLayout()
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.label_3 = QLabel(self.centralwidget)
+        self.label_3.setObjectName(u"label_3")
+
+        self.verticalLayout.addWidget(self.label_3)
+
+        self.listWidget_img_path = QListWidget(self.centralwidget)
+        self.listWidget_img_path.setObjectName(u"listWidget_img_path")
+
+        self.verticalLayout.addWidget(self.listWidget_img_path)
+
+        self.label_4 = QLabel(self.centralwidget)
+        self.label_4.setObjectName(u"label_4")
+
+        self.verticalLayout.addWidget(self.label_4)
+
+        self.tableWidget = QTableWidget(self.centralwidget)
+        if (self.tableWidget.columnCount() < 3):
+            self.tableWidget.setColumnCount(3)
+        __qtablewidgetitem = QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(0, __qtablewidgetitem)
+        __qtablewidgetitem1 = QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(1, __qtablewidgetitem1)
+        __qtablewidgetitem2 = QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(2, __qtablewidgetitem2)
+        self.tableWidget.setObjectName(u"tableWidget")
+
+        self.verticalLayout.addWidget(self.tableWidget)
+
+        self.label_5 = QLabel(self.centralwidget)
+        self.label_5.setObjectName(u"label_5")
+
+        self.verticalLayout.addWidget(self.label_5)
+
+
+        self.horizontalLayout_3.addLayout(self.verticalLayout)
+
+
+        self.gridLayout_2.addLayout(self.horizontalLayout_3, 2, 0, 1, 1)
+
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.folder_button = QPushButton(self.centralwidget)
         self.folder_button.setObjectName(u"folder_button")
         self.folder_button.setEnabled(True)
         sizePolicy.setHeightForWidth(self.folder_button.sizePolicy().hasHeightForWidth())
         self.folder_button.setSizePolicy(sizePolicy)
 
-        self.horizontalLayout_4.addWidget(self.folder_button)
+        self.horizontalLayout_2.addWidget(self.folder_button)
 
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.frame = QFrame(self.centralwidget)
         self.frame.setObjectName(u"frame")
         self.frame.setFrameShape(QFrame.Box)
@@ -110,32 +160,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.addWidget(self.frame)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout_4)
-
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.folder_button_2 = QPushButton(self.centralwidget)
-        self.folder_button_2.setObjectName(u"folder_button_2")
-
-        self.horizontalLayout.addWidget(self.folder_button_2)
-
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout.addItem(self.horizontalSpacer)
+        self.horizontalLayout_2.addLayout(self.horizontalLayout_4)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout)
-
-        self.treeWidget = QTreeWidget(self.centralwidget)
-        self.treeWidget.setObjectName(u"treeWidget")
-
-        self.verticalLayout.addWidget(self.treeWidget)
+        self.gridLayout_2.addLayout(self.horizontalLayout_2, 1, 0, 1, 1)
 
 
-        self.verticalLayout_2.addLayout(self.verticalLayout)
-
-
-        self.verticalLayout_3.addLayout(self.verticalLayout_2)
+        self.verticalLayout_2.addLayout(self.gridLayout_2)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
@@ -156,11 +187,18 @@ class Ui_MainWindow(object):
         self.label.setText(QCoreApplication.translate("MainWindow", u"User:", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Password::", None))
         self.pushButton_login.setText(QCoreApplication.translate("MainWindow", u"Login", None))
+        ___qtreewidgetitem = self.treeWidget_patient.headerItem()
+        ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"Patient ID / Visit Date", None));
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Image Path:", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Grading Details:", None))
+        ___qtablewidgetitem = self.tableWidget.horizontalHeaderItem(0)
+        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"Eye", None));
+        ___qtablewidgetitem1 = self.tableWidget.horizontalHeaderItem(1)
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Choice", None));
+        ___qtablewidgetitem2 = self.tableWidget.horizontalHeaderItem(2)
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Score", None));
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Total score:", None))
         self.folder_button.setText(QCoreApplication.translate("MainWindow", u"Select folder", None))
         self.label_folder.setText("")
-        self.folder_button_2.setText(QCoreApplication.translate("MainWindow", u"Show patients list", None))
-        ___qtreewidgetitem = self.treeWidget.headerItem()
-        ___qtreewidgetitem.setText(1, QCoreApplication.translate("MainWindow", u"\u65b0\u5efa\u5217", None));
-        ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"Patient ID", None));
     # retranslateUi
 

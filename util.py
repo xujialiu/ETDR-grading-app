@@ -1,5 +1,8 @@
 from dataclasses import dataclass
 from pathlib import Path
+import re
+import pandas as pd
+from pathlib import Path
 
 
 @dataclass(frozen=True)
@@ -8,109 +11,49 @@ class OptionScoreImgPath:
     path: str | Path
 
 
-def comboboxes_options(self):
-    self.options_HMA = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "<std 1": OptionScoreImgPath(2, "question.png"),
-        "≥std 1": OptionScoreImgPath(3, "question.png"),
-        "≥std 2A": OptionScoreImgPath(4, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-    self.options_HE = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "<std 3": OptionScoreImgPath(2, "question.png"),
-        "≥std 3 - <std 4": OptionScoreImgPath(3, "question.png"),
-        "≥std 4": OptionScoreImgPath(4, "question.png"),
-    }
-    self.options_SE = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "Definite": OptionScoreImgPath(2, "question.png"),
-    }
-    self.options_IRMA = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "Definite": OptionScoreImgPath(2, "question.png"),
-        "Definite (all fields)": OptionScoreImgPath(3, "question.png"),
-        "≥std 8A": OptionScoreImgPath(4, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-    self.options_VB = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "Definite": OptionScoreImgPath(2, "question.png"),
-        "Definite (2+ fields)": OptionScoreImgPath(3, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-    self.options_NVD = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "<std 10A": OptionScoreImgPath(2, "question.png"),
-        "≥std 10A": OptionScoreImgPath(3, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-    self.options_NVE = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "<1/2 Disc area": OptionScoreImgPath(2, "question.png"),
-        "≥1/2 Disc area": OptionScoreImgPath(3, "question.png"),
-    }
-    self.options_FP = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "FPE only": OptionScoreImgPath(2, "question.png"),
-        "FPD only": OptionScoreImgPath(3, "question.png"),
-        "FPD + FPE": OptionScoreImgPath(4, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-    self.options_PRH_VH = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "PRH only": OptionScoreImgPath(2, "question.png"),
-        "VH only": OptionScoreImgPath(3, "question.png"),
-        "PRH+VH": OptionScoreImgPath(4, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-    self.options_EDEMA = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "Present, not CSME": OptionScoreImgPath(2, "question.png"),
-        "Present, CSME": OptionScoreImgPath(3, "question.png"),
-        "Non-Diab": OptionScoreImgPath(4, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
+def get_folder_contents_df(root_dir):
+    # Initialize lists to store the data
+    # series_id = []
+    patient_id_list = []
+    visit_date_list = []
+    file_path_list = []
+    eye_list = []
 
-    self.options_CTR = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "Present, not CSME": OptionScoreImgPath(2, "question.png"),
-        "Present, CSME": OptionScoreImgPath(3, "question.png"),
-        "Non-Diab": OptionScoreImgPath(4, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
+    # Date pattern to match directories in the format YYYY-MM-DD
+    date_pattern = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+    
+    eye_pattern = re.compile(r'_Color_(L|R)_')
 
-    self.options_VEN = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "Definite": OptionScoreImgPath(2, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
+    root_path = Path(root_dir)
 
-    self.options_LASER = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest/incomplete": OptionScoreImgPath(1, "question.png"),
-        "Focal": OptionScoreImgPath(2, "question.png"),
-        "Scatter only": OptionScoreImgPath(3, "question.png"),
-        "Scatter + Focal": OptionScoreImgPath(4, "question.png"),
-        "Could grade": OptionScoreImgPath(8, "question.png"),
-    }
-    self.options_RX = {
-        "None": OptionScoreImgPath(0, "question.png"),
-        "Quest": OptionScoreImgPath(1, "question.png"),
-        "Focal RX only": OptionScoreImgPath(2, "question.png"),
-        "Grid RX only": OptionScoreImgPath(3, "question.png"),
-        "Focal + Grid": OptionScoreImgPath(4, "question.png"),
-        "CG": OptionScoreImgPath(8, "question.png"),
-    }
+    # Walk through the directory structure
+    for file_path in root_path.rglob("*"):
+        if file_path.is_file():
+            # Get the parent directories
+            parents = list(file_path.parents)
+            if len(parents) >= 2:  # Ensure there are at least 2 parts for dir1 and dir2
+                dir1 = parents[1].name
+                dir2 = parents[0].name
+                if date_pattern.match(dir2):  # Check if dir2 matches the date pattern
+                    patient_id_list.append(dir1)
+                    visit_date_list.append(dir2)
+                    file_path_list.append(str(file_path))
+                    
+                    # Extract 'L' or 'R' from the filename
+                    match = eye_pattern.search(file_path.name)
+                    if match:
+                        eye_list.append(match.group(1))
+                    else:
+                        eye_list.append(None)
+
+    # Create a DataFrame from the lists
+    df = pd.DataFrame(
+        {
+            "patient_id": patient_id_list,
+            "visit_date": visit_date_list,
+            "file_path": file_path_list,
+            "eye":eye_list
+        }
+    )
+
+    return df

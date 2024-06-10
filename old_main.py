@@ -2,7 +2,7 @@ import sys
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
 
-from MainWindowImpl import MainWindowImpl
+from old_MainWindowImpl import MainWindowImpl
 
 
 if __name__ == "__main__":
