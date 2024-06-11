@@ -3,6 +3,7 @@ from copy import copy
 from doctest import debug
 import json
 from pathlib import Path
+from PySide6.QtCore import Slot
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
     QFileDialog,
@@ -18,6 +19,7 @@ from PySide6.QtWidgets import QApplication
 from util import OptionScoreImgPath, get_df_folder_contents, load_or_create_df_dataset
 from ComboboxWithHover import ComboBoxWithHover, HoverLabel
 import pandas as pd
+from DebugWindow import DebugWindow
 
 
 user_data = {"1": "1"}
@@ -47,6 +49,10 @@ class MainWindowImpl(MainWindow):
         self._init_menu()
         self.islogin = False
         self.debug_button(hide=False)
+        
+    def closeEvent(self, event):
+        if not self.df_dataset.empty:
+            self.df_dataset.to_hdf("dataset.hdf5", key='my_dataset', mode='w')
 
     def _init_setwidge(self):
         self.set = setwidget.Ui_MainWindow()
@@ -127,7 +133,23 @@ class MainWindowImpl(MainWindow):
 
         self.menu_help = self.menu.addMenu("help")
         self.menu_help_about = self.menu_help.addAction("About")
+        self.menu_help_about = self.menu_help.addAction("Debug")
+        
         self.menu_file_openfolder.triggered.connect(self.select_folder)
+        self.menu_help_about.triggered.connect(self.on_debug_click)
+        
+    def on_debug_click(self):
+        self.debug_window = DebugWindow()
+        self.debug_window.code_submitted.connect(self.execute_code)
+        self.debug_window.show()
+
+    @Slot(str)
+    def execute_code(self, code):
+        try:
+            exec(code)
+        except Exception as e:
+            print(e)
+
 
     def select_folder(self):
         if self.islogin:
@@ -150,6 +172,9 @@ class MainWindowImpl(MainWindow):
 
     def _init_login_button(self):
         self.set.pushButton_login.clicked.connect(self.login_user)
+
+    def _init_save_button(self):
+        self.grad.pushButton_save.clicked.connect(self.on_save_click)
 
     def get_df_dataset(self):
         self.df_dataset = load_or_create_df_dataset()
@@ -191,7 +216,7 @@ class MainWindowImpl(MainWindow):
 
             # 获取点击的visit_date, eye和patient_id
             self.visit_date, self.eye = item.text(0).split()
-            self.patien_id = item.parent().text(0)
+            self.patient_id = item.parent().text(0)
 
             self.show_file_path(self.visit_date, self.eye)
 
@@ -205,9 +230,6 @@ class MainWindowImpl(MainWindow):
             item = QListWidgetItem(Path(path).name)
             item.setToolTip(path)
             self.set.listWidget_img_path.addItem(item)
-
-    def _init_save_button(self):
-        self.grad.pushButton_save.clicked.connect(self.on_save_click)
 
     def on_save_click(self):
 
@@ -241,7 +263,7 @@ class MainWindowImpl(MainWindow):
         dict_results.update(dict_scores)
 
         dict_results["comment"] = self.grad.textEdit_comment.toPlainText()
-        dict_results["patient_id"] = self.patien_id
+        dict_results["patient_id"] = self.patient_id
         dict_results["visit_date"] = self.visit_date
         dict_results["eye"] = self.eye
 
@@ -279,6 +301,8 @@ class MainWindowImpl(MainWindow):
     def debug_func(self):
         a = self.set.treeWidget_patient.currentItem()
         print(self.options_HE)
+        
+    
 
 
 if __name__ == "__main__":
