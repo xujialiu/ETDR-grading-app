@@ -40,15 +40,12 @@ class MainWindowImpl(MainWindow):
         self.setWindowIcon(QIcon("icon.png"))
         self.setWindowTitle("Diabetic Retinopathy Grading System")
 
-        # testing part
         # disable password
         self.islogin = True  # testing...发行版删除该行
         self.user = "xujialiu"  # testing...发行版删除该行
 
         # 数据注入
         # self.df_dataset = pd.read_pickle(".data/test_data.pkl")
-        # print(self.df_dataset)
-        # self.df
 
     def init_ui_impl(self):
         self._init_tabs()
@@ -250,7 +247,7 @@ class MainWindowImpl(MainWindow):
 
     def _init_save_button(self):
         self.grad.pushButton_save.clicked.connect(self.on_save_click)
-        self.grad.pushButton_save.clicked.connect(self.on_clear_click)
+        # self.grad.pushButton_save.clicked.connect(self.on_clear_click)    # testing...发行版中取消注释
 
     def _init_df_dataset(self):
         self.df_dataset = load_or_create_df_dataset()
@@ -309,12 +306,12 @@ class MainWindowImpl(MainWindow):
             item = QListWidgetItem(Path(path).name)
             item.setToolTip(path)
             self.set.listWidget_img_path.addItem(item)
-            
+
     def _init_clear_button(self):
         self.grad.pushButton_clear.clicked.connect(self.on_clear_click)
-            
+
     def on_clear_click(self):
-        comboboxes = (combobox for _,(combobox,_) in self.dict_comboboxes.items())
+        comboboxes = (combobox for _, (combobox, _) in self.dict_comboboxes.items())
         for combobox in comboboxes:
             combobox.setCurrentIndex(-1)
 
