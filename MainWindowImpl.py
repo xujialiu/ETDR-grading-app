@@ -3,6 +3,7 @@ from copy import copy
 from doctest import debug
 import json
 from pathlib import Path
+import pickle
 from PySide6.QtCore import Slot
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
@@ -33,6 +34,10 @@ class MainWindowImpl(MainWindow):
         self.setWindowTitle("Diabetic Retinopathy Grading System")
         # disable password
         self.islogin = True
+        
+        # 数据注入
+        # self.df_dataset = pd.read_pickle('test_data.pkl')
+        
 
     def init_ui_impl(self):
         self._init_gradwidge()
@@ -49,10 +54,12 @@ class MainWindowImpl(MainWindow):
         self._init_menu()
         self.islogin = False
         self.debug_button(hide=False)
-        
+
     def closeEvent(self, event):
         if not self.df_dataset.empty:
-            self.df_dataset.to_hdf("dataset.hdf5", key='my_dataset', mode='w')
+            self.df_dataset.astype(str).to_hdf(
+                "dataset.hdf5", key="my_dataset", mode="w"
+            )
 
     def _init_setwidge(self):
         self.set = setwidget.Ui_MainWindow()
@@ -134,10 +141,10 @@ class MainWindowImpl(MainWindow):
         self.menu_help = self.menu.addMenu("help")
         self.menu_help_about = self.menu_help.addAction("About")
         self.menu_help_about = self.menu_help.addAction("Debug")
-        
+
         self.menu_file_openfolder.triggered.connect(self.select_folder)
         self.menu_help_about.triggered.connect(self.on_debug_click)
-        
+
     def on_debug_click(self):
         self.debug_window = DebugWindow()
         self.debug_window.code_submitted.connect(self.execute_code)
@@ -149,7 +156,6 @@ class MainWindowImpl(MainWindow):
             exec(code)
         except Exception as e:
             print(e)
-
 
     def select_folder(self):
         if self.islogin:
@@ -249,7 +255,7 @@ class MainWindowImpl(MainWindow):
         self.update_dict_results(dict_results)
 
         self.update_df_database(dict_results)
-        print(self.df_dataset)  # 写到这里
+        # print(self.df_dataset)  # 写到这里
 
     def update_df_database(self, dict_results):
         df_data = pd.DataFrame([dict_results])
@@ -261,6 +267,10 @@ class MainWindowImpl(MainWindow):
             options = getattr(self, f"options_{key}")
             dict_scores[f"{key}_score"] = options[label].score
         dict_results.update(dict_scores)
+        
+        #~~~~~~~~~~~~~~~~~~~~~~~
+        # print(self.df_dataset)
+        # self.df_dataset.to_pickle("test_data.pkl")
 
         dict_results["comment"] = self.grad.textEdit_comment.toPlainText()
         dict_results["patient_id"] = self.patient_id
@@ -301,8 +311,6 @@ class MainWindowImpl(MainWindow):
     def debug_func(self):
         a = self.set.treeWidget_patient.currentItem()
         print(self.options_HE)
-        
-    
 
 
 if __name__ == "__main__":

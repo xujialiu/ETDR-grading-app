@@ -3,3 +3,6 @@ __pycache__/
 .trial/
 .sample/
 .standard/
+dataset.hdf5
+window_state.dat
+test_data.pkl

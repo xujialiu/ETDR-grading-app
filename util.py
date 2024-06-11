@@ -55,7 +55,7 @@ def get_df_folder_contents(root_dir):
     return df
 
 
-def load_or_create_df_dataset(filename="dataset.hdf"):
+def load_or_create_df_dataset(filename="dataset.hdf5"):
     columns = [
         "patient_id",
         "visit_date",
@@ -75,8 +75,6 @@ def load_or_create_df_dataset(filename="dataset.hdf"):
         "LASER",
         "RX",
         "comments",
-        "patient_id_score",
-        "visit_date_score",
         "HMA_score",
         "HE_score",
         "SE_score",
@@ -97,6 +95,8 @@ def load_or_create_df_dataset(filename="dataset.hdf"):
 
     if file_path.exists():
         df = pd.read_hdf(file_path)
+        score_columns  = df.filter(like='score', axis=1)
+        df[score_columns.columns] = score_columns.astype(int)
     else:
         df = pd.DataFrame(columns=columns)
 
