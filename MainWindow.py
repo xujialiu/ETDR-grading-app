@@ -27,7 +27,6 @@ class MainWindow(QMainWindow):
 
     def init_ui(self):
         self._init_docks()
-        self._init_tabs()
 
     def _init_docks(self):
 
@@ -51,17 +50,4 @@ class MainWindow(QMainWindow):
         )
         self.addDockWidget(Qt.TopDockWidgetArea, self.right_dock)
 
-    def _init_tabs(self):
 
-        dummy_widget_1 = my_widget()
-        dummy_widget_2 = my_widget()
-        dummy_widget_3 = my_widget()
-
-        # self.tabwidget.addTab(dummy_widget_1, "Grading Area")
-        # self.tabwidget.addTab(dummy_widget_3, "Settings")
-
-        self.tabwidget = QTabWidget(self)
-        self.right_dock.setWidget(self.tabwidget)
-        self.left_dock.setWidget(dummy_widget_2)
-
-        # self.tab_grad.setwidg

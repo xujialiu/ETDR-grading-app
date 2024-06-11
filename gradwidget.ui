@@ -53,7 +53,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="label_patient_id">
           <property name="text">
            <string>Patient ID: </string>
           </property>
@@ -110,12 +110,9 @@
          </spacer>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_eye_r">
+         <widget class="QLabel" name="label_user">
           <property name="text">
-           <string>Right eye (OD)</string>
-          </property>
-          <property name="checkable">
-           <bool>false</bool>
+           <string>Grader: </string>
           </property>
          </widget>
         </item>
@@ -133,12 +130,9 @@
          </spacer>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_eye_l">
+         <widget class="QLabel" name="label_eye">
           <property name="text">
-           <string>Left eye (OS)</string>
-          </property>
-          <property name="checkable">
-           <bool>false</bool>
+           <string>Eye: </string>
           </property>
          </widget>
         </item>

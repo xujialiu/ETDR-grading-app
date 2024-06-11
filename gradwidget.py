@@ -16,9 +16,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QLabel,
-    QMainWindow, QMenuBar, QPushButton, QRadioButton,
-    QSizePolicy, QSpacerItem, QStatusBar, QTextEdit,
-    QVBoxLayout, QWidget)
+    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
+    QSpacerItem, QStatusBar, QTextEdit, QVBoxLayout,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -46,10 +46,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_20)
 
-        self.label = QLabel(self.centralwidget)
-        self.label.setObjectName(u"label")
+        self.label_patient_id = QLabel(self.centralwidget)
+        self.label_patient_id.setObjectName(u"label_patient_id")
 
-        self.horizontalLayout_2.addWidget(self.label)
+        self.horizontalLayout_2.addWidget(self.label_patient_id)
 
         self.horizontalSpacer_21 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -73,21 +73,19 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer_23)
 
-        self.radioButton_eye_r = QRadioButton(self.centralwidget)
-        self.radioButton_eye_r.setObjectName(u"radioButton_eye_r")
-        self.radioButton_eye_r.setCheckable(False)
+        self.label_user = QLabel(self.centralwidget)
+        self.label_user.setObjectName(u"label_user")
 
-        self.horizontalLayout.addWidget(self.radioButton_eye_r)
+        self.horizontalLayout.addWidget(self.label_user)
 
         self.horizontalSpacer_18 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer_18)
 
-        self.radioButton_eye_l = QRadioButton(self.centralwidget)
-        self.radioButton_eye_l.setObjectName(u"radioButton_eye_l")
-        self.radioButton_eye_l.setCheckable(False)
+        self.label_eye = QLabel(self.centralwidget)
+        self.label_eye.setObjectName(u"label_eye")
 
-        self.horizontalLayout.addWidget(self.radioButton_eye_l)
+        self.horizontalLayout.addWidget(self.label_eye)
 
         self.horizontalSpacer_24 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -451,10 +449,10 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label_visit_date.setText(QCoreApplication.translate("MainWindow", u"Visit date:", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Patient ID: ", None))
+        self.label_patient_id.setText(QCoreApplication.translate("MainWindow", u"Patient ID: ", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"NO. photo / Total photos:", None))
-        self.radioButton_eye_r.setText(QCoreApplication.translate("MainWindow", u"Right eye (OD)", None))
-        self.radioButton_eye_l.setText(QCoreApplication.translate("MainWindow", u"Left eye (OS)", None))
+        self.label_user.setText(QCoreApplication.translate("MainWindow", u"Grader: ", None))
+        self.label_eye.setText(QCoreApplication.translate("MainWindow", u"Eye: ", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Haemorrhage/Microaneurysms (HMA):", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Hard Exudates (HE):", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Soft Exudates (SE):", None))

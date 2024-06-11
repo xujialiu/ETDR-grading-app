@@ -35,6 +35,7 @@ class ComboBoxWithHover(QComboBox):
         fixed_width = 150
         self.setMinimumWidth(fixed_width)
         self.setMaximumWidth(fixed_width)
+        self.setCurrentIndex(1)
 
     def eventFilter(self, source, event):
         if event.type() == QEvent.MouseMove and source == self.view().viewport():
