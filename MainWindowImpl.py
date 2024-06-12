@@ -5,12 +5,13 @@ from functools import partial
 import json
 from pathlib import Path
 from PySide6.QtCore import QEvent, Qt, Slot
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import (
     QFileDialog,
     QHBoxLayout,
     QLabel,
     QListWidgetItem,
+    QMenu,
     QMessageBox,
     QTabWidget,
     QTableWidgetItem,
@@ -43,7 +44,7 @@ class MainWindowImpl(MainWindow):
         super().__init__()
         self.init_ui_impl()
         self.setWindowIcon(QIcon("icon.png"))
-        self.setWindowTitle("Diabetic Retinopathy Grading System")
+        self.setWindowTitle("Diabetic Retinopathy Grading Application")
 
         # disable password
         self.islogin = True  # testing...发行版删除该行
@@ -67,7 +68,7 @@ class MainWindowImpl(MainWindow):
         self._init_df_graded()
         self._init_save_button()
         self._init_next_and_previous_button()
-        
+
         self.installEventFilter(self)
         self.setFocusPolicy(Qt.StrongFocus)  # 确保窗口可以接收键盘事件
 
@@ -82,7 +83,7 @@ class MainWindowImpl(MainWindow):
             )
 
             self.df_graded.to_hdf(".data/database.hdf5", key="df_graded", mode="a")
-            
+
     def eventFilter(self, source, event):
         if event.type() == QEvent.KeyPress:
             if event.key() == Qt.Key_Right:
@@ -260,7 +261,7 @@ class MainWindowImpl(MainWindow):
         self.img.pushButton_next.clicked.connect(self.on_next_click)
         self.img.pushButton_next.clicked.connect(self.on_display_img)
         self.img.pushButton_next.clicked.connect(self.displace_photo_number)
-        
+
         self.img.pushButton_previous.clicked.connect(self.on_previous_click)
         self.img.pushButton_previous.clicked.connect(self.on_display_img)
         self.img.pushButton_previous.clicked.connect(self.displace_photo_number)
@@ -275,22 +276,55 @@ class MainWindowImpl(MainWindow):
 
     def _init_menu(self):
         self.menu = self.menuBar()
-        self.menu_file = self.menu.addMenu("File")
+        self.menu.file_menu = self.menu.addMenu("File")
+        self.menu.help_menu = self.menu.addMenu("Help")
 
-        # 重构成使用addActions和QAction
-        self.menu_file_openfolder = self.menu_file.addAction("Open Folder...")
-        self.menu_file_save = self.menu_file.addAction("Save...")
-        self.menu_file_exit = self.menu_file.addAction("Exit...")
+        self.menu.open_folder = QAction("Open Folder...", self)
+        self.menu.save = QAction("Save...", self)
 
-        self.menu_help = self.menu.addMenu("help")
-        self.menu_help_about = self.menu_help.addAction("About")
-        self.menu_help_about = self.menu_help.addAction("Debug")
+        self.menu.file_menu.addAction(self.menu.open_folder)
+        self.menu.file_menu.addAction(self.menu.save)
 
-        self.menu_file_openfolder.triggered.connect(self.select_folder)
-        self.menu_help_about.triggered.connect(self.on_debug_click)
+        self.menu.export = QAction("Export", self)
+        self.menu.export_menu = QMenu("Export", self)
+
+        self.menu.export.setMenu(self.menu.export_menu)
+        self.menu.file_menu.addAction(self.menu.export)
+
+        self.menu.exit = QAction("Exit", self)
+        self.menu.file_menu.addAction(self.menu.exit)
+
+        self.menu.excel = QAction("Excel", self)
+        self.menu.export_menu.addAction(self.menu.excel)
+
+        self.menu.csv = QAction("Csv", self)
+        self.menu.export_menu.addAction(self.menu.csv)
+
+        self.menu.debug = QAction("Debug", self)
+        self.menu.help_menu.addAction(self.menu.debug)
+
+        self.menu.about = QAction("About", self)
+        self.menu.help_menu.addAction(self.menu.about)
+
         # [[feat]]: 做About页面
-        # [[feat]]: Exit
-        self.menu_file_exit.triggered.connect(self.on_exit_click)
+        self.menu.open_folder.triggered.connect(self.select_folder)
+        self.menu.debug.triggered.connect(self.on_debug_click)
+        self.menu.exit.triggered.connect(self.on_exit_click)
+        self.menu.about.triggered.connect(self.on_about_click)
+
+    def on_about_click(self):
+        # 创建关于对话框
+        about_dialog = QMessageBox(self)
+        about_dialog.setWindowTitle("About")
+        about_dialog.setText(
+            "This is a diabetic ETDR grading application.<br><br>"
+            "Version: 1.0.0<br><br>"
+            "Author: Xujia Liu<br>"
+            "Email: xujialiuphd@gmail.com<br><br>"
+            'Website (building): <a href="https://github.com/xujialiu/ETDR-grading-app">https://github.com/xujialiu/ETDR-grading-app</a>'
+        )
+        about_dialog.setIcon(QMessageBox.Information)
+        about_dialog.exec()
 
     def on_exit_click(self):
         app = QApplication.instance()
@@ -583,17 +617,8 @@ class MainWindowImpl(MainWindow):
             for key, value in options_dict.items()
         }
 
-    # debug button
-    def debug_button(self, hide=True):
-        self.set.pushButton_debug.clicked.connect(self.debug_func)
-        if hide:
-            self.set.pushButton_debug.hide()
-
-    def debug_func(self):
-        a = self.set.treeWidget_patient.currentItem()
-        print(self.options_HE)
-
     def _test_script(self):
+        """This is test script and never expected to run on App"""
         self.df
         self.df_graded
         self.df_database
@@ -602,7 +627,6 @@ class MainWindowImpl(MainWindow):
 
 
 if __name__ == "__main__":
-
     app = QApplication(sys.argv)
     mwimpl = MainWindowImpl()
     mwimpl.show()
