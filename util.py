@@ -55,7 +55,7 @@ def get_df_folder_contents(root_dir):
     return df
 
 
-def load_or_create_df_dataset(filename=".data/dataset.hdf5"):
+def load_or_create_df_database(filename=".data/database.hdf5"):
     columns = [
         "patient_id",
         "visit_date",
@@ -95,7 +95,7 @@ def load_or_create_df_dataset(filename=".data/dataset.hdf5"):
     file_path = Path(filename)
 
     if file_path.exists():
-        df = pd.read_hdf(file_path, key="df_dataset")
+        df = pd.read_hdf(file_path, key="df_database")
         score_columns  = df.filter(like='score', axis=1)
         df[score_columns.columns] = score_columns.astype(int)
     else:
@@ -104,7 +104,7 @@ def load_or_create_df_dataset(filename=".data/dataset.hdf5"):
     return df
 
 
-def load_or_create_df_graded(filename=".data/dataset.hdf5"):
+def load_or_create_df_graded(filename=".data/database.hdf5"):
     columns = [
         "patient_id",
         "visit_date",

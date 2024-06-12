@@ -116,35 +116,41 @@
           <item>
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>Image Path:</string>
+             <string>Graded list:</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QListWidget" name="listWidget_img_path"/>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>Grading Details:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QTableWidget" name="tableWidget">
+           <widget class="QTableWidget" name="tableWidget_graded">
+            <column>
+             <property name="text">
+              <string>Patient ID</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Visit Date</string>
+             </property>
+            </column>
             <column>
              <property name="text">
               <string>Eye</string>
              </property>
             </column>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Database: </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="tableWidget_database">
             <column>
              <property name="text">
-              <string>Choice</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Score</string>
+              <string>Patient ID</string>
              </property>
             </column>
            </widget>

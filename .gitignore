@@ -6,3 +6,4 @@ __pycache__/
 dataset.hdf5
 window_state.dat
 test_data.pkl
+.data/

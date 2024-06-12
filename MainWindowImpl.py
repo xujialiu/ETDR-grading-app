@@ -10,18 +10,19 @@ from PySide6.QtWidgets import (
     QListWidgetItem,
     QMessageBox,
     QTabWidget,
+    QTableWidgetItem,
     QTreeWidget,
     QTreeWidgetItem,
 )
 import numpy as np
-from mainwindow import MainWindow
-import gradwidget, setwidget
+from MainWindow import MainWindow
+import GradWidget, SetWidget
 import sys
 from PySide6.QtWidgets import QApplication
 from util import (
     OptionScoreImgPath,
     get_df_folder_contents,
-    load_or_create_df_dataset,
+    load_or_create_df_database,
     load_or_create_df_graded,
 )
 from ComboboxWithHover import ComboBoxWithHover, HoverLabel
@@ -45,7 +46,7 @@ class MainWindowImpl(MainWindow):
         self.user = "xujialiu"  # testing...发行版删除该行
 
         # 数据注入
-        # self.df_dataset = pd.read_pickle(".data/test_data.pkl")
+        # self.df_database = pd.read_pickle(".data/test_data.pkl")
 
     def init_ui_impl(self):
         self._init_tabs()
@@ -57,7 +58,7 @@ class MainWindowImpl(MainWindow):
         self._init_login_button()
         self._init_folder_button()
         self._init_patients_tree()
-        self._init_df_dataset()
+        self._init_df_database()
         self._init_df_graded()
         self._init_save_button()
 
@@ -66,12 +67,12 @@ class MainWindowImpl(MainWindow):
         self.islogin = False
 
     def closeEvent(self, event):
-        if not self.df_dataset.empty:
-            self.df_dataset.astype(str).to_hdf(
-                ".data/dataset.hdf5", key="df_dataset", mode="w"
+        if not self.df_database.empty:
+            self.df_database.astype(str).to_hdf(
+                ".data/database.hdf5", key="df_database", mode="w"
             )
 
-            self.df_graded.to_hdf(".data/dataset.hdf5", key="df_graded", mode="a")
+            self.df_graded.to_hdf(".data/database.hdf5", key="df_graded", mode="a")
 
     def _init_tabs(self):
 
@@ -114,12 +115,12 @@ class MainWindowImpl(MainWindow):
         self.plot_item.getViewBox().setAspectLocked(True)
 
     def _init_setwidge(self):
-        self.set = setwidget.Ui_MainWindow()
+        self.set = SetWidget.Ui_MainWindow()
         self.set.setupUi(self)
         self.tabwidget.addTab(self.set.centralwidget, "Settings")
 
     def _init_gradwidge(self):
-        self.grad = gradwidget.Ui_MainWindow()
+        self.grad = GradWidget.Ui_MainWindow()
         self.grad.setupUi(self)
         self.tabwidget.addTab(self.grad.centralwidget, "Grading Area")
 
@@ -157,6 +158,8 @@ class MainWindowImpl(MainWindow):
                 self.grad, comboBox.objectName(), hover_combobox
             )  # 绑定到新的变量上
             hover_combobox.setCurrentIndex(1)  # testing...发行版改为-1
+            hover_combobox.currentTextChanged.connect(self.displace_total_score)
+
             self.grad.list_comboboxes.append(hover_combobox)
 
             # [[feat]]: 增加text改变时, 计算总分并显示总分的功能
@@ -177,6 +180,26 @@ class MainWindowImpl(MainWindow):
             "LASER": [self.grad.comboBox_LASER, self.options_LASER],
             "RX": [self.grad.comboBox_RX, self.options_RX],
         }
+
+    def displace_total_score(self):
+        # print(self.options_HMA)
+        self.calculate_total_score()
+        self.grad.label_score.setText(f"Total score: {self.total_score}")
+
+    def calculate_total_score(self):
+        # list_combobox = [for _,(com)]
+        list_comboboxes = []
+        list_options = []
+        for _, (combobox, option) in self.dict_comboboxes.items():
+            list_comboboxes.append(combobox)
+            list_options.append(option)
+            # self.grad.comboBox_PRH_VH.currentText()
+        list_text = [combobox.currentText() for combobox in list_comboboxes]
+        list_score = [
+            option.get(text, OptionScoreImgPath(score=0, path="")).score
+            for option, text in zip(list_options, list_text)
+        ]
+        self.total_score = sum(list_score)
 
     def _init_app(self):
         app = QApplication.instance()
@@ -234,6 +257,7 @@ class MainWindowImpl(MainWindow):
         self.set.folder_button.clicked.connect(self.show_patients_tree)
         self.set.folder_button.clicked.connect(self.find_first_tree_item)
         self.set.folder_button.clicked.connect(self.show_grad_labels)
+        self.set.folder_button.clicked.connect(self.show_df_graded_df_database)
 
     def _init_df_graded(self):
         """储存graded的患者信息, 包括patient_id, visit_date, eye"""
@@ -249,8 +273,8 @@ class MainWindowImpl(MainWindow):
         self.grad.pushButton_save.clicked.connect(self.on_save_click)
         # self.grad.pushButton_save.clicked.connect(self.on_clear_click)    # testing...发行版中取消注释
 
-    def _init_df_dataset(self):
-        self.df_dataset = load_or_create_df_dataset()
+    def _init_df_database(self):
+        self.df_database = load_or_create_df_database()
 
     def get_df(self):
         self.df = get_df_folder_contents(self.set.folder_path)
@@ -294,19 +318,6 @@ class MainWindowImpl(MainWindow):
             self.visit_date, self.eye = item.text(0).split()
             self.patient_id = item.parent().text(0)
 
-            self.show_file_path(self.visit_date, self.eye)
-
-    def show_file_path(self, visit_date, eye):
-        self.set.listWidget_img_path.clear()
-        filtered_df = self.df[
-            (self.df["visit_date"] == visit_date) & (self.df["eye"] == eye)
-        ]
-
-        for path in filtered_df.loc[:, "file_path"]:
-            item = QListWidgetItem(Path(path).name)
-            item.setToolTip(path)
-            self.set.listWidget_img_path.addItem(item)
-
     def _init_clear_button(self):
         self.grad.pushButton_clear.clicked.connect(self.on_clear_click)
 
@@ -314,6 +325,28 @@ class MainWindowImpl(MainWindow):
         comboboxes = (combobox for _, (combobox, _) in self.dict_comboboxes.items())
         for combobox in comboboxes:
             combobox.setCurrentIndex(-1)
+
+    def show_df_graded_df_database(self):
+        self.show_df_database()
+        self.show_df_graded()
+
+    def show_df_graded(self):
+        self.add_df_to_qtable(self.df_graded, self.set.tableWidget_graded)
+
+    def show_df_database(self):
+        self.add_df_to_qtable(self.df_database, self.set.tableWidget_database)
+
+    @staticmethod
+    def add_df_to_qtable(df: pd.DataFrame, table: QTreeWidget):
+
+        df.reset_index(drop=True, inplace=True)
+        table.setRowCount(len(df))
+        table.setColumnCount(len(df.columns))
+        table.setHorizontalHeaderLabels(df.columns)
+
+        for row_index, row in df.iterrows():
+            for col_index, value in enumerate(row):
+                table.setItem(row_index, col_index, QTableWidgetItem(str(value)))
 
     def on_save_click(self):
         comboboxs_choices = [
@@ -330,19 +363,21 @@ class MainWindowImpl(MainWindow):
             for label, list_combobox in self.dict_comboboxes.items()
         }
         self.update_dict_results(dict_results)
-
         self.update_df_database(dict_results)
 
         self.update_df_graded()
+
         self.update_df()
         self.show_patients_tree()
-
-        # 定位到新的行
-        # 如果self.patient_id还在self.df, 转到第一个visit_date
-        # 如果self.patient_id已经不在self.df里, 转到第一个visit_date的第一个值
         self.find_and_activate_tree_item()
+        self.show_df_graded_df_database()
 
     def find_and_activate_tree_item(self):
+        """
+        定位到新的行:
+        1. 如果self.patient_id还在self.df, 转到第一个visit_date
+        2. 如果self.patient_id已经不在self.df里, 转到第一个visit_date的第一个值
+        """
         # 列表为空时, 提前返回
         if len(self.df) == 0:
             QMessageBox.information(
@@ -351,11 +386,10 @@ class MainWindowImpl(MainWindow):
             return
 
         if self.patient_id in self.df.patient_id.to_numpy():
-            print("if...")
+
             # 遍历顶层项目
             for i in range(self.set.treeWidget_patient.topLevelItemCount()):
                 top_level_item = self.set.treeWidget_patient.topLevelItem(i)
-                print(top_level_item.text(0))
                 if top_level_item.text(0) == self.patient_id:
                     # 直接返回第一个
                     self.item = top_level_item.child(0)
@@ -365,8 +399,6 @@ class MainWindowImpl(MainWindow):
                         self.item, QTreeWidget.PositionAtCenter
                     )
         else:
-
-            print("else:...")
             self.find_first_tree_item()
 
     def find_first_tree_item(self):
@@ -418,7 +450,7 @@ class MainWindowImpl(MainWindow):
 
     def update_df_database(self, dict_results):
         df_data = pd.DataFrame([dict_results])
-        self.df_dataset = pd.concat([self.df_dataset, df_data])
+        self.df_database = pd.concat([self.df_database, df_data])
 
     def update_dict_results(self, dict_results):
         dict_scores = {}
@@ -432,6 +464,12 @@ class MainWindowImpl(MainWindow):
         dict_results["patient_id"] = self.patient_id
         dict_results["visit_date"] = self.visit_date
         dict_results["eye"] = self.eye
+
+        # total_score = 0
+        # for key, value in dict_results.items():
+        #     if key.endswith("_score"):
+        #         total_score += value
+        dict_results["total_score"] = self.total_score
 
     def comboboxes_options(self):
         with open("combobox_options.json", "r", encoding="utf-8") as f:
@@ -471,9 +509,9 @@ class MainWindowImpl(MainWindow):
     def _test_script(self):
         self.df
         self.df_graded
-        self.df_dataset
+        self.df_database
         self.patient_id, self.visit_date, self.eye
-        self.df_dataset.to_csv("test.csv")
+        self.df_database.to_csv("test.csv")
 
 
 if __name__ == "__main__":

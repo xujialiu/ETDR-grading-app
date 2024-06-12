@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'gradwidget.ui'
+## Form generated from reading UI file 'GradWidget.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.3
 ##
@@ -86,6 +86,15 @@ class Ui_MainWindow(object):
         self.label_eye.setObjectName(u"label_eye")
 
         self.horizontalLayout.addWidget(self.label_eye)
+
+        self.horizontalSpacer_26 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout.addItem(self.horizontalSpacer_26)
+
+        self.label_score = QLabel(self.centralwidget)
+        self.label_score.setObjectName(u"label_score")
+
+        self.horizontalLayout.addWidget(self.label_score)
 
         self.horizontalSpacer_24 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -453,6 +462,7 @@ class Ui_MainWindow(object):
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"NO. photo / Total photos:", None))
         self.label_user.setText(QCoreApplication.translate("MainWindow", u"Grader: ", None))
         self.label_eye.setText(QCoreApplication.translate("MainWindow", u"Eye: ", None))
+        self.label_score.setText(QCoreApplication.translate("MainWindow", u"Total score: ", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Haemorrhage/Microaneurysms (HMA):", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Hard Exudates (HE):", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Soft Exudates (SE):", None))
