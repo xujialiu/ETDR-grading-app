@@ -1,4 +1,4 @@
-# mainwindowimpl.py
+# MainWindowImpl.py
 # [[feat]]: 增加export 按键
 
 from functools import partial
@@ -8,16 +8,19 @@ from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
     QFileDialog,
+    QHBoxLayout,
+    QLabel,
     QListWidgetItem,
     QMessageBox,
     QTabWidget,
     QTableWidgetItem,
     QTreeWidget,
     QTreeWidgetItem,
+    QWidget,
 )
 import numpy as np
 from MainWindow import MainWindow
-import GradWidget, SetWidget
+import GradWidget, SetWidget, ImgDock
 import sys
 from PySide6.QtWidgets import QApplication
 from util import (
@@ -50,7 +53,8 @@ class MainWindowImpl(MainWindow):
         # self.df_database = pd.read_pickle(".data/test_data.pkl")
 
     def init_ui_impl(self):
-        self._init_tabs()
+        self._init_right_dock()
+        self._init_left_dock()
         self._init_gradwidge()
         self._init_setwidge()
         self._init_comboboxes()
@@ -75,20 +79,36 @@ class MainWindowImpl(MainWindow):
 
             self.df_graded.to_hdf(".data/database.hdf5", key="df_graded", mode="a")
 
-    def _init_tabs(self):
+    def _init_right_dock(self):
 
         # set right dock
         self.tabwidget = QTabWidget(self)
         self.right_dock.setWidget(self.tabwidget)
 
+    def _init_left_dock(self):
         self._init_img_widget()
+        self._init_imgdock()
+        
         # set left dock
-        self.left_dock.setWidget(self.img_widget)
+        self.left_dock.setWidget(self.img.centralwidget)
+        img_layout = self.img.widget_img.parentWidget().layout()
+        img_layout.replaceWidget(self.img.widget_img, self.img_widget)
+        setattr(self.img, self.img.widget_img.objectName(), self.img_widget)
+        self.img.widget_img = self.img_widget
+        
+    # def _init_left_dock(self):
+    #     # For debugging, simplify the left dock initialization
+    #     container_widget = QWidget()
+    #     layout = QHBoxLayout(container_widget)
+    #     label = QLabel("Left Dock Content")
+    #     layout.addWidget(label)
+
+    #     self.left_dock.setWidget(container_widget)
 
     def _init_img_widget(self):
         # 创建一个GraphicsLayoutWidget
         self.img_widget = GraphicsLayoutWidget()
-        self.setCentralWidget(self.img_widget)
+        # self.setCentralWidget(self.img_widget)    # testing...移除此处, 检查bug是否还存在
 
         # 添加一个PlotItem
         self.plot_item = self.img_widget.addPlot()
@@ -103,7 +123,7 @@ class MainWindowImpl(MainWindow):
 
         # 加载图像
         path = "icon.png"
-        
+
         self.display_img(path)
 
         # 设置放大缩小功能
@@ -113,23 +133,25 @@ class MainWindowImpl(MainWindow):
         # 设置放大缩小功能
         self.plot_item.getViewBox().setMouseEnabled(x=True, y=True)
         self.plot_item.getViewBox().setAspectLocked(True)
-        
-        
+
     def display_img(self, path):
         img = Image.open(path)
         img = np.array(img)
         img = np.rot90(img, -1)
         self.img_item.setImage(img)
-        
+
     def on_display_img(self):
         self.img_path = self.list_img_path[self.img_index]
         self.display_img(self.img_path)
-        
+
     def get_img_path_list(self):
-        cond = (self.df.patient_id == self.patient_id) & (self.df.visit_date==self.visit_date) & (self.df.eye ==self.eye)
+        cond = (
+            (self.df.patient_id == self.patient_id)
+            & (self.df.visit_date == self.visit_date)
+            & (self.df.eye == self.eye)
+        )
         series_img_path = self.df.file_path[cond]
         self.list_img_path = list(series_img_path)
-        
 
     def _init_setwidge(self):
         self.set = SetWidget.Ui_MainWindow()
@@ -140,6 +162,10 @@ class MainWindowImpl(MainWindow):
         self.grad = GradWidget.Ui_MainWindow()
         self.grad.setupUi(self)
         self.tabwidget.addTab(self.grad.centralwidget, "Grading Area")
+
+    def _init_imgdock(self):
+        self.img = ImgDock.Ui_MainWindow()
+        self.img.setupUi(self)
 
     def _init_comboboxes(self):
         self.comboboxes_options()
@@ -280,7 +306,7 @@ class MainWindowImpl(MainWindow):
         self.set.folder_button.clicked.connect(self.on_display_img)
 
     def get_first_img_index(self):
-        self.img_index=0
+        self.img_index = 0
 
     def _init_df_graded(self):
         """储存graded的患者信息, 包括patient_id, visit_date, eye"""
@@ -290,7 +316,6 @@ class MainWindowImpl(MainWindow):
         self.set.treeWidget_patient.itemClicked.connect(self.on_visit_date_clicked)
         self.set.treeWidget_patient.itemClicked.connect(self.get_img_path_list)
         self.set.treeWidget_patient.itemClicked.connect(self.on_display_img)
-        
 
     def _init_login_button(self):
         self.set.pushButton_login.clicked.connect(self.login_user)

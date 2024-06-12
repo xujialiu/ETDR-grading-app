@@ -1,4 +1,4 @@
-# mainwindow.py
+# MainWindow.py
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QMainWindow,
@@ -49,5 +49,3 @@ class MainWindow(QMainWindow):
             QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetFloatable
         )
         self.addDockWidget(Qt.TopDockWidgetArea, self.right_dock)
-
-
