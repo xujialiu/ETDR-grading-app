@@ -1,6 +1,7 @@
 # mainwindowimpl.py
 # [[feat]]: 增加export 按键
 
+from functools import partial
 import json
 from pathlib import Path
 from PySide6.QtCore import Qt, Slot
@@ -101,18 +102,34 @@ class MainWindowImpl(MainWindow):
         self.plot_item.addItem(self.img_item)
 
         # 加载图像
-        img = Image.open("icon.png")
+        path = "icon.png"
+        
+        self.display_img(path)
+
+        # 设置放大缩小功能
+        self.plot_item.getViewBox().setMouseEnabled(x=True, y=True)
+        self.plot_item.getViewBox().setAspectLocked(True)
+
+        # 设置放大缩小功能
+        self.plot_item.getViewBox().setMouseEnabled(x=True, y=True)
+        self.plot_item.getViewBox().setAspectLocked(True)
+        
+        
+    def display_img(self, path):
+        img = Image.open(path)
         img = np.array(img)
         img = np.rot90(img, -1)
         self.img_item.setImage(img)
-
-        # 设置放大缩小功能
-        self.plot_item.getViewBox().setMouseEnabled(x=True, y=True)
-        self.plot_item.getViewBox().setAspectLocked(True)
-
-        # 设置放大缩小功能
-        self.plot_item.getViewBox().setMouseEnabled(x=True, y=True)
-        self.plot_item.getViewBox().setAspectLocked(True)
+        
+    def on_display_img(self):
+        self.img_path = self.list_img_path[self.img_index]
+        self.display_img(self.img_path)
+        
+    def get_img_path_list(self):
+        cond = (self.df.patient_id == self.patient_id) & (self.df.visit_date==self.visit_date) & (self.df.eye ==self.eye)
+        series_img_path = self.df.file_path[cond]
+        self.list_img_path = list(series_img_path)
+        
 
     def _init_setwidge(self):
         self.set = SetWidget.Ui_MainWindow()
@@ -258,6 +275,12 @@ class MainWindowImpl(MainWindow):
         self.set.folder_button.clicked.connect(self.find_first_tree_item)
         self.set.folder_button.clicked.connect(self.show_grad_labels)
         self.set.folder_button.clicked.connect(self.show_df_graded_df_database)
+        self.set.folder_button.clicked.connect(self.get_first_img_index)
+        self.set.folder_button.clicked.connect(self.get_img_path_list)
+        self.set.folder_button.clicked.connect(self.on_display_img)
+
+    def get_first_img_index(self):
+        self.img_index=0
 
     def _init_df_graded(self):
         """储存graded的患者信息, 包括patient_id, visit_date, eye"""
@@ -265,6 +288,9 @@ class MainWindowImpl(MainWindow):
 
     def _init_patients_tree(self):
         self.set.treeWidget_patient.itemClicked.connect(self.on_visit_date_clicked)
+        self.set.treeWidget_patient.itemClicked.connect(self.get_img_path_list)
+        self.set.treeWidget_patient.itemClicked.connect(self.on_display_img)
+        
 
     def _init_login_button(self):
         self.set.pushButton_login.clicked.connect(self.login_user)
