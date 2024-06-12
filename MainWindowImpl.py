@@ -66,6 +66,7 @@ class MainWindowImpl(MainWindow):
         self._init_df_database()
         self._init_df_graded()
         self._init_save_button()
+        self._init_next_and_previous_button()
 
         # 放在最后, 因为需要连接其他控件
         self._init_menu()
@@ -88,22 +89,13 @@ class MainWindowImpl(MainWindow):
     def _init_left_dock(self):
         self._init_img_widget()
         self._init_imgdock()
-        
+
         # set left dock
         self.left_dock.setWidget(self.img.centralwidget)
         img_layout = self.img.widget_img.parentWidget().layout()
         img_layout.replaceWidget(self.img.widget_img, self.img_widget)
         setattr(self.img, self.img.widget_img.objectName(), self.img_widget)
         self.img.widget_img = self.img_widget
-        
-    # def _init_left_dock(self):
-    #     # For debugging, simplify the left dock initialization
-    #     container_widget = QWidget()
-    #     layout = QHBoxLayout(container_widget)
-    #     label = QLabel("Left Dock Content")
-    #     layout.addWidget(label)
-
-    #     self.left_dock.setWidget(container_widget)
 
     def _init_img_widget(self):
         # 创建一个GraphicsLayoutWidget
@@ -139,6 +131,7 @@ class MainWindowImpl(MainWindow):
         img = np.array(img)
         img = np.rot90(img, -1)
         self.img_item.setImage(img)
+
 
     def on_display_img(self):
         self.img_path = self.list_img_path[self.img_index]
@@ -230,13 +223,11 @@ class MainWindowImpl(MainWindow):
         self.grad.label_score.setText(f"Total score: {self.total_score}")
 
     def calculate_total_score(self):
-        # list_combobox = [for _,(com)]
         list_comboboxes = []
         list_options = []
         for _, (combobox, option) in self.dict_comboboxes.items():
             list_comboboxes.append(combobox)
             list_options.append(option)
-            # self.grad.comboBox_PRH_VH.currentText()
         list_text = [combobox.currentText() for combobox in list_comboboxes]
         list_score = [
             option.get(text, OptionScoreImgPath(score=0, path="")).score
@@ -247,6 +238,20 @@ class MainWindowImpl(MainWindow):
     def _init_app(self):
         app = QApplication.instance()
         app.setStyle("fusion")
+        
+    def _init_next_and_previous_button(self):
+        self.img.pushButton_next.clicked.connect(self.on_next_click)
+        self.img.pushButton_next.clicked.connect(self.on_display_img)
+        self.img.pushButton_previous.clicked.connect(self.on_previous_click)
+        self.img.pushButton_previous.clicked.connect(self.on_display_img)
+
+    def on_next_click(self):
+        if self.img_index < len(self.list_img_path) - 1:
+            self.img_index += 1
+
+    def on_previous_click(self):
+        if self.img_index > 0:
+            self.img_index -= 1
 
     def _init_menu(self):
         self.menu = self.menuBar()
@@ -265,6 +270,11 @@ class MainWindowImpl(MainWindow):
         self.menu_help_about.triggered.connect(self.on_debug_click)
         # [[feat]]: 做About页面
         # [[feat]]: Exit
+        self.menu_file_exit.triggered.connect(self.on_exit_click)
+
+    def on_exit_click(self):
+        app = QApplication.instance()
+        app.quit()
 
     def on_debug_click(self):
         self.debug_window = DebugWindow()

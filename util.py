@@ -89,7 +89,8 @@ def load_or_create_df_database(filename=".data/database.hdf5"):
         "VEN_score",
         "LASER_score",
         "RX_score",
-        "user"
+        "user",
+        "total_score"
     ]
 
     file_path = Path(filename)
