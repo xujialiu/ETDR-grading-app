@@ -55,10 +55,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_21)
 
-        self.label_2 = QLabel(self.centralwidget)
-        self.label_2.setObjectName(u"label_2")
+        self.label_num_photo = QLabel(self.centralwidget)
+        self.label_num_photo.setObjectName(u"label_num_photo")
 
-        self.horizontalLayout_2.addWidget(self.label_2)
+        self.horizontalLayout_2.addWidget(self.label_num_photo)
 
         self.horizontalSpacer_22 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -459,7 +459,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label_visit_date.setText(QCoreApplication.translate("MainWindow", u"Visit date:", None))
         self.label_patient_id.setText(QCoreApplication.translate("MainWindow", u"Patient ID: ", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"NO. photo / Total photos:", None))
+        self.label_num_photo.setText(QCoreApplication.translate("MainWindow", u"NO. photo / Total photos:", None))
         self.label_user.setText(QCoreApplication.translate("MainWindow", u"Grader: ", None))
         self.label_eye.setText(QCoreApplication.translate("MainWindow", u"Eye: ", None))
         self.label_score.setText(QCoreApplication.translate("MainWindow", u"Total score: ", None))

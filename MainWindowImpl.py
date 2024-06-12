@@ -132,7 +132,6 @@ class MainWindowImpl(MainWindow):
         img = np.rot90(img, -1)
         self.img_item.setImage(img)
 
-
     def on_display_img(self):
         self.img_path = self.list_img_path[self.img_index]
         self.display_img(self.img_path)
@@ -222,6 +221,12 @@ class MainWindowImpl(MainWindow):
         self.calculate_total_score()
         self.grad.label_score.setText(f"Total score: {self.total_score}")
 
+    def displace_photo_number(self):
+        num_img = len(self.list_img_path)
+        self.grad.label_num_photo.setText(
+            f"NO. photo / Total photos: {self.img_index+1} / {num_img}"
+        )
+
     def calculate_total_score(self):
         list_comboboxes = []
         list_options = []
@@ -238,12 +243,15 @@ class MainWindowImpl(MainWindow):
     def _init_app(self):
         app = QApplication.instance()
         app.setStyle("fusion")
-        
+
     def _init_next_and_previous_button(self):
         self.img.pushButton_next.clicked.connect(self.on_next_click)
         self.img.pushButton_next.clicked.connect(self.on_display_img)
+        self.img.pushButton_next.clicked.connect(self.displace_photo_number)
+        
         self.img.pushButton_previous.clicked.connect(self.on_previous_click)
         self.img.pushButton_previous.clicked.connect(self.on_display_img)
+        self.img.pushButton_previous.clicked.connect(self.displace_photo_number)
 
     def on_next_click(self):
         if self.img_index < len(self.list_img_path) - 1:
@@ -314,6 +322,7 @@ class MainWindowImpl(MainWindow):
         self.set.folder_button.clicked.connect(self.get_first_img_index)
         self.set.folder_button.clicked.connect(self.get_img_path_list)
         self.set.folder_button.clicked.connect(self.on_display_img)
+        self.set.folder_button.clicked.connect(self.displace_photo_number)
 
     def get_first_img_index(self):
         self.img_index = 0
@@ -326,6 +335,7 @@ class MainWindowImpl(MainWindow):
         self.set.treeWidget_patient.itemClicked.connect(self.on_visit_date_clicked)
         self.set.treeWidget_patient.itemClicked.connect(self.get_img_path_list)
         self.set.treeWidget_patient.itemClicked.connect(self.on_display_img)
+        self.set.treeWidget_patient.itemClicked.connect(self.displace_photo_number)
 
     def _init_login_button(self):
         self.set.pushButton_login.clicked.connect(self.login_user)
@@ -333,6 +343,10 @@ class MainWindowImpl(MainWindow):
     def _init_save_button(self):
         self.grad.pushButton_save.clicked.connect(self.on_save_click)
         # self.grad.pushButton_save.clicked.connect(self.on_clear_click)    # testing...发行版中取消注释
+        self.grad.pushButton_save.clicked.connect(self.get_first_img_index)
+        self.grad.pushButton_save.clicked.connect(self.get_img_path_list)
+        self.grad.pushButton_save.clicked.connect(self.on_display_img)
+        self.grad.pushButton_save.clicked.connect(self.displace_photo_number)
 
     def _init_df_database(self):
         self.df_database = load_or_create_df_database()

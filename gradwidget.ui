@@ -73,7 +73,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="label_num_photo">
           <property name="text">
            <string>NO. photo / Total photos:</string>
           </property>
