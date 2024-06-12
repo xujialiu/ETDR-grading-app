@@ -4,7 +4,7 @@
 from functools import partial
 import json
 from pathlib import Path
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import QEvent, Qt, Slot
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
     QFileDialog,
@@ -67,6 +67,9 @@ class MainWindowImpl(MainWindow):
         self._init_df_graded()
         self._init_save_button()
         self._init_next_and_previous_button()
+        
+        self.installEventFilter(self)
+        self.setFocusPolicy(Qt.StrongFocus)  # 确保窗口可以接收键盘事件
 
         # 放在最后, 因为需要连接其他控件
         self._init_menu()
@@ -79,9 +82,19 @@ class MainWindowImpl(MainWindow):
             )
 
             self.df_graded.to_hdf(".data/database.hdf5", key="df_graded", mode="a")
+            
+    def eventFilter(self, source, event):
+        if event.type() == QEvent.KeyPress:
+            if event.key() == Qt.Key_Right:
+                # 触发按钮的点击事件
+                self.img.pushButton_next.click()
+                return True  # 事件已处理
+            if event.key() == Qt.Key_Left:
+                self.img.pushButton_previous.click()
+                return True  # 事件已处理
+        return super().eventFilter(source, event)
 
     def _init_right_dock(self):
-
         # set right dock
         self.tabwidget = QTabWidget(self)
         self.right_dock.setWidget(self.tabwidget)
@@ -89,7 +102,6 @@ class MainWindowImpl(MainWindow):
     def _init_left_dock(self):
         self._init_img_widget()
         self._init_imgdock()
-
         # set left dock
         self.left_dock.setWidget(self.img.centralwidget)
         img_layout = self.img.widget_img.parentWidget().layout()
