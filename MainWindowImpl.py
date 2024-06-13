@@ -1,7 +1,9 @@
 # MainWindowImpl.py
-# [[feat]]: 增加export 按键, 到处df, df_database, df_graded
+# TODO list
+# [[feat]]: 增加注册功能
 
 from functools import partial
+import hashlib
 import json
 from pathlib import Path
 from PySide6.QtCore import QEvent, Qt, Slot
@@ -21,7 +23,7 @@ from PySide6.QtWidgets import (
 )
 import numpy as np
 from MainWindow import MainWindow
-import GradWidget, SetWidget, ImgDock
+import GradWidget, SetWidget, ImgDock, RegisterDialog
 import sys
 from PySide6.QtWidgets import QApplication
 from util import (
@@ -35,22 +37,28 @@ import pandas as pd
 from DebugWindow import DebugWindow
 from pyqtgraph import ImageItem, GraphicsLayoutWidget
 from PIL import Image
+from cryptography.fernet import Fernet
+from RegisterDialogImpl import RegisterDialog
 
-user_data = {"1": "1"}
+user_data = {"root": "1"}
+
+ICON_PATH = ".meta/icon.png"
+ROOT_USERNAME = "root"
+ROOT_PASSWORD = "root"
 
 
 class MainWindowImpl(MainWindow):
-    ICON_PATH = ".meta/icon.png"
-    
+
     def __init__(self) -> None:
         super().__init__()
         self.init_ui_impl()
-        self.setWindowIcon(QIcon(self.ICON_PATH))
+        self.setWindowIcon(QIcon(ICON_PATH))
         self.setWindowTitle("Diabetic Retinopathy Grading Application")
 
         # disable password
-        self.islogin = True  # testing...发行版删除该行
-        self.user = "xujialiu"  # testing...发行版删除该行
+        self.islogin = True  # [[test]]: 发行版删除该行
+        self.isroot = False
+        self.user = "xujialiu"  # [[test]]: 发行版删除该行
 
         # 数据注入
         # self.df_database = pd.read_pickle(".data/test_data.pkl")
@@ -115,7 +123,7 @@ class MainWindowImpl(MainWindow):
     def _init_img_widget(self):
         # 创建一个GraphicsLayoutWidget
         self.img_widget = GraphicsLayoutWidget()
-        # self.setCentralWidget(self.img_widget)    # testing...移除此处, 检查bug是否还存在
+        # self.setCentralWidget(self.img_widget)    # [[test]]: 移除此处, 检查bug是否还存在
 
         # 添加一个PlotItem
         self.plot_item = self.img_widget.addPlot()
@@ -129,7 +137,7 @@ class MainWindowImpl(MainWindow):
         self.plot_item.addItem(self.img_item)
 
         # 加载图像
-        self.display_img(self.ICON_PATH)
+        self.display_img(ICON_PATH)
 
         # 设置放大缩小功能
         self.plot_item.getViewBox().setMouseEnabled(x=True, y=True)
@@ -162,6 +170,11 @@ class MainWindowImpl(MainWindow):
         self.set = SetWidget.Ui_MainWindow()
         self.set.setupUi(self)
         self.tabwidget.addTab(self.set.centralwidget, "Settings")
+
+    def _init_register_dialog(self):
+
+        self.register = RegisterDialog.Ui_Dialog()
+        self.register.setupUi(self)
 
     def _init_gradwidge(self):
         self.grad = GradWidget.Ui_MainWindow()
@@ -205,12 +218,10 @@ class MainWindowImpl(MainWindow):
             setattr(
                 self.grad, comboBox.objectName(), hover_combobox
             )  # 绑定到新的变量上
-            hover_combobox.setCurrentIndex(1)  # testing...发行版改为-1
+            hover_combobox.setCurrentIndex(1)  # [[test]]: 发行版改为-1
             hover_combobox.currentTextChanged.connect(self.displace_total_score)
 
             self.grad.list_comboboxes.append(hover_combobox)
-
-            # [[feat]]: 增加text改变时, 计算总分并显示总分的功能
 
         self.dict_comboboxes = {
             "HMA": [self.grad.comboBox_HMA, self.options_HMA],
@@ -278,14 +289,17 @@ class MainWindowImpl(MainWindow):
 
         self.menu = self.menuBar()
         self.menu.file_menu = self.menu.addMenu("File")
-        self.menu.register_menu = self.menu.addMenu("Register")
+        # self.menu.register_menu = self.menu.addMenu("Register")
         self.menu.help_menu = self.menu.addMenu("Help")
+        
+        self.menu.register = QAction("Register / Reset password", self)
+        self.menu.help_menu.addAction(self.menu.register)
+        
 
-        self.menu.open_folder = QAction("Open Folder...", self)
-        self.menu.save = QAction("Save...", self)
+        self.menu.open_folder = QAction("Open Folder", self)
 
         self.menu.file_menu.addAction(self.menu.open_folder)
-        self.menu.file_menu.addAction(self.menu.save)
+
 
         self.menu.export = QAction("Export", self)
         self.menu.export_menu = QMenu("Export", self)
@@ -310,14 +324,18 @@ class MainWindowImpl(MainWindow):
 
         self.menu.about = QAction("About", self)
         self.menu.help_menu.addAction(self.menu.about)
+
         
-        self.menu.register = QAction("Register", self)
-        self.menu.register_menu.addAction(self.menu.register)
+        # self.menu.register_menu.addAction(self.menu.register)
         
-        self.menu.open_folder.triggered.connect(self.select_folder)
+
+        self.menu.register.triggered.connect(self.on_menu_register_clicked)
+
+        self.menu.open_folder.triggered.connect(self.select_folder_clicked)
         self.menu.debug.triggered.connect(self.on_debug_click)
         self.menu.exit.triggered.connect(self.on_exit_click)
         self.menu.about.triggered.connect(self.on_about_click)
+
 
         self.df = pd.DataFrame()
         self.menu.df.triggered.connect(partial(self.on_export_clicked, self.df))
@@ -327,6 +345,79 @@ class MainWindowImpl(MainWindow):
         self.menu.df_graded.triggered.connect(
             partial(self.on_export_clicked, self.df_graded)
         )
+
+        self.menu.register.setEnabled(False)
+
+    def on_menu_register_clicked(self):
+        self.dialog = RegisterDialog(self)
+        self.dialog.pushButton_cancel.clicked.connect(self.on_cancel_clicked)
+        self.dialog.pushButton_register.clicked.connect(self.on_register_clicked)
+        self.dialog.exec()
+
+    def on_cancel_clicked(self):
+        self.dialog.close()
+
+    def on_register_clicked(self):
+
+        username = self.dialog.lineEdit_user.text()
+        password = self.dialog.lineEdit_password.text()
+        confirm_password = self.dialog.lineEdit_confirm_password.text()
+        if password != confirm_password:
+            QMessageBox.warning(self, "Registration Failed", "Passwords do not match.")
+            return
+        if username == ROOT_USERNAME:
+            QMessageBox.warning(
+                self, "Registration Failed", "You cannot register as root."
+            )
+            return
+        if self.add_user(username, password):
+            QMessageBox.information(
+                self, "Registration Successful", "User registered successfully."
+            )
+            self.islogin = True
+            self.user = username
+            self.set.lineEdit_user.setText(username)
+            self.set.lineEdit_password.setText(password)
+        else:
+            QMessageBox.warning(self, "Registration Failed", "Username already exists.")
+
+    def add_user(self, username, password):
+
+        with open("users.json", "r") as file:
+            users = json.load(file)
+
+        # 允许重名注册, 当为重名注册时, 相当于修改密码
+        # if username in users:
+        #     return False
+
+        salt = Fernet.generate_key().decode()
+        encrypted_password = hashlib.sha256((password + salt).encode()).hexdigest()
+        users[username] = {"password": encrypted_password, "salt": salt}
+
+        with open(".meta/users.json", "w") as file:
+            json.dump(users, file)
+
+        return True
+
+    def add_user(self, username, password):
+
+        try:
+            with open(".meta/users.json", "r") as file:
+                users = json.load(file)
+        except FileNotFoundError:
+            users = {}
+
+        if username in users:
+            return False
+
+        salt = Fernet.generate_key().decode()
+        encrypted_password = hashlib.sha256((password + salt).encode()).hexdigest()
+        users[username] = {"password": encrypted_password, "salt": salt}
+
+        with open("users.json", "w") as file:
+            json.dump(users, file)
+
+        return True
 
     def on_export_clicked(self, df: pd.DataFrame):
         # 弹出文件选择窗口
@@ -376,7 +467,7 @@ class MainWindowImpl(MainWindow):
         except Exception as e:
             print(e)
 
-    def select_folder(self):
+    def select_folder_clicked(self):
         if not self.islogin:
             QMessageBox.warning(self, "Error", "Please login!")
         else:
@@ -393,7 +484,7 @@ class MainWindowImpl(MainWindow):
         self.grad.label_visit_date.setText(f"Visit date: {self.visit_date}")
 
     def _init_folder_button(self):
-        self.set.folder_button.clicked.connect(self.select_folder)
+        self.set.folder_button.clicked.connect(self.select_folder_clicked)
         self.set.folder_button.clicked.connect(self.get_df)
         self.set.folder_button.clicked.connect(self.show_patients_tree)
         self.set.folder_button.clicked.connect(self.find_first_tree_item)
@@ -418,11 +509,11 @@ class MainWindowImpl(MainWindow):
         self.set.treeWidget_patient.itemClicked.connect(self.displace_photo_number)
 
     def _init_login_button(self):
-        self.set.pushButton_login.clicked.connect(self.login_user)
+        self.set.pushButton_login.clicked.connect(self.on_login_clicked)
 
     def _init_save_button(self):
         self.grad.pushButton_save.clicked.connect(self.on_save_click)
-        # self.grad.pushButton_save.clicked.connect(self.on_clear_click)    # testing...发行版中取消注释
+        # self.grad.pushButton_save.clicked.connect(self.on_clear_click)    # [[test]]: 发行版中取消注释
         self.grad.pushButton_save.clicked.connect(self.get_first_img_index)
         self.grad.pushButton_save.clicked.connect(self.get_img_path_list)
         self.grad.pushButton_save.clicked.connect(self.on_display_img)
@@ -435,16 +526,41 @@ class MainWindowImpl(MainWindow):
         self.df = get_df_folder_contents(self.set.folder_path)
         self.df_remove_row_in_df_graded()
 
-    def login_user(self):
+    def on_login_clicked(self):
         self.user = self.set.lineEdit_user.text()
         password = self.set.lineEdit_password.text()
-
-        if self.user in user_data and user_data[self.user] == password:
-            QMessageBox.information(self, "Success", "Login successful!")
-            self.islogin = True
-
+        if self.validate_user(self.user, password):
+            if self.user == ROOT_USERNAME:
+                QMessageBox.information(
+                    self, "Login Successful", "You are logged in as root."
+                )
+                self.islogin = True
+                self.isroot = True
+                self.menu.register.setEnabled(True)
+            else:
+                QMessageBox.information(self, "Login Successful", "You are logged in.")
+                self.islogin = True
         else:
-            QMessageBox.warning(self, "Error", "Invalid username or password!")
+            QMessageBox.warning(self, "Login Failed", "Invalid username or password.")
+
+    def validate_user(self, username, password):
+        if username == ROOT_USERNAME and password == ROOT_PASSWORD:
+            return True
+
+        try:
+            with open("users.json", "r") as file:
+                users = json.load(file)
+        except FileNotFoundError:
+            users = {}
+
+        if username in users:
+            stored_password = users[username]["password"]
+            salt = users[username]["salt"]
+            return (
+                stored_password
+                == hashlib.sha256((password + salt).encode()).hexdigest()
+            )
+        return False
 
     def show_patients_tree(self):
         self.set.treeWidget_patient.clear()
@@ -619,11 +735,6 @@ class MainWindowImpl(MainWindow):
         dict_results["patient_id"] = self.patient_id
         dict_results["visit_date"] = self.visit_date
         dict_results["eye"] = self.eye
-
-        # total_score = 0
-        # for key, value in dict_results.items():
-        #     if key.endswith("_score"):
-        #         total_score += value
         dict_results["total_score"] = self.total_score
 
     def comboboxes_options(self):
