@@ -1,6 +1,5 @@
 # MainWindowImpl.py
 # TODO list
-# [[feat]]: 增加注册功能
 
 from functools import partial
 import hashlib
@@ -45,7 +44,7 @@ user_data = {"root": "1"}
 ICON_PATH = ".meta/icon.png"
 ROOT_USERNAME = "root"
 ROOT_PASSWORD = "root"
-
+TEST_MODE = True
 
 class MainWindowImpl(MainWindow):
 
@@ -55,13 +54,14 @@ class MainWindowImpl(MainWindow):
         self.setWindowIcon(QIcon(ICON_PATH))
         self.setWindowTitle("Diabetic Retinopathy Grading Application")
 
+        if TEST_MODE:
         # disable password
-        self.islogin = True  # [[test]]: 发行版删除该行
+            self.islogin = True  # [[test]]: 发行版删除该行
+        else:
+            self.islogin = False    
+        
+        
         self.isroot = False
-        self.user = "xujialiu"  # [[test]]: 发行版删除该行
-
-        # 数据注入
-        # self.df_database = pd.read_pickle(".data/test_data.pkl")
 
     def init_ui_impl(self):
         self._init_right_dock()
@@ -291,15 +291,13 @@ class MainWindowImpl(MainWindow):
         self.menu.file_menu = self.menu.addMenu("File")
         # self.menu.register_menu = self.menu.addMenu("Register")
         self.menu.help_menu = self.menu.addMenu("Help")
-        
+
         self.menu.register = QAction("Register / Reset password", self)
         self.menu.help_menu.addAction(self.menu.register)
-        
 
         self.menu.open_folder = QAction("Open Folder", self)
 
         self.menu.file_menu.addAction(self.menu.open_folder)
-
 
         self.menu.export = QAction("Export", self)
         self.menu.export_menu = QMenu("Export", self)
@@ -325,9 +323,7 @@ class MainWindowImpl(MainWindow):
         self.menu.about = QAction("About", self)
         self.menu.help_menu.addAction(self.menu.about)
 
-        
         # self.menu.register_menu.addAction(self.menu.register)
-        
 
         self.menu.register.triggered.connect(self.on_menu_register_clicked)
 
@@ -335,7 +331,6 @@ class MainWindowImpl(MainWindow):
         self.menu.debug.triggered.connect(self.on_debug_click)
         self.menu.exit.triggered.connect(self.on_exit_click)
         self.menu.about.triggered.connect(self.on_about_click)
-
 
         self.df = pd.DataFrame()
         self.menu.df.triggered.connect(partial(self.on_export_clicked, self.df))
