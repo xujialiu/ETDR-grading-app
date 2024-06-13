@@ -1,0 +1,104 @@
+{
+    "HMA": {
+        "None": {"score": 0, "image": ".meta/icon.png"},
+        "Quest": {"score": 1, "image": ".meta/icon.png"},
+        "<std 1": {"score": 2, "image": ".meta/icon.png"},
+        "≥std 1": {"score": 3, "image": ".meta/icon.png"},
+        "≥std 2A": {"score": 4, "image": ".meta/icon.png"},
+        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+    },
+    "HE": {
+        "None": {"score": 0, "image": ".meta/icon.png"},
+        "Quest": {"score": 1, "image": ".meta/icon.png"},
+        "<std 3": {"score": 2, "image": ".meta/icon.png"},
+        "≥std 3 - <std 4": {"score": 3, "image": ".meta/icon.png"},
+        "≥std 4": {"score": 4, "image": ".meta/icon.png"}
+    },
+    "SE": {
+        "None": {"score": 0, "image": ".meta/icon.png"},
+        "Quest": {"score": 1, "image": ".meta/icon.png"},
+        "Definite": {"score": 2, "image": ".meta/icon.png"}
+    },
+    "IRMA": {
+        "None": {"score": 0, "image": ".meta/icon.png"},
+        "Quest": {"score": 1, "image": ".meta/icon.png"},
+        "Definite": {"score": 2, "image": ".meta/icon.png"},
+        "Definite (all fields)": {"score": 3, "image": ".meta/icon.png"},
+        "≥std 8A": {"score": 4, "image": ".meta/icon.png"},
+        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+    },
+    "VB": {
+        "None": {"score": 0, "image": ".meta/icon.png"},
+        "Quest": {"score": 1, "image": ".meta/icon.png"},
+        "Definite": {"score": 2, "image": ".meta/icon.png"},
+        "Definite (2+ fields)": {"score": 3, "image": ".meta/icon.png"},
+        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+    },
+    "NVD": {
+        "None": {"score": 0, "image": ".meta/icon.png"},
+        "Quest": {"score": 1, "image": ".meta/icon.png"},
+        "<std 10A": {"score": 2, "image": ".meta/icon.png"},
+        "≥std 10A": {"score": 3, "image": ".meta/icon.png"},
+        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+    },
+    "NVE": {
+        "None": {"score": 0, "image": ".meta/icon.png"},
+        "Quest": {"score": 1, "image": ".meta/icon.png"},
+        "<1/2 Disc area": {"score": 2, "image": ".meta/icon.png"},
+        "≥1/2 Disc area": {"score": 3, "image": ".meta/icon.png"}
+    },
+    "FP": {
+        "None": {"score": 0, "image": ".meta/icon.png"},
+        "Quest": {"score": 1, "image": ".meta/icon.png"},
+        "FPE only": {"score": 2, "image": ".meta/icon.png"},
+        "FPD only": {"score": 3, "image": ".meta/icon.png"},
+        "FPD + FPE": {"score": 4, "image": ".meta/icon.png"},
+        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+    },
+    "PRH_VH": {
+        "None": {"score": 0, "image": ".meta/icon.png"},
+        "Quest": {"score": 1, "image": ".meta/icon.png"},
+        "PRH only": {"score": 2, "image": ".meta/icon.png"},
+        "VH only": {"score": 3, "image": ".meta/icon.png"},
+        "PRH+VH": {"score": 4, "image": ".meta/icon.png"},
+        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+    },
+    "EDEMA": {
+        "None": {"score": 0, "image": ".meta/icon.png"},
+        "Quest": {"score": 1, "image": ".meta/icon.png"},
+        "Present, not CSME": {"score": 2, "image": ".meta/icon.png"},
+        "Present, CSME": {"score": 3, "image": ".meta/icon.png"},
+        "Non-Diab": {"score": 4, "image": ".meta/icon.png"},
+        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+    },
+    "CTR": {
+        "None": {"score": 0, "image": ".meta/icon.png"},
+        "Quest": {"score": 1, "image": ".meta/icon.png"},
+        "Present, not CSME": {"score": 2, "image": ".meta/icon.png"},
+        "Present, CSME": {"score": 3, "image": ".meta/icon.png"},
+        "Non-Diab": {"score": 4, "image": ".meta/icon.png"},
+        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+    },
+    "VEN": {
+        "None": {"score": 0, "image": ".meta/icon.png"},
+        "Quest": {"score": 1, "image": ".meta/icon.png"},
+        "Definite": {"score": 2, "image": ".meta/icon.png"},
+        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+    },
+    "LASER": {
+        "None": {"score": 0, "image": ".meta/icon.png"},
+        "Quest/incomplete": {"score": 1, "image": ".meta/icon.png"},
+        "Focal": {"score": 2, "image": ".meta/icon.png"},
+        "Scatter only": {"score": 3, "image": ".meta/icon.png"},
+        "Scatter + Focal": {"score": 4, "image": ".meta/icon.png"},
+        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+    },
+    "RX": {
+        "None": {"score": 0, "image": ".meta/icon.png"},
+        "Quest": {"score": 1, "image": ".meta/icon.png"},
+        "Focal RX only": {"score": 2, "image": ".meta/icon.png"},
+        "Grid RX only": {"score": 3, "image": ".meta/icon.png"},
+        "Focal + Grid": {"score": 4, "image": ".meta/icon.png"},
+        "CG": {"score": 8, "image": ".meta/icon.png"}
+    }
+}

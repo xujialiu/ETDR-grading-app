@@ -40,10 +40,12 @@ user_data = {"1": "1"}
 
 
 class MainWindowImpl(MainWindow):
+    ICON_PATH = ".meta/icon.png"
+    
     def __init__(self) -> None:
         super().__init__()
         self.init_ui_impl()
-        self.setWindowIcon(QIcon("icon.png"))
+        self.setWindowIcon(QIcon(self.ICON_PATH))
         self.setWindowTitle("Diabetic Retinopathy Grading Application")
 
         # disable password
@@ -127,9 +129,7 @@ class MainWindowImpl(MainWindow):
         self.plot_item.addItem(self.img_item)
 
         # 加载图像
-        path = "icon.png"
-
-        self.display_img(path)
+        self.display_img(self.ICON_PATH)
 
         # 设置放大缩小功能
         self.plot_item.getViewBox().setMouseEnabled(x=True, y=True)
@@ -278,6 +278,7 @@ class MainWindowImpl(MainWindow):
 
         self.menu = self.menuBar()
         self.menu.file_menu = self.menu.addMenu("File")
+        self.menu.register_menu = self.menu.addMenu("Register")
         self.menu.help_menu = self.menu.addMenu("Help")
 
         self.menu.open_folder = QAction("Open Folder...", self)
@@ -309,7 +310,10 @@ class MainWindowImpl(MainWindow):
 
         self.menu.about = QAction("About", self)
         self.menu.help_menu.addAction(self.menu.about)
-
+        
+        self.menu.register = QAction("Register", self)
+        self.menu.register_menu.addAction(self.menu.register)
+        
         self.menu.open_folder.triggered.connect(self.select_folder)
         self.menu.debug.triggered.connect(self.on_debug_click)
         self.menu.exit.triggered.connect(self.on_exit_click)
@@ -623,7 +627,7 @@ class MainWindowImpl(MainWindow):
         dict_results["total_score"] = self.total_score
 
     def comboboxes_options(self):
-        with open("combobox_options.json", "r", encoding="utf-8") as f:
+        with open(".meta/combobox_options.json", "r", encoding="utf-8") as f:
             options_data = json.load(f)
 
         self.options_HMA = self._parse_options(options_data["HMA"])
