@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'gradwidget.ui'
+## Form generated from reading UI file 'GradWidget.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.3
 ##

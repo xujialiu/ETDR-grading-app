@@ -3,7 +3,7 @@ import sys
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
 
-from mainwindowimpl import MainWindowImpl
+from MainWindowImpl import MainWindowImpl
 
 
 if __name__ == "__main__":

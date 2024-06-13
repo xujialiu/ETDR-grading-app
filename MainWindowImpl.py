@@ -1,5 +1,5 @@
 # MainWindowImpl.py
-# [[feat]]: 增加export 按键
+# [[feat]]: 增加export 按键, 到处df, df_database, df_graded
 
 from functools import partial
 import json
@@ -275,6 +275,7 @@ class MainWindowImpl(MainWindow):
             self.img_index -= 1
 
     def _init_menu(self):
+
         self.menu = self.menuBar()
         self.menu.file_menu = self.menu.addMenu("File")
         self.menu.help_menu = self.menu.addMenu("Help")
@@ -294,11 +295,14 @@ class MainWindowImpl(MainWindow):
         self.menu.exit = QAction("Exit", self)
         self.menu.file_menu.addAction(self.menu.exit)
 
-        self.menu.excel = QAction("Excel", self)
-        self.menu.export_menu.addAction(self.menu.excel)
+        self.menu.df = QAction("Patient ID / Visit Date list", self)
+        self.menu.export_menu.addAction(self.menu.df)
 
-        self.menu.csv = QAction("Csv", self)
-        self.menu.export_menu.addAction(self.menu.csv)
+        self.menu.df_database = QAction("Graded list", self)
+        self.menu.export_menu.addAction(self.menu.df_database)
+
+        self.menu.df_graded = QAction("Database table", self)
+        self.menu.export_menu.addAction(self.menu.df_graded)
 
         self.menu.debug = QAction("Debug", self)
         self.menu.help_menu.addAction(self.menu.debug)
@@ -306,11 +310,37 @@ class MainWindowImpl(MainWindow):
         self.menu.about = QAction("About", self)
         self.menu.help_menu.addAction(self.menu.about)
 
-        # [[feat]]: 做About页面
         self.menu.open_folder.triggered.connect(self.select_folder)
         self.menu.debug.triggered.connect(self.on_debug_click)
         self.menu.exit.triggered.connect(self.on_exit_click)
         self.menu.about.triggered.connect(self.on_about_click)
+
+        self.df = pd.DataFrame()
+        self.menu.df.triggered.connect(partial(self.on_export_clicked, self.df))
+        self.menu.df_database.triggered.connect(
+            partial(self.on_export_clicked, self.df_database)
+        )
+        self.menu.df_graded.triggered.connect(
+            partial(self.on_export_clicked, self.df_graded)
+        )
+
+    def on_export_clicked(self, df: pd.DataFrame):
+        # 弹出文件选择窗口
+
+        options = QFileDialog.Options()
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Save DataFrame",
+            "",
+            "CSV Files (*.csv);;Excel Files (*.xlsx)",
+            options=options,
+        )
+        if file_path:
+            # 根据文件扩展名保存DataFrame
+            if file_path.endswith(".csv"):
+                df.to_csv(file_path, index=False)
+            elif file_path.endswith(".xlsx"):
+                df.to_excel(file_path, index=False)
 
     def on_about_click(self):
         # 创建关于对话框
