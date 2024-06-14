@@ -89,10 +89,12 @@ class MainWindowImpl(MainWindow):
         self._init_test_mode()
 
     def _init_test_mode(self):
-        if self.test_mode:
-            self.set.lineEdit_user.setText("xujialiu")
-            self.set.lineEdit_password.setText("3")
-            self.set.pushButton_login.click()
+        # if self.test_mode:
+        #     self.set.lineEdit_user.setText("xujialiu")
+        #     self.set.lineEdit_password.setText("3")
+        #     self.set.pushButton_login.click()
+            
+        pass
 
     def closeEvent(self, event):
         if not self.df_database.empty:
