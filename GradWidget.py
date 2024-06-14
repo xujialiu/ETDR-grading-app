@@ -16,9 +16,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QLabel,
-    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
-    QSpacerItem, QStatusBar, QTextEdit, QVBoxLayout,
-    QWidget)
+    QLineEdit, QMainWindow, QMenuBar, QPushButton,
+    QSizePolicy, QSpacerItem, QStatusBar, QTextEdit,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -27,10 +27,10 @@ class Ui_MainWindow(object):
         MainWindow.resize(849, 964)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_4 = QVBoxLayout(self.centralwidget)
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.verticalLayout_3 = QVBoxLayout()
+        self.verticalLayout_3 = QVBoxLayout(self.centralwidget)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalSpacer_25 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addItem(self.horizontalSpacer_22)
 
 
-        self.verticalLayout_3.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -101,10 +101,69 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addItem(self.horizontalSpacer_24)
 
 
-        self.verticalLayout_3.addLayout(self.horizontalLayout)
+        self.verticalLayout_2.addLayout(self.horizontalLayout)
 
-        self.verticalLayout_2 = QVBoxLayout()
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.label = QLabel(self.centralwidget)
+        self.label.setObjectName(u"label")
+
+        self.horizontalLayout_4.addWidget(self.label)
+
+        self.horizontalSpacer_28 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_4.addItem(self.horizontalSpacer_28)
+
+        self.comboBox_gradable = QComboBox(self.centralwidget)
+        self.comboBox_gradable.addItem("")
+        self.comboBox_gradable.addItem("")
+        self.comboBox_gradable.setObjectName(u"comboBox_gradable")
+
+        self.horizontalLayout_4.addWidget(self.comboBox_gradable)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_4)
+
+        self.horizontalLayout_18 = QHBoxLayout()
+        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
+        self.label_19 = QLabel(self.centralwidget)
+        self.label_19.setObjectName(u"label_19")
+
+        self.horizontalLayout_18.addWidget(self.label_19)
+
+        self.horizontalSpacer_30 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_18.addItem(self.horizontalSpacer_30)
+
+        self.comboBox_is_dr = QComboBox(self.centralwidget)
+        self.comboBox_is_dr.addItem("")
+        self.comboBox_is_dr.addItem("")
+        self.comboBox_is_dr.setObjectName(u"comboBox_is_dr")
+
+        self.horizontalLayout_18.addWidget(self.comboBox_is_dr)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_18)
+
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.label_2 = QLabel(self.centralwidget)
+        self.label_2.setObjectName(u"label_2")
+
+        self.horizontalLayout_3.addWidget(self.label_2)
+
+        self.horizontalSpacer_27 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_3.addItem(self.horizontalSpacer_27)
+
+        self.lineEdit_other_diagnosis = QLineEdit(self.centralwidget)
+        self.lineEdit_other_diagnosis.setObjectName(u"lineEdit_other_diagnosis")
+
+        self.horizontalLayout_3.addWidget(self.lineEdit_other_diagnosis)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_3)
+
         self.horizontalLayout_21 = QHBoxLayout()
         self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
         self.label_4 = QLabel(self.centralwidget)
@@ -379,6 +438,27 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_17)
 
+        self.horizontalLayout_5 = QHBoxLayout()
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.label_3 = QLabel(self.centralwidget)
+        self.label_3.setObjectName(u"label_3")
+
+        self.horizontalLayout_5.addWidget(self.label_3)
+
+        self.horizontalSpacer_29 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_5.addItem(self.horizontalSpacer_29)
+
+        self.comboBox_confident = QComboBox(self.centralwidget)
+        self.comboBox_confident.addItem("")
+        self.comboBox_confident.addItem("")
+        self.comboBox_confident.setObjectName(u"comboBox_confident")
+
+        self.horizontalLayout_5.addWidget(self.comboBox_confident)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_5)
+
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.label_18 = QLabel(self.centralwidget)
@@ -393,9 +473,6 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_2.addLayout(self.verticalLayout)
-
-
-        self.verticalLayout_3.addLayout(self.verticalLayout_2)
 
         self.horizontalLayout_20 = QHBoxLayout()
         self.horizontalLayout_20.setObjectName(u"horizontalLayout_20")
@@ -433,10 +510,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_20.addItem(self.horizontalSpacer_16)
 
 
-        self.verticalLayout_3.addLayout(self.horizontalLayout_20)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_20)
 
 
-        self.verticalLayout_4.addLayout(self.verticalLayout_3)
+        self.verticalLayout_3.addLayout(self.verticalLayout_2)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
@@ -449,6 +526,9 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
+        self.comboBox_gradable.setCurrentIndex(-1)
+        self.comboBox_is_dr.setCurrentIndex(-1)
+        self.comboBox_confident.setCurrentIndex(-1)
         self.pushButton_clear.setDefault(False)
 
 
@@ -463,6 +543,15 @@ class Ui_MainWindow(object):
         self.label_user.setText(QCoreApplication.translate("MainWindow", u"Grader: ", None))
         self.label_eye.setText(QCoreApplication.translate("MainWindow", u"Eye: ", None))
         self.label_score.setText(QCoreApplication.translate("MainWindow", u"Total score: ", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Is fundus photos gradable?", None))
+        self.comboBox_gradable.setItemText(0, QCoreApplication.translate("MainWindow", u"Yes", None))
+        self.comboBox_gradable.setItemText(1, QCoreApplication.translate("MainWindow", u"No", None))
+
+        self.label_19.setText(QCoreApplication.translate("MainWindow", u"Whether it is DR?", None))
+        self.comboBox_is_dr.setItemText(0, QCoreApplication.translate("MainWindow", u"Yes", None))
+        self.comboBox_is_dr.setItemText(1, QCoreApplication.translate("MainWindow", u"No", None))
+
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"    Other diagnosis (if not DR)", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Haemorrhage/Microaneurysms (HMA):", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Hard Exudates (HE):", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Soft Exudates (SE):", None))
@@ -477,6 +566,10 @@ class Ui_MainWindow(object):
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"VEN LOOPS", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"LASER SCARS", None))
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"FOCAL/GRID RX", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Are you confident in this grading?", None))
+        self.comboBox_confident.setItemText(0, QCoreApplication.translate("MainWindow", u"Yes", None))
+        self.comboBox_confident.setItemText(1, QCoreApplication.translate("MainWindow", u"No", None))
+
         self.label_18.setText(QCoreApplication.translate("MainWindow", u"Comments:", None))
         self.pushButton_clear.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
         self.pushButton_save.setText(QCoreApplication.translate("MainWindow", u"Save", None))

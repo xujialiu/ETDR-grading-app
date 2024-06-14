@@ -8,7 +8,7 @@ TEST_MODE = True
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    mwImpl = MainWindowImpl(test_mode=False)
+    mwImpl = MainWindowImpl(test_mode=TEST_MODE)
 
     mwImpl.show()
 

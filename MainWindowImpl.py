@@ -1,6 +1,8 @@
 # MainWindowImpl.py
 # TODO list
 # [[chore]]: 添加license文件
+# [[feat]]: 增加如果not gradable, 其他选项变为灰色
+# [[feat]]: 重写calculate_total_score的逻辑
 
 
 from functools import partial
@@ -17,10 +19,8 @@ from PySide6.QtWidgets import (
     QTableWidgetItem,
     QTreeWidget,
     QTreeWidgetItem,
-    QWidget,
 )
 import numpy as np
-from pytz import VERSION
 from MainWindow import MainWindow
 import GradWidget, SetWidget, ImgDock
 import sys
@@ -44,6 +44,7 @@ ICON_PATH = ".meta/icon.png"
 ROOT_USERNAME = "root"
 ROOT_PASSWORD = "root"
 VERSION = "1.0.1"
+TEST_MODE = True
 
 
 class MainWindowImpl(MainWindow):
@@ -69,6 +70,8 @@ class MainWindowImpl(MainWindow):
         self._init_gradwidge()
         self._init_setwidge()
         self._init_comboboxes()
+        self._init_combobox_gradable()
+        self._init_combobox_is_dr()
         self._init_app()
         self._init_clear_button()
         self._init_login_button()
@@ -82,9 +85,14 @@ class MainWindowImpl(MainWindow):
         self.installEventFilter(self)
         self.setFocusPolicy(Qt.StrongFocus)  # 确保窗口可以接收键盘事件
 
-        # 放在最后, 因为需要连接其他控件
-        self._init_menu()
-        self.islogin = False
+        self._init_menu()  # 放在最后, 因为需要连接其他控件
+        self._init_test_mode()
+
+    def _init_test_mode(self):
+        if self.test_mode:
+            self.set.lineEdit_user.setText("xujialiu")
+            self.set.lineEdit_password.setText("3")
+            self.set.pushButton_login.click()
 
     def closeEvent(self, event):
         if not self.df_database.empty:
@@ -217,10 +225,7 @@ class MainWindowImpl(MainWindow):
             setattr(
                 self.grad, comboBox.objectName(), hover_combobox
             )  # 绑定到新的变量上
-            if self.test_mode:
-                hover_combobox.setCurrentIndex(1)
-            else:
-                hover_combobox.setCurrentIndex(-1)
+            hover_combobox.setCurrentIndex(-1)
             hover_combobox.currentTextChanged.connect(self.displace_total_score)
 
             self.grad.list_comboboxes.append(hover_combobox)
@@ -243,7 +248,6 @@ class MainWindowImpl(MainWindow):
         }
 
     def displace_total_score(self):
-        # print(self.options_HMA)
         self.calculate_total_score()
         self.grad.label_score.setText(f"Total score: {self.total_score}")
 
@@ -254,6 +258,7 @@ class MainWindowImpl(MainWindow):
         )
 
     def calculate_total_score(self):
+        """计算总分数"""
         list_comboboxes = []
         list_options = []
         for _, (combobox, option) in self.dict_comboboxes.items():
@@ -334,6 +339,11 @@ class MainWindowImpl(MainWindow):
             self.menu.debug = QAction("Debug", self)
             self.menu.help_menu.addAction(self.menu.debug)
             self.menu.debug.triggered.connect(self.on_debug_clicked)
+
+            self.menu.data_inject = QAction("Data inject", self)
+            self.menu.help_menu.addAction(self.menu.data_inject)
+            self.menu.data_inject.triggered.connect(self.on_data_inject_clicked)
+
         else:
             pass
 
@@ -351,6 +361,26 @@ class MainWindowImpl(MainWindow):
 
         self.menu.register.setEnabled(False)
         self.menu.reset.setEnabled(False)
+
+    def on_data_inject_clicked(self):
+        self.grad.comboBox_HMA.setCurrentText("Quest")  ###############
+        self.grad.comboBox_HE.setCurrentText("Quest")
+        self.grad.comboBox_SE.setCurrentText("Quest")
+        self.grad.comboBox_IRMA.setCurrentText("Quest")
+        self.grad.comboBox_VB.setCurrentText("Quest")
+        self.grad.comboBox_NVD.setCurrentText("Quest")
+        self.grad.comboBox_NVE.setCurrentText("Quest")
+        self.grad.comboBox_FP.setCurrentText("Quest")
+        self.grad.comboBox_PRH_VH.setCurrentText("Quest")
+        self.grad.comboBox_EDEMA.setCurrentText("Quest")
+        self.grad.comboBox_CTR.setCurrentText("Quest")
+        self.grad.comboBox_VEN.setCurrentText("Quest")
+        self.grad.comboBox_LASER.setCurrentText("Quest/incomplete")
+        self.grad.comboBox_RX.setCurrentText("Quest")
+        self.grad.comboBox_gradable.setCurrentText("Yes")
+        self.grad.comboBox_is_dr.setCurrentText("Yes")
+        self.grad.comboBox_confident.setCurrentText("Yes")
+        self.grad.textEdit_comment.setText("test comments")
 
     def on_menu_register_clicked(self):
         self.dialog = RegisterDialog(self)
@@ -548,12 +578,6 @@ class MainWindowImpl(MainWindow):
 
     def _init_save_button(self):
         self.grad.pushButton_save.clicked.connect(self.on_save_clicked)
-
-        if self.test_mode:
-            pass
-        else:
-            self.grad.pushButton_save.clicked.connect(self.on_clear_clicked)
-
         self.grad.pushButton_save.clicked.connect(self.get_first_img_index)
         self.grad.pushButton_save.clicked.connect(self.get_img_path_list)
         self.grad.pushButton_save.clicked.connect(self.on_display_img)
@@ -642,6 +666,11 @@ class MainWindowImpl(MainWindow):
         comboboxes = (combobox for _, (combobox, _) in self.dict_comboboxes.items())
         for combobox in comboboxes:
             combobox.setCurrentIndex(-1)
+        self.grad.comboBox_gradable.setCurrentIndex(-1)
+        self.grad.comboBox_is_dr.setCurrentIndex(-1)
+        self.grad.lineEdit_other_diagnosis.setText("")
+        self.grad.comboBox_confident.setCurrentIndex(-1)
+        self.grad.textEdit_comment.setText("")
 
     def show_df_graded_df_database(self):
         self.show_df_database()
@@ -665,29 +694,88 @@ class MainWindowImpl(MainWindow):
             for col_index, value in enumerate(row):
                 table.setItem(row_index, col_index, QTableWidgetItem(str(value)))
 
-    def on_save_clicked(self):
-        comboboxs_choices = [
-            list_combobox[0].currentText()
-            for list_combobox in self.dict_comboboxes.values()
+    def _init_combobox_gradable(self):
+        self.grad.comboBox_gradable.currentTextChanged.connect(
+            self.on_gradable_text_changed
+        )
+
+    def on_gradable_text_changed(self):
+
+        if self.grad.comboBox_gradable.currentText() == "Yes":
+            for combobox, _ in self.dict_comboboxes.values():
+                combobox.setEnabled(True)
+            self.grad.comboBox_is_dr.setEnabled(True)
+            self.grad.lineEdit_other_diagnosis.setEnabled(True)
+            self.grad.comboBox_confident.setEnabled(True)
+
+        if self.grad.comboBox_gradable.currentText() == "No":
+            for combobox, _ in self.dict_comboboxes.values():
+                combobox.setEnabled(False)
+            self.grad.comboBox_is_dr.setEnabled(False)
+            self.grad.lineEdit_other_diagnosis.setEnabled(False)
+            self.grad.comboBox_confident.setEnabled(False)
+
+    def is_all_filled(self):
+        # 如果是gradable为No, 直接返回True
+        if self.grad.comboBox_gradable.currentText() == "No":
+            return True
+
+        comboboxes_choices = [
+            combobox.currentText() for (combobox, _) in self.dict_comboboxes.values()
         ]
+
+        # 如果gradable为Yes, 需要进一步判断combobox_with_hover
+        if all(comboboxes_choices) and self.grad.comboBox_confident.currentText():
+            # 需要进一步判断is_dr
+
+            # 如果is_dr=="Yes", 直接返回True
+            if self.grad.comboBox_is_dr.currentText() == "Yes":
+                return True
+
+            # 如果is_dr=="No", 还需要other_diagnosis不为空
+            elif (
+                self.grad.comboBox_is_dr.currentText() == "No"
+                and self.grad.lineEdit_other_diagnosis.text()
+            ):
+                return True
+
+        # 其余情况, 返回false
+        else:
+            return False
+
+    def _init_combobox_is_dr(self):
+        self.grad.comboBox_is_dr.currentTextChanged.connect(self.on_is_dr_changed)
+
+    def on_is_dr_changed(self):
+        if self.grad.comboBox_is_dr.currentText() == "Yes":
+            self.grad.lineEdit_other_diagnosis.setEnabled(True)
+            # 如果不是空字符, 把lineEdit_other_diagnosis设为空字符
+            self.grad.lineEdit_other_diagnosis.setText("")
+
+        if self.grad.comboBox_is_dr.currentText() == "No":
+            self.grad.lineEdit_other_diagnosis.setEnabled(False)
+
+    def on_save_clicked(self):
         if not self.islogin:
             QMessageBox.warning(self, "Error", "Please login!")
-        elif not all(comboboxs_choices):
+        elif not self.is_all_filled():
             QMessageBox.warning(self, "Error", "Please fill all options!")
 
-        dict_results = {
-            label: list_combobox[0].currentText()
-            for label, list_combobox in self.dict_comboboxes.items()
-        }
-        self.update_dict_results(dict_results)
-        self.update_df_database(dict_results)
+        elif self.is_all_filled():
 
-        self.update_df_graded()
+            dict_results = self.update_dict_results()
+            self.update_df_database(dict_results)
 
-        self.update_df()
-        self.show_patients_tree()
-        self.find_and_activate_tree_item()
-        self.show_df_graded_df_database()
+            self.update_df_graded()
+
+            self.update_df()
+            self.show_patients_tree()
+            self.find_and_activate_tree_item()
+            self.show_df_graded_df_database()
+            self.on_clear_clicked()
+
+            for combobox, _ in self.dict_comboboxes.values():
+                combobox.setEnabled(True)
 
     def find_and_activate_tree_item(self):
         """
@@ -769,19 +857,35 @@ class MainWindowImpl(MainWindow):
         df_data = pd.DataFrame([dict_results])
         self.df_database = pd.concat([self.df_database, df_data])
 
-    def update_dict_results(self, dict_results):
+    def update_dict_results(self):
+        dict_results = {
+            label: combobox.currentText()
+            for label, (combobox, _) in self.dict_comboboxes.items()
+        }
+
         dict_scores = {}
         for key, label in dict_results.items():
             options = getattr(self, f"options_{key}")
             dict_scores[f"{key}_score"] = options[label].score
         dict_results.update(dict_scores)
 
-        dict_results["comment"] = self.grad.textEdit_comment.toPlainText()
+        other_result = {
+            "is_gradable": self.grad.comboBox_gradable.currentText(),
+            "is_dr": self.grad.comboBox_is_dr.currentText(),
+            "other_diagnosis": self.grad.lineEdit_other_diagnosis.text(),
+            "confident": self.grad.comboBox_confident.currentText(),
+            "comment": self.grad.textEdit_comment.toPlainText(),
+        }
+
+        dict_results.update(other_result)
+
         dict_results["user"] = self.user
         dict_results["patient_id"] = self.patient_id
         dict_results["visit_date"] = self.visit_date
         dict_results["eye"] = self.eye
         dict_results["total_score"] = self.total_score
+
+        return dict_results
 
     def comboboxes_options(self):
         with open(".meta/combobox_options.json", "r", encoding="utf-8") as f:
@@ -819,6 +923,6 @@ class MainWindowImpl(MainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    mwimpl = MainWindowImpl(test_mode=False)
+    mwimpl = MainWindowImpl(test_mode=TEST_MODE)
     mwimpl.show()
     sys.exit(app.exec())
