@@ -1,7 +1,5 @@
 # MainWindowImpl.py
 # TODO list
-# [[feat]]: comboboxwithhover当没有提供图片时, 不显示pixmap
-# [[feat]]: 把reset password和register分开
 # [[chore]]: 添加license文件
 
 
@@ -45,7 +43,7 @@ from RegisterResetDialogImpl import RegisterDialog
 ICON_PATH = ".meta/icon.png"
 ROOT_USERNAME = "root"
 ROOT_PASSWORD = "root"
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 
 
 class MainWindowImpl(MainWindow):
@@ -318,10 +316,10 @@ class MainWindowImpl(MainWindow):
         self.menu.df = QAction("Patient ID / Visit Date list", self)
         self.menu.export_menu.addAction(self.menu.df)
 
-        self.menu.df_database = QAction("Graded list", self)
+        self.menu.df_database = QAction("Database table", self)
         self.menu.export_menu.addAction(self.menu.df_database)
 
-        self.menu.df_graded = QAction("Database table", self)
+        self.menu.df_graded = QAction("Graded list", self)
         self.menu.export_menu.addAction(self.menu.df_graded)
 
         self.menu.about = QAction("About", self)
@@ -426,7 +424,7 @@ class MainWindowImpl(MainWindow):
             QMessageBox.information(
                 self,
                 "Registration Successful",
-                "User registered successfully.",  # -------------
+                "User registered successfully.",
             )
             self.islogin = True
             self.isroot = False
@@ -821,6 +819,6 @@ class MainWindowImpl(MainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    mwimpl = MainWindowImpl(test_mode=True)
+    mwimpl = MainWindowImpl(test_mode=False)
     mwimpl.show()
     sys.exit(app.exec())

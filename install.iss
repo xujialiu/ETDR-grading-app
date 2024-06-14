@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ETDR grading application"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "Xujia Liu"
 #define MyAppURL "https://github.com/xujialiu/ETDR-grading-app"
 #define MyAppExeName "main.exe"
@@ -39,6 +39,7 @@ OutputBaseFilename=ETDR_grading_application_setup_{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+SetupIconFile=C:\Users\xujia\Git projects\Master\ETDR-grading-app\.meta\icon.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
