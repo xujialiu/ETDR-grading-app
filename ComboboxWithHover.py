@@ -12,6 +12,10 @@ class HoverLabel(QLabel):
         self.setVisible(False)
 
     def show_image(self, image_path, item_rect_top_left):
+        if not image_path:  # If image_path is empty, hide the label and return
+            self.hide_image()
+            return
+
         pixmap = QPixmap(image_path)
         self.setPixmap(pixmap)
         self.adjustSize()
@@ -40,14 +44,20 @@ class ComboBoxWithHover(QComboBox):
     def eventFilter(self, source, event):
         if event.type() == QEvent.MouseMove and source == self.view().viewport():
             index = self.view().indexAt(event.pos())
-            if index.isValid():
-                option_text = self.itemText(index.row())
-                image_path = self.options[option_text].path
-                item_rect = self.view().visualRect(index)
-                item_rect_top_left = self.view().mapToGlobal(item_rect.topLeft())
-                self.hover_label.show_image(image_path, item_rect_top_left)
-            else:
+            if not index.isValid():
                 self.hover_label.hide_image()
+                return super().eventFilter(source, event)
+
+            option_text = self.itemText(index.row())
+            image_path = self.options[option_text].path
+            if not image_path:
+                self.hover_label.hide_image()
+                return super().eventFilter(source, event)
+
+            item_rect = self.view().visualRect(index)
+            item_rect_top_left = self.view().mapToGlobal(item_rect.topLeft())
+            self.hover_label.show_image(image_path, item_rect_top_left)
         elif event.type() in (QEvent.HoverLeave, QEvent.Leave):
             self.hover_label.hide_image()
+        
         return super().eventFilter(source, event)

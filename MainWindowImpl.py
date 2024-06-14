@@ -57,7 +57,7 @@ class MainWindowImpl(MainWindow):
 
         if TEST_MODE:
             # disable password
-            self.islogin = True  # [[test]]: 发行版删除该行
+            self.islogin = True
         else:
             self.islogin = False
 
@@ -218,7 +218,7 @@ class MainWindowImpl(MainWindow):
                 self.grad, comboBox.objectName(), hover_combobox
             )  # 绑定到新的变量上
             if TEST_MODE:
-                hover_combobox.setCurrentIndex(1)  # [[test]]: 发行版改为-1
+                hover_combobox.setCurrentIndex(1)
             else:
                 hover_combobox.setCurrentIndex(-1)
             hover_combobox.currentTextChanged.connect(self.displace_total_score)
@@ -518,7 +518,7 @@ class MainWindowImpl(MainWindow):
         else:
             self.grad.pushButton_save.clicked.connect(
                 self.on_clear_clicked
-            )  # [[test]]: 发行版中取消注释
+            )
 
         self.grad.pushButton_save.clicked.connect(self.get_first_img_index)
         self.grad.pushButton_save.clicked.connect(self.get_img_path_list)

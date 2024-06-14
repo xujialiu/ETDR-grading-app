@@ -1,7 +1,7 @@
 {
     "HMA": {
         "None": {"score": 0, "image": ".meta/icon.png"},
-        "Quest": {"score": 1, "image": ".meta/icon.png"},
+        "Quest": {"score": 1, "image": ""},
         "<std 1": {"score": 2, "image": ".meta/icon.png"},
         "≥std 1": {"score": 3, "image": ".meta/icon.png"},
         "≥std 2A": {"score": 4, "image": ".meta/icon.png"},
