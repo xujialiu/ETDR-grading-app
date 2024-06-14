@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 import numpy as np
+from pytz import VERSION
 from MainWindow import MainWindow
 import GradWidget, SetWidget, ImgDock
 import sys
@@ -44,18 +45,19 @@ from RegisterResetDialogImpl import RegisterDialog
 ICON_PATH = ".meta/icon.png"
 ROOT_USERNAME = "root"
 ROOT_PASSWORD = "root"
-TEST_MODE = False
+VERSION = "1.0.0"
 
 
 class MainWindowImpl(MainWindow):
 
-    def __init__(self) -> None:
+    def __init__(self, test_mode) -> None:
         super().__init__()
+        self.test_mode = test_mode
         self.init_ui_impl()
         self.setWindowIcon(QIcon(ICON_PATH))
         self.setWindowTitle("Diabetic Retinopathy Grading Application")
 
-        if TEST_MODE:
+        if self.test_mode:
             # disable password
             self.islogin = True
         else:
@@ -217,7 +219,7 @@ class MainWindowImpl(MainWindow):
             setattr(
                 self.grad, comboBox.objectName(), hover_combobox
             )  # 绑定到新的变量上
-            if TEST_MODE:
+            if self.test_mode:
                 hover_combobox.setCurrentIndex(1)
             else:
                 hover_combobox.setCurrentIndex(-1)
@@ -330,7 +332,7 @@ class MainWindowImpl(MainWindow):
 
         self.menu.open_folder.triggered.connect(self.select_folder_clicked)
 
-        if TEST_MODE:
+        if self.test_mode:
             self.menu.debug = QAction("Debug", self)
             self.menu.help_menu.addAction(self.menu.debug)
             self.menu.debug.triggered.connect(self.on_debug_clicked)
@@ -478,7 +480,7 @@ class MainWindowImpl(MainWindow):
         about_dialog.setWindowTitle("About")
         about_dialog.setText(
             "This is a diabetic ETDR grading application.<br><br>"
-            "Version: 1.0.0<br><br>"
+            f"Version: {VERSION}<br><br>"
             "Author: Xujia Liu<br>"
             "Email: xujialiuphd@gmail.com<br><br>"
             'Website (building): <a href="https://github.com/xujialiu/ETDR-grading-app">https://github.com/xujialiu/ETDR-grading-app</a>'
@@ -549,7 +551,7 @@ class MainWindowImpl(MainWindow):
     def _init_save_button(self):
         self.grad.pushButton_save.clicked.connect(self.on_save_clicked)
 
-        if TEST_MODE:
+        if self.test_mode:
             pass
         else:
             self.grad.pushButton_save.clicked.connect(self.on_clear_clicked)
@@ -585,7 +587,7 @@ class MainWindowImpl(MainWindow):
                 self.set.lineEdit_user.setEnabled(False)
                 self.set.lineEdit_password.setEnabled(False)
                 self.set.pushButton_login.setEnabled(False)
-                
+
         else:
             QMessageBox.warning(self, "Login Failed", "Invalid username or password.")
 
@@ -819,6 +821,6 @@ class MainWindowImpl(MainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    mwimpl = MainWindowImpl()
+    mwimpl = MainWindowImpl(test_mode=True)
     mwimpl.show()
     sys.exit(app.exec())
