@@ -1,17 +1,17 @@
 # MainWindowImpl.py
 # TODO list
+# [[feat]]: comboboxwithhover当没有提供图片时, 不显示pixmap
+# [[feat]]: 把reset password和register分开
+# [[chore]]: 添加license文件
+
 
 from functools import partial
 import hashlib
 import json
-from pathlib import Path
 from PySide6.QtCore import QEvent, Qt, Slot
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import (
     QFileDialog,
-    QHBoxLayout,
-    QLabel,
-    QListWidgetItem,
     QMenu,
     QMessageBox,
     QTabWidget,
@@ -44,7 +44,8 @@ user_data = {"root": "1"}
 ICON_PATH = ".meta/icon.png"
 ROOT_USERNAME = "root"
 ROOT_PASSWORD = "root"
-TEST_MODE = True
+TEST_MODE = False
+
 
 class MainWindowImpl(MainWindow):
 
@@ -55,12 +56,11 @@ class MainWindowImpl(MainWindow):
         self.setWindowTitle("Diabetic Retinopathy Grading Application")
 
         if TEST_MODE:
-        # disable password
+            # disable password
             self.islogin = True  # [[test]]: 发行版删除该行
         else:
-            self.islogin = False    
-        
-        
+            self.islogin = False
+
         self.isroot = False
 
     def init_ui_impl(self):
@@ -123,7 +123,6 @@ class MainWindowImpl(MainWindow):
     def _init_img_widget(self):
         # 创建一个GraphicsLayoutWidget
         self.img_widget = GraphicsLayoutWidget()
-        # self.setCentralWidget(self.img_widget)    # [[test]]: 移除此处, 检查bug是否还存在
 
         # 添加一个PlotItem
         self.plot_item = self.img_widget.addPlot()
@@ -218,7 +217,10 @@ class MainWindowImpl(MainWindow):
             setattr(
                 self.grad, comboBox.objectName(), hover_combobox
             )  # 绑定到新的变量上
-            hover_combobox.setCurrentIndex(1)  # [[test]]: 发行版改为-1
+            if TEST_MODE:
+                hover_combobox.setCurrentIndex(1)  # [[test]]: 发行版改为-1
+            else:
+                hover_combobox.setCurrentIndex(-1)
             hover_combobox.currentTextChanged.connect(self.displace_total_score)
 
             self.grad.list_comboboxes.append(hover_combobox)
@@ -269,19 +271,19 @@ class MainWindowImpl(MainWindow):
         app.setStyle("fusion")
 
     def _init_next_and_previous_button(self):
-        self.img.pushButton_next.clicked.connect(self.on_next_click)
+        self.img.pushButton_next.clicked.connect(self.on_next_clicked)
         self.img.pushButton_next.clicked.connect(self.on_display_img)
         self.img.pushButton_next.clicked.connect(self.displace_photo_number)
 
-        self.img.pushButton_previous.clicked.connect(self.on_previous_click)
+        self.img.pushButton_previous.clicked.connect(self.on_previous_clicked)
         self.img.pushButton_previous.clicked.connect(self.on_display_img)
         self.img.pushButton_previous.clicked.connect(self.displace_photo_number)
 
-    def on_next_click(self):
+    def on_next_clicked(self):
         if self.img_index < len(self.list_img_path) - 1:
             self.img_index += 1
 
-    def on_previous_click(self):
+    def on_previous_clicked(self):
         if self.img_index > 0:
             self.img_index -= 1
 
@@ -317,20 +319,22 @@ class MainWindowImpl(MainWindow):
         self.menu.df_graded = QAction("Database table", self)
         self.menu.export_menu.addAction(self.menu.df_graded)
 
-        self.menu.debug = QAction("Debug", self)
-        self.menu.help_menu.addAction(self.menu.debug)
-
         self.menu.about = QAction("About", self)
         self.menu.help_menu.addAction(self.menu.about)
-
-        # self.menu.register_menu.addAction(self.menu.register)
 
         self.menu.register.triggered.connect(self.on_menu_register_clicked)
 
         self.menu.open_folder.triggered.connect(self.select_folder_clicked)
-        self.menu.debug.triggered.connect(self.on_debug_click)
-        self.menu.exit.triggered.connect(self.on_exit_click)
-        self.menu.about.triggered.connect(self.on_about_click)
+
+        if TEST_MODE:
+            self.menu.debug = QAction("Debug", self)
+            self.menu.help_menu.addAction(self.menu.debug)
+            self.menu.debug.triggered.connect(self.on_debug_clicked)
+        else:
+            pass
+
+        self.menu.exit.triggered.connect(self.on_exit_clicked)
+        self.menu.about.triggered.connect(self.on_about_clicked)
 
         self.df = pd.DataFrame()
         self.menu.df.triggered.connect(partial(self.on_export_clicked, self.df))
@@ -432,7 +436,7 @@ class MainWindowImpl(MainWindow):
             elif file_path.endswith(".xlsx"):
                 df.to_excel(file_path, index=False)
 
-    def on_about_click(self):
+    def on_about_clicked(self):
         # 创建关于对话框
         about_dialog = QMessageBox(self)
         about_dialog.setWindowTitle("About")
@@ -446,11 +450,11 @@ class MainWindowImpl(MainWindow):
         about_dialog.setIcon(QMessageBox.Information)
         about_dialog.exec()
 
-    def on_exit_click(self):
+    def on_exit_clicked(self):
         app = QApplication.instance()
         app.quit()
 
-    def on_debug_click(self):
+    def on_debug_clicked(self):
         self.debug_window = DebugWindow()
         self.debug_window.code_submitted.connect(self.execute_code)
         self.debug_window.show()
@@ -507,8 +511,15 @@ class MainWindowImpl(MainWindow):
         self.set.pushButton_login.clicked.connect(self.on_login_clicked)
 
     def _init_save_button(self):
-        self.grad.pushButton_save.clicked.connect(self.on_save_click)
-        # self.grad.pushButton_save.clicked.connect(self.on_clear_click)    # [[test]]: 发行版中取消注释
+        self.grad.pushButton_save.clicked.connect(self.on_save_clicked)
+
+        if TEST_MODE:
+            pass
+        else:
+            self.grad.pushButton_save.clicked.connect(
+                self.on_clear_clicked
+            )  # [[test]]: 发行版中取消注释
+
         self.grad.pushButton_save.clicked.connect(self.get_first_img_index)
         self.grad.pushButton_save.clicked.connect(self.get_img_path_list)
         self.grad.pushButton_save.clicked.connect(self.on_display_img)
@@ -585,9 +596,9 @@ class MainWindowImpl(MainWindow):
             self.patient_id = item.parent().text(0)
 
     def _init_clear_button(self):
-        self.grad.pushButton_clear.clicked.connect(self.on_clear_click)
+        self.grad.pushButton_clear.clicked.connect(self.on_clear_clicked)
 
-    def on_clear_click(self):
+    def on_clear_clicked(self):
         comboboxes = (combobox for _, (combobox, _) in self.dict_comboboxes.items())
         for combobox in comboboxes:
             combobox.setCurrentIndex(-1)
@@ -614,7 +625,7 @@ class MainWindowImpl(MainWindow):
             for col_index, value in enumerate(row):
                 table.setItem(row_index, col_index, QTableWidgetItem(str(value)))
 
-    def on_save_click(self):
+    def on_save_clicked(self):
         comboboxs_choices = [
             list_combobox[0].currentText()
             for list_combobox in self.dict_comboboxes.values()
