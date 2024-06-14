@@ -1,6 +1,6 @@
 set appVersion="1.0.1"
 
-pyinstaller -w main.py -y
+pyinstaller -w main.py -y --icon=.meta/icon.ico
 
 robocopy .meta dist/main\.meta /E
 

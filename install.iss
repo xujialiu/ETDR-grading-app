@@ -33,7 +33,7 @@ ArchitecturesInstallIn64BitMode=x64compatible
 ChangesAssociations=yes
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
-;PrivilegesRequired=lowest
+PrivilegesRequired=lowest
 OutputDir=C:\Users\xujia\Git projects\Master\ETDR-grading-app\.releases\{#MyAppVersion}
 OutputBaseFilename=ETDR_grading_application_setup_{#MyAppVersion}
 Compression=lzma
