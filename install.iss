@@ -36,10 +36,11 @@ DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
 OutputDir=C:\Users\xujia\Git projects\Master\ETDR-grading-app\.releases\{#MyAppVersion}
 OutputBaseFilename=ETDR_grading_application_setup_{#MyAppVersion}
+SetupIconFile=C:\Users\xujia\Git projects\Master\ETDR-grading-app\.meta\icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-SetupIconFile=C:\Users\xujia\Git projects\Master\ETDR-grading-app\.meta\icon.ico
+
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

@@ -9,4 +9,8 @@
   - is gradable
   - is DR
   - other diagnosis
-  - confident
+  - is confident
+- fix install.iss problem
+
+todo:
+- bug: piction in combobox option do not show properly

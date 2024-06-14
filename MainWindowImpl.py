@@ -69,6 +69,8 @@ class MainWindowImpl(MainWindow):
         self._init_left_dock()
         self._init_gradwidge()
         self._init_setwidge()
+        
+        self._init_labels()
         self._init_comboboxes()
         self._init_combobox_gradable()
         self._init_combobox_is_dr()
@@ -663,6 +665,10 @@ class MainWindowImpl(MainWindow):
 
     def _init_clear_button(self):
         self.grad.pushButton_clear.clicked.connect(self.on_clear_clicked)
+        
+        
+    def _init_labels(self):
+        pass
 
     def on_clear_clicked(self):
         comboboxes = (combobox for _, (combobox, _) in self.dict_comboboxes.items())
@@ -750,12 +756,12 @@ class MainWindowImpl(MainWindow):
 
     def on_is_dr_changed(self):
         if self.grad.comboBox_is_dr.currentText() == "Yes":
-            self.grad.lineEdit_other_diagnosis.setEnabled(True)
+            self.grad.lineEdit_other_diagnosis.setEnabled(False)
             # 如果不是空字符, 把lineEdit_other_diagnosis设为空字符
             self.grad.lineEdit_other_diagnosis.setText("")
 
         if self.grad.comboBox_is_dr.currentText() == "No":
-            self.grad.lineEdit_other_diagnosis.setEnabled(False)
+            self.grad.lineEdit_other_diagnosis.setEnabled(True)
 
     def on_save_clicked(self):
         if not self.islogin:

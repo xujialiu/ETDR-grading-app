@@ -74,7 +74,7 @@ def load_or_create_df_database(filename=".data/database.hdf5"):
         "VEN",
         "LASER",
         "RX",
-        "comments",
+        "comment",
         "HMA_score",
         "HE_score",
         "SE_score",
@@ -90,14 +90,14 @@ def load_or_create_df_database(filename=".data/database.hdf5"):
         "LASER_score",
         "RX_score",
         "user",
-        "total_score"
+        "total_score",
     ]
 
     file_path = Path(filename)
 
     if file_path.exists():
         df = pd.read_hdf(file_path, key="df_database")
-        score_columns  = df.filter(like='score', axis=1)
+        score_columns = df.filter(like="score", axis=1)
         df[score_columns.columns] = score_columns.astype(int)
     else:
         df = pd.DataFrame(columns=columns)
@@ -116,7 +116,7 @@ def load_or_create_df_graded(filename=".data/database.hdf5"):
 
     if file_path.exists():
         df = pd.read_hdf(file_path, key="df_graded")
-        score_columns  = df.filter(like='score', axis=1)
+        score_columns = df.filter(like="score", axis=1)
         df[score_columns.columns] = score_columns.astype(int)
     else:
         df = pd.DataFrame(columns=columns)

@@ -124,6 +124,27 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_4)
 
+        self.horizontalLayout_19 = QHBoxLayout()
+        self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
+        self.label_20 = QLabel(self.centralwidget)
+        self.label_20.setObjectName(u"label_20")
+
+        self.horizontalLayout_19.addWidget(self.label_20)
+
+        self.horizontalSpacer_31 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_19.addItem(self.horizontalSpacer_31)
+
+        self.comboBox = QComboBox(self.centralwidget)
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.setObjectName(u"comboBox")
+
+        self.horizontalLayout_19.addWidget(self.comboBox)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_19)
+
         self.horizontalLayout_18 = QHBoxLayout()
         self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
         self.label_19 = QLabel(self.centralwidget)
@@ -166,10 +187,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_21 = QHBoxLayout()
         self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
-        self.label_4 = QLabel(self.centralwidget)
-        self.label_4.setObjectName(u"label_4")
+        self.label_HMA = QLabel(self.centralwidget)
+        self.label_HMA.setObjectName(u"label_HMA")
 
-        self.horizontalLayout_21.addWidget(self.label_4)
+        self.horizontalLayout_21.addWidget(self.label_HMA)
 
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -527,6 +548,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.comboBox_gradable.setCurrentIndex(-1)
+        self.comboBox.setCurrentIndex(-1)
         self.comboBox_is_dr.setCurrentIndex(-1)
         self.comboBox_confident.setCurrentIndex(-1)
         self.pushButton_clear.setDefault(False)
@@ -547,12 +569,16 @@ class Ui_MainWindow(object):
         self.comboBox_gradable.setItemText(0, QCoreApplication.translate("MainWindow", u"Yes", None))
         self.comboBox_gradable.setItemText(1, QCoreApplication.translate("MainWindow", u"No", None))
 
+        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Clarity", None))
+        self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Blur", None))
+        self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Clear", None))
+
         self.label_19.setText(QCoreApplication.translate("MainWindow", u"Whether it is DR?", None))
         self.comboBox_is_dr.setItemText(0, QCoreApplication.translate("MainWindow", u"Yes", None))
         self.comboBox_is_dr.setItemText(1, QCoreApplication.translate("MainWindow", u"No", None))
 
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"    Other diagnosis (if not DR)", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Haemorrhage/Microaneurysms (HMA):", None))
+        self.label_HMA.setText(QCoreApplication.translate("MainWindow", u"Haemorrhage/Microaneurysms (HMA):", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Hard Exudates (HE):", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Soft Exudates (SE):", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Intraretinal Microvascular Abnormalities (IRMA):", None))
