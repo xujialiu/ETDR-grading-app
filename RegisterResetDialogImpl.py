@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QDialog
-from RegisterDialog import Ui_Dialog
+from RegisterResetDialog import Ui_Dialog
 
 
 # class RegisterDialog(Ui_Dialog):

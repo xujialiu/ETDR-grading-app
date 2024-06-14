@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'RegisterDialog.ui'
+## Form generated from reading UI file 'RegisterResetDialog.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.3
 ##
@@ -38,10 +38,10 @@ class Ui_Dialog(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.label = QLabel(Dialog)
-        self.label.setObjectName(u"label")
+        self.label_user = QLabel(Dialog)
+        self.label_user.setObjectName(u"label_user")
 
-        self.verticalLayout_2.addWidget(self.label)
+        self.verticalLayout_2.addWidget(self.label_user)
 
         self.label_2 = QLabel(Dialog)
         self.label_2.setObjectName(u"label_2")
@@ -87,10 +87,10 @@ class Ui_Dialog(object):
 
         self.horizontalLayout_4.addItem(self.horizontalSpacer_2)
 
-        self.pushButton_register = QPushButton(Dialog)
-        self.pushButton_register.setObjectName(u"pushButton_register")
+        self.pushButton_register_reset = QPushButton(Dialog)
+        self.pushButton_register_reset.setObjectName(u"pushButton_register_reset")
 
-        self.horizontalLayout_4.addWidget(self.pushButton_register)
+        self.horizontalLayout_4.addWidget(self.pushButton_register_reset)
 
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -116,10 +116,10 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.label.setText(QCoreApplication.translate("Dialog", u"User name:", None))
+        self.label_user.setText(QCoreApplication.translate("Dialog", u"User name:", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"Password: ", None))
         self.label_3.setText(QCoreApplication.translate("Dialog", u"Confirm Password:", None))
-        self.pushButton_register.setText(QCoreApplication.translate("Dialog", u"Register / Reset password", None))
+        self.pushButton_register_reset.setText(QCoreApplication.translate("Dialog", u"Register / Reset password", None))
         self.pushButton_cancel.setText(QCoreApplication.translate("Dialog", u"Cancel", None))
     # retranslateUi
 

@@ -8,6 +8,7 @@
 from functools import partial
 import hashlib
 import json
+from typing import Literal
 from PySide6.QtCore import QEvent, Qt, Slot
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import (
@@ -22,7 +23,7 @@ from PySide6.QtWidgets import (
 )
 import numpy as np
 from MainWindow import MainWindow
-import GradWidget, SetWidget, ImgDock, RegisterDialog
+import GradWidget, SetWidget, ImgDock
 import sys
 from PySide6.QtWidgets import QApplication
 from util import (
@@ -37,9 +38,8 @@ from DebugWindow import DebugWindow
 from pyqtgraph import ImageItem, GraphicsLayoutWidget
 from PIL import Image
 from cryptography.fernet import Fernet
-from RegisterDialogImpl import RegisterDialog
+from RegisterResetDialogImpl import RegisterDialog
 
-user_data = {"root": "1"}
 
 ICON_PATH = ".meta/icon.png"
 ROOT_USERNAME = "root"
@@ -291,11 +291,14 @@ class MainWindowImpl(MainWindow):
 
         self.menu = self.menuBar()
         self.menu.file_menu = self.menu.addMenu("File")
-        # self.menu.register_menu = self.menu.addMenu("Register")
+        self.menu.user_menu = self.menu.addMenu("User")
         self.menu.help_menu = self.menu.addMenu("Help")
 
-        self.menu.register = QAction("Register / Reset password", self)
-        self.menu.help_menu.addAction(self.menu.register)
+        self.menu.register = QAction("Register", self)
+        self.menu.user_menu.addAction(self.menu.register)
+
+        self.menu.reset = QAction("Reset", self)
+        self.menu.user_menu.addAction(self.menu.reset)
 
         self.menu.open_folder = QAction("Open Folder", self)
 
@@ -323,6 +326,7 @@ class MainWindowImpl(MainWindow):
         self.menu.help_menu.addAction(self.menu.about)
 
         self.menu.register.triggered.connect(self.on_menu_register_clicked)
+        self.menu.reset.triggered.connect(self.on_menu_reset_clicked)
 
         self.menu.open_folder.triggered.connect(self.select_folder_clicked)
 
@@ -346,18 +350,65 @@ class MainWindowImpl(MainWindow):
         )
 
         self.menu.register.setEnabled(False)
+        self.menu.reset.setEnabled(False)
 
     def on_menu_register_clicked(self):
         self.dialog = RegisterDialog(self)
+        self.dialog.setWindowTitle("Register new user")
+        self.dialog.pushButton_register_reset.setText("Register")
         self.dialog.pushButton_cancel.clicked.connect(self.on_cancel_clicked)
-        self.dialog.pushButton_register.clicked.connect(self.on_register_clicked)
+        self.dialog.pushButton_register_reset.clicked.connect(self.on_register_clicked)
+        self.dialog.exec()
+
+    def on_menu_reset_clicked(self):
+        self.dialog = RegisterDialog(self)
+        self.dialog.setWindowTitle("Reset password")
+        self.dialog.lineEdit_user.hide()
+        self.dialog.label_user.hide()
+        self.dialog.pushButton_register_reset.setText("Reset")
+        self.dialog.pushButton_cancel.clicked.connect(self.on_cancel_clicked)
+        self.dialog.pushButton_register_reset.clicked.connect(self.on_reset_clicked)
         self.dialog.exec()
 
     def on_cancel_clicked(self):
         self.dialog.close()
 
-    def on_register_clicked(self):
+    def on_reset_clicked(self):
+        username = self.user
+        password = self.dialog.lineEdit_password.text()
+        confirm_password = self.dialog.lineEdit_confirm_password.text()
+        if password != confirm_password:
+            QMessageBox.warning(self, "Reset Failed", "Passwords do not match.")
+            return
+        if username == ROOT_USERNAME:
+            QMessageBox.warning(self, "Reset Failed", "You cannot reset root password.")
+            return
+        if self.reset_user_password(username, password):
+            QMessageBox.information(
+                self,
+                "Reset Successful",
+                "Password resetted successfully.",
+            )
+            self.user = username
+            self.set.lineEdit_user.setText(self.user)
+            self.set.lineEdit_password.setText(password)
+        else:
+            QMessageBox.warning(self, "Registration Failed", "Username already exists.")
 
+    def reset_user_password(self, username, password):
+        with open(".meta/users.json", "r") as file:
+            users = json.load(file)
+
+        salt = Fernet.generate_key().decode()
+        encrypted_password = hashlib.sha256((password + salt).encode()).hexdigest()
+        users[username] = {"password": encrypted_password, "salt": salt}
+
+        with open(".meta/users.json", "w") as file:
+            json.dump(users, file)
+
+        return True
+
+    def on_register_clicked(self):
         username = self.dialog.lineEdit_user.text()
         password = self.dialog.lineEdit_password.text()
         confirm_password = self.dialog.lineEdit_confirm_password.text()
@@ -369,37 +420,22 @@ class MainWindowImpl(MainWindow):
                 self, "Registration Failed", "You cannot register as root."
             )
             return
-        if self.add_user(username, password):
+        if self.add_user_password(username, password):
             QMessageBox.information(
-                self, "Registration Successful", "User registered successfully."
+                self,
+                "Registration Successful",
+                "User registered successfully.",  # -------------
             )
             self.islogin = True
+            self.isroot = False
+            self.menu.reset.setEnabled(True)
             self.user = username
             self.set.lineEdit_user.setText(username)
             self.set.lineEdit_password.setText(password)
         else:
             QMessageBox.warning(self, "Registration Failed", "Username already exists.")
 
-    def add_user(self, username, password):
-
-        with open("users.json", "r") as file:
-            users = json.load(file)
-
-        # 允许重名注册, 当为重名注册时, 相当于修改密码
-        # if username in users:
-        #     return False
-
-        salt = Fernet.generate_key().decode()
-        encrypted_password = hashlib.sha256((password + salt).encode()).hexdigest()
-        users[username] = {"password": encrypted_password, "salt": salt}
-
-        with open(".meta/users.json", "w") as file:
-            json.dump(users, file)
-
-        return True
-
-    def add_user(self, username, password):
-
+    def add_user_password(self, username, password):
         try:
             with open(".meta/users.json", "r") as file:
                 users = json.load(file)
@@ -413,7 +449,7 @@ class MainWindowImpl(MainWindow):
         encrypted_password = hashlib.sha256((password + salt).encode()).hexdigest()
         users[username] = {"password": encrypted_password, "salt": salt}
 
-        with open("users.json", "w") as file:
+        with open(".meta/users.json", "w") as file:
             json.dump(users, file)
 
         return True
@@ -516,9 +552,7 @@ class MainWindowImpl(MainWindow):
         if TEST_MODE:
             pass
         else:
-            self.grad.pushButton_save.clicked.connect(
-                self.on_clear_clicked
-            )
+            self.grad.pushButton_save.clicked.connect(self.on_clear_clicked)
 
         self.grad.pushButton_save.clicked.connect(self.get_first_img_index)
         self.grad.pushButton_save.clicked.connect(self.get_img_path_list)
@@ -546,6 +580,12 @@ class MainWindowImpl(MainWindow):
             else:
                 QMessageBox.information(self, "Login Successful", "You are logged in.")
                 self.islogin = True
+                self.isroot = False
+                self.menu.reset.setEnabled(True)
+                self.set.lineEdit_user.setEnabled(False)
+                self.set.lineEdit_password.setEnabled(False)
+                self.set.pushButton_login.setEnabled(False)
+                
         else:
             QMessageBox.warning(self, "Login Failed", "Invalid username or password.")
 
@@ -554,7 +594,7 @@ class MainWindowImpl(MainWindow):
             return True
 
         try:
-            with open("users.json", "r") as file:
+            with open(".meta/users.json", "r") as file:
                 users = json.load(file)
         except FileNotFoundError:
             users = {}

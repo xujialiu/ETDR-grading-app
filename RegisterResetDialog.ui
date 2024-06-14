@@ -40,7 +40,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="label_user">
          <property name="text">
           <string>User name:</string>
          </property>
@@ -101,7 +101,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_register">
+      <widget class="QPushButton" name="pushButton_register_reset">
        <property name="text">
         <string>Register / Reset password</string>
        </property>
