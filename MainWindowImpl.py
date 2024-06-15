@@ -18,7 +18,7 @@ import hashlib
 import json
 from time import sleep
 from typing import Literal
-from PySide6.QtCore import QEvent, Qt, Slot
+from PySide6.QtCore import QEvent, QSettings, Qt, Slot
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import (
     QFileDialog,
@@ -64,13 +64,9 @@ class MainWindowImpl(MainWindow):
         self.init_ui_impl()
         self.setWindowIcon(QIcon(ICON_PATH))
         self.setWindowTitle("Diabetic Retinopathy Grading Application")
+        self.load_settings()
 
-        if self.test_mode:
-            # disable password
-            self.islogin = True
-        else:
-            self.islogin = False
-
+        self.islogin = False
         self.isroot = False
 
     def init_ui_impl(self):
@@ -116,9 +112,23 @@ class MainWindowImpl(MainWindow):
                 executor.submit(
                     self.save_parquet,
                     ".data/df_graded.parquet",
-                    self.df_graded.astype(str),
+                    self.df_graded,
                 )
+                
+        self.save_settings()
         event.accept()
+    
+    def save_settings(self):
+        settings = QSettings("MyCompany", "MyApp")
+        settings.setValue("geometry", self.saveGeometry())
+        settings.setValue("windowState", self.saveState())
+        settings.setValue("username", self.set.lineEdit_user.text())
+        
+    def load_settings(self):
+        settings = QSettings("MyCompany", "MyApp")
+        self.restoreGeometry(settings.value("geometry"))
+        self.restoreState(settings.value("windowState"))
+        self.set.lineEdit_user.setText(settings.value("username", ""))
 
     def save_parquet(self, file_path, df):
         df.to_parquet(file_path)
