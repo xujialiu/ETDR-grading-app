@@ -6,6 +6,7 @@
 # [[feat]]: 增加eventFilter全局按键监听
 # [[feat]]: 没login前, select folder 为灰色
 # [[feat]]: 保存和读取时使用多进程加速
+# [[feat]]: 如果gradable为no, 其他选项设为空字符
 
 # [[bug]]: load_or_create_df_graded存在bug
 # [[bug]]: other_diagnosis为空, 不知道会不会导致问题, 试一下删除other_diagnosis
@@ -68,11 +69,13 @@ class MainWindowImpl(MainWindow):
         self.isroot = False
 
     def init_ui_impl(self):
+        # 初始化布局组件
         self._init_right_dock()
         self._init_left_dock()
         self._init_gradwidge()
         self._init_setwidge()
 
+        # 初始化其他
         self._init_labels()
         self._init_comboboxes()
         self._init_combobox_gradable()
@@ -87,11 +90,14 @@ class MainWindowImpl(MainWindow):
         self._init_save_button()
         self._init_next_and_previous_button()
 
+        # 初始化事件相关函数
         self.installEventFilter(self)
         self.setFocusPolicy(Qt.StrongFocus)  # 确保窗口可以接收键盘事件
 
+        # 初始化menu
         self._init_menu()  # 放在最后, 因为需要连接其他控件
 
+        # 初始化测试模块
         if self.test_mode:
             self._init_test_mode()
 
@@ -384,6 +390,8 @@ class MainWindowImpl(MainWindow):
         self.menu.reset.setEnabled(False)
 
     def on_data_inject_clicked(self):
+        self.grad.comboBox_gradable.setCurrentText("Yes")
+        self.grad.comboBox_clarity.setCurrentText("Clear")
         self.grad.comboBox_HMA.setCurrentText("Quest")
         self.grad.comboBox_HE.setCurrentText("Quest")
         self.grad.comboBox_SE.setCurrentText("Quest")
@@ -398,7 +406,6 @@ class MainWindowImpl(MainWindow):
         self.grad.comboBox_VEN.setCurrentText("Quest")
         self.grad.comboBox_LASER.setCurrentText("Quest/incomplete")
         self.grad.comboBox_RX.setCurrentText("Quest")
-        self.grad.comboBox_gradable.setCurrentText("Yes")
         self.grad.comboBox_is_dr.setCurrentText("Yes")
         self.grad.comboBox_confident.setCurrentText("Yes")
         self.grad.textEdit_comment.setText("test comments")
@@ -696,7 +703,9 @@ class MainWindowImpl(MainWindow):
         self.grad.comboBox_is_dr.setCurrentIndex(-1)
         self.grad.lineEdit_other_diagnosis.setText("")
         self.grad.comboBox_confident.setCurrentIndex(-1)
+        self.grad.comboBox_clarity.setCurrentIndex(-1)
         self.grad.textEdit_comment.setText("")
+        
 
     def show_df_graded_df_database(self):
         self.show_df_database()
@@ -731,8 +740,12 @@ class MainWindowImpl(MainWindow):
             for combobox, _ in self.dict_comboboxes.values():
                 combobox.setEnabled(True)
             self.grad.comboBox_is_dr.setEnabled(True)
-            self.grad.lineEdit_other_diagnosis.setEnabled(True)
+            if self.grad.comboBox_is_dr.currentText() == "Yes":
+                self.grad.lineEdit_other_diagnosis.setEnabled(False)
+            else:
+                self.grad.lineEdit_other_diagnosis.setEnabled(True)
             self.grad.comboBox_confident.setEnabled(True)
+            self.grad.comboBox_clarity.setEnabled(True)
 
         if self.grad.comboBox_gradable.currentText() == "No":
             for combobox, _ in self.dict_comboboxes.values():
@@ -740,6 +753,7 @@ class MainWindowImpl(MainWindow):
             self.grad.comboBox_is_dr.setEnabled(False)
             self.grad.lineEdit_other_diagnosis.setEnabled(False)
             self.grad.comboBox_confident.setEnabled(False)
+            self.grad.comboBox_clarity.setEnabled(False)
 
     def is_all_filled(self):
         # 如果是gradable为No, 直接返回True
@@ -751,7 +765,11 @@ class MainWindowImpl(MainWindow):
         ]
 
         # 如果gradable为Yes, 需要进一步判断combobox_with_hover
-        if all(comboboxes_choices) and self.grad.comboBox_confident.currentText():
+        if (
+            all(comboboxes_choices)
+            and self.grad.comboBox_confident.currentText()
+            and self.grad.comboBox_clarity.currentText()
+        ):
             # 需要进一步判断is_dr
 
             # 如果is_dr=="Yes", 直接返回True
@@ -884,32 +902,78 @@ class MainWindowImpl(MainWindow):
         self.df_database = pd.concat([self.df_database, df_data])
 
     def update_dict_results(self):
-        dict_results = {
-            label: combobox.currentText()
-            for label, (combobox, _) in self.dict_comboboxes.items()
-        }
+        if self.grad.comboBox_gradable.currentText() == "Yes":
+            dict_results = {
+                label: combobox.currentText()
+                for label, (combobox, _) in self.dict_comboboxes.items()
+            }
 
-        dict_scores = {}
-        for key, label in dict_results.items():
-            options = getattr(self, f"options_{key}")
-            dict_scores[f"{key}_score"] = options[label].score
-        dict_results.update(dict_scores)
+            dict_scores = {}
+            for key, label in dict_results.items():
+                options = getattr(self, f"options_{key}")
+                dict_scores[f"{key}_score"] = options[label].score
+            dict_results.update(dict_scores)
 
-        other_result = {
-            "is_gradable": self.grad.comboBox_gradable.currentText(),
-            "is_dr": self.grad.comboBox_is_dr.currentText(),
-            "other_diagnosis": self.grad.lineEdit_other_diagnosis.text(),
-            "confident": self.grad.comboBox_confident.currentText(),
-            "comment": self.grad.textEdit_comment.toPlainText(),
-        }
+            other_result = {
+                "is_gradable": self.grad.comboBox_gradable.currentText(),
+                "is_dr": self.grad.comboBox_is_dr.currentText(),
+                "other_diagnosis": self.grad.lineEdit_other_diagnosis.text(),
+                "confident": self.grad.comboBox_confident.currentText(),
+                "clarity": self.grad.comboBox_clarity.currentText(),
+                "comment": self.grad.textEdit_comment.toPlainText(),
+            }
 
-        dict_results.update(other_result)
+            dict_results.update(other_result)
 
-        dict_results["user"] = self.user
-        dict_results["patient_id"] = self.patient_id
-        dict_results["visit_date"] = self.visit_date
-        dict_results["eye"] = self.eye
-        dict_results["total_score"] = self.total_score
+            dict_results["user"] = self.user
+            dict_results["patient_id"] = self.patient_id
+            dict_results["visit_date"] = self.visit_date
+            dict_results["eye"] = self.eye
+            dict_results["total_score"] = self.total_score
+            self.dict = dict_results
+
+        else:
+            {
+                "HMA": "",
+                "HE": "",
+                "SE": "",
+                "IRMA": "",
+                "VB": "",
+                "NVD": "",
+                "NVE": "",
+                "FP": "",
+                "PRH_VH": "",
+                "EDEMA": "",
+                "CTR": "",
+                "VEN": "",
+                "LASER": "",
+                "RX": "",
+                "HMA_score": 999,
+                "HE_score": 999,
+                "SE_score": 999,
+                "IRMA_score": 999,
+                "VB_score": 999,
+                "NVD_score": 999,
+                "NVE_score": 999,
+                "FP_score": 999,
+                "PRH_VH_score": 999,
+                "EDEMA_score": 999,
+                "CTR_score": 999,
+                "VEN_score": 999,
+                "LASER_score": 999,
+                "RX_score": 999,
+                "is_gradable": "",
+                "is_dr": "",
+                "other_diagnosis": "",
+                "confident": "",
+                "clarity": "",
+                "comment": "",
+                "user": "",
+                "patient_id": "",
+                "visit_date": "",
+                "eye": "",
+                "total_score": 999,
+            }
 
         return dict_results
 

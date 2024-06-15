@@ -122,11 +122,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.tableWidget_database)
 
-        self.label_5 = QLabel(self.centralwidget)
-        self.label_5.setObjectName(u"label_5")
-
-        self.verticalLayout.addWidget(self.label_5)
-
 
         self.horizontalLayout_3.addLayout(self.verticalLayout)
 
@@ -202,7 +197,6 @@ class Ui_MainWindow(object):
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Database: ", None))
         ___qtablewidgetitem3 = self.tableWidget_database.horizontalHeaderItem(0)
         ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Patient ID", None));
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Total score:", None))
         self.folder_button.setText(QCoreApplication.translate("MainWindow", u"Select folder", None))
         self.label_folder.setText("")
     # retranslateUi

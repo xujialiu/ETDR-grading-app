@@ -235,7 +235,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox">
+         <widget class="QComboBox" name="comboBox_clarity">
           <property name="currentIndex">
            <number>-1</number>
           </property>

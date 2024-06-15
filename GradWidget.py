@@ -135,12 +135,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_19.addItem(self.horizontalSpacer_31)
 
-        self.comboBox = QComboBox(self.centralwidget)
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.setObjectName(u"comboBox")
+        self.comboBox_clarity = QComboBox(self.centralwidget)
+        self.comboBox_clarity.addItem("")
+        self.comboBox_clarity.addItem("")
+        self.comboBox_clarity.setObjectName(u"comboBox_clarity")
 
-        self.horizontalLayout_19.addWidget(self.comboBox)
+        self.horizontalLayout_19.addWidget(self.comboBox_clarity)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_19)
@@ -548,7 +548,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.comboBox_gradable.setCurrentIndex(-1)
-        self.comboBox.setCurrentIndex(-1)
+        self.comboBox_clarity.setCurrentIndex(-1)
         self.comboBox_is_dr.setCurrentIndex(-1)
         self.comboBox_confident.setCurrentIndex(-1)
         self.pushButton_clear.setDefault(False)
@@ -570,8 +570,8 @@ class Ui_MainWindow(object):
         self.comboBox_gradable.setItemText(1, QCoreApplication.translate("MainWindow", u"No", None))
 
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"Clarity", None))
-        self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Blur", None))
-        self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Clear", None))
+        self.comboBox_clarity.setItemText(0, QCoreApplication.translate("MainWindow", u"Blur", None))
+        self.comboBox_clarity.setItemText(1, QCoreApplication.translate("MainWindow", u"Clear", None))
 
         self.label_19.setText(QCoreApplication.translate("MainWindow", u"Whether it is DR?", None))
         self.comboBox_is_dr.setItemText(0, QCoreApplication.translate("MainWindow", u"Yes", None))

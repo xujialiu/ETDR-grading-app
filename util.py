@@ -60,6 +60,10 @@ def load_or_create_df_database(filename=".data/df_database.parquet"):
         "patient_id",
         "visit_date",
         "eye",
+        "is_gradable",
+        "clarity",
+        "is_dr",
+        "other_diagnosis",
         "HMA",
         "HE",
         "SE",
@@ -74,7 +78,6 @@ def load_or_create_df_database(filename=".data/df_database.parquet"):
         "VEN",
         "LASER",
         "RX",
-        "comment",
         "HMA_score",
         "HE_score",
         "SE_score",
@@ -89,7 +92,8 @@ def load_or_create_df_database(filename=".data/df_database.parquet"):
         "VEN_score",
         "LASER_score",
         "RX_score",
-        "user",
+        "confident",
+        "comment",
         "total_score",
     ]
 
@@ -104,6 +108,7 @@ def load_or_create_df_database(filename=".data/df_database.parquet"):
     # df = pd.DataFrame(columns=columns)
 
     return df
+
 
 # 出问题的地方
 def load_or_create_df_graded(filename=".data/df_graded.parquet"):

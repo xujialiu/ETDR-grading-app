@@ -155,13 +155,6 @@
             </column>
            </widget>
           </item>
-          <item>
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>Total score:</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
        </layout>
