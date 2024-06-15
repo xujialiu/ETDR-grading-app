@@ -7,6 +7,12 @@
 # [[feat]]: 保存和读取时使用多进程加速
 # [[feat]]: 如果gradable为no, 其他选项设为空字符
 
+# [[feat]]: ICDR
+# [[feat]]: is_dr + quest
+# [[feat]]: 去除other diagnosis
+# [[feat]]: login前, export disable
+
+
 # [[bug]]: load_or_create_df_graded存在bug
 # [[bug]]: other_diagnosis为空, 不知道会不会导致问题, 试一下删除other_diagnosis
 # [[bug]]: 先处理pyinstaller打包后的文件不能正确关闭的问题
@@ -348,6 +354,7 @@ class MainWindowImpl(MainWindow):
         self.menu.file_menu.addAction(self.menu.open_folder)
 
         self.menu.export = QAction("Export", self)
+        self.menu.export.setEnabled(False)
         self.menu.export_menu = QMenu("Export", self)
 
         self.menu.export.setMenu(self.menu.export_menu)
@@ -629,6 +636,7 @@ class MainWindowImpl(MainWindow):
                 self.isroot = True
                 self.menu.register.setEnabled(True)
                 self.set.folder_button.setEnabled(False)
+                self.menu.export.setEnabled(True)
             else:
                 QMessageBox.information(self, "Login Successful", "You are logged in.")
                 self.islogin = True
@@ -638,6 +646,7 @@ class MainWindowImpl(MainWindow):
                 self.set.lineEdit_password.setEnabled(False)
                 self.set.pushButton_login.setEnabled(False)
                 self.set.folder_button.setEnabled(True)
+                self.menu.export.setEnabled(False)
 
         else:
             QMessageBox.warning(self, "Login Failed", "Invalid username or password.")
@@ -932,7 +941,7 @@ class MainWindowImpl(MainWindow):
             self.dict = dict_results
 
         else:
-            {
+            dict_results = {
                 "HMA": "",
                 "HE": "",
                 "SE": "",
