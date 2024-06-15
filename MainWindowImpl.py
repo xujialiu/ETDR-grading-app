@@ -12,6 +12,7 @@
 # [[bug]]: 先处理pyinstaller打包后的文件不能正确关闭的问题
 
 
+from concurrent.futures import ThreadPoolExecutor
 from functools import partial
 import hashlib
 import json
@@ -107,16 +108,20 @@ class MainWindowImpl(MainWindow):
         pass
 
     def closeEvent(self, event):
-        print("start...")
         if not self.df_database.empty:
-            print("start if")
-            self.df_database.to_parquet(".data/df_database.parquet")
-            print("start mode a")
-            self.df_graded.astype(str).to_parquet(".data/df_graded.parquet")
-            print("saving...")
-        print("Closing main window")
-        sleep(5)
+            with ThreadPoolExecutor() as executor:
+                executor.submit(
+                    self.save_parquet, ".data/df_database.parquet", self.df_database
+                )
+                executor.submit(
+                    self.save_parquet,
+                    ".data/df_graded.parquet",
+                    self.df_graded.astype(str),
+                )
         event.accept()
+
+    def save_parquet(self, file_path, df):
+        df.to_parquet(file_path)
 
     def eventFilter(self, source, event):
         if event.type() == QEvent.KeyPress:
@@ -617,6 +622,7 @@ class MainWindowImpl(MainWindow):
                 self.islogin = True
                 self.isroot = True
                 self.menu.register.setEnabled(True)
+                self.set.folder_button.setEnabled(False)
             else:
                 QMessageBox.information(self, "Login Successful", "You are logged in.")
                 self.islogin = True
@@ -625,6 +631,7 @@ class MainWindowImpl(MainWindow):
                 self.set.lineEdit_user.setEnabled(False)
                 self.set.lineEdit_password.setEnabled(False)
                 self.set.pushButton_login.setEnabled(False)
+                self.set.folder_button.setEnabled(True)
 
         else:
             QMessageBox.warning(self, "Login Failed", "Invalid username or password.")

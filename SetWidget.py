@@ -137,7 +137,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.folder_button = QPushButton(self.centralwidget)
         self.folder_button.setObjectName(u"folder_button")
-        self.folder_button.setEnabled(True)
+        self.folder_button.setEnabled(False)
         sizePolicy.setHeightForWidth(self.folder_button.sizePolicy().hasHeightForWidth())
         self.folder_button.setSizePolicy(sizePolicy)
 
