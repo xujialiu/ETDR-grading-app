@@ -3,11 +3,19 @@
 # [[chore]]: 添加license文件
 # [[feat]]: 增加如果not gradable, 其他选项变为灰色
 # [[feat]]: 重写calculate_total_score的逻辑
+# [[feat]]: 增加eventFilter全局按键监听
+# [[feat]]: 没login前, select folder 为灰色
+# [[feat]]: 保存和读取时使用多进程加速
+
+# [[bug]]: load_or_create_df_graded存在bug
+# [[bug]]: other_diagnosis为空, 不知道会不会导致问题, 试一下删除other_diagnosis
+# [[bug]]: 先处理pyinstaller打包后的文件不能正确关闭的问题
 
 
 from functools import partial
 import hashlib
 import json
+from time import sleep
 from typing import Literal
 from PySide6.QtCore import QEvent, Qt, Slot
 from PySide6.QtGui import QAction, QIcon
@@ -43,7 +51,7 @@ from RegisterResetDialogImpl import RegisterDialog
 ICON_PATH = ".meta/icon.png"
 ROOT_USERNAME = "root"
 ROOT_PASSWORD = "root"
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 TEST_MODE = True
 
 
@@ -69,12 +77,12 @@ class MainWindowImpl(MainWindow):
         self._init_left_dock()
         self._init_gradwidge()
         self._init_setwidge()
-        
+
         self._init_labels()
         self._init_comboboxes()
         self._init_combobox_gradable()
         self._init_combobox_is_dr()
-        self._init_app()
+        # self._init_app()
         self._init_clear_button()
         self._init_login_button()
         self._init_folder_button()
@@ -95,16 +103,20 @@ class MainWindowImpl(MainWindow):
         #     self.set.lineEdit_user.setText("xujialiu")
         #     self.set.lineEdit_password.setText("3")
         #     self.set.pushButton_login.click()
-            
+
         pass
 
     def closeEvent(self, event):
+        print("start...")
         if not self.df_database.empty:
-            self.df_database.astype(str).to_hdf(
-                ".data/database.hdf5", key="df_database", mode="w"
-            )
-
-            self.df_graded.to_hdf(".data/database.hdf5", key="df_graded", mode="a")
+            print("start if")
+            self.df_database.to_parquet(".data/df_database.parquet")
+            print("start mode a")
+            self.df_graded.astype(str).to_parquet(".data/df_graded.parquet")
+            print("saving...")
+        print("Closing main window")
+        sleep(5)
+        event.accept()
 
     def eventFilter(self, source, event):
         if event.type() == QEvent.KeyPress:
@@ -275,9 +287,9 @@ class MainWindowImpl(MainWindow):
         ]
         self.total_score = sum(list_score)
 
-    def _init_app(self):
-        app = QApplication.instance()
-        app.setStyle("fusion")
+    # def _init_app(self):
+    #     app = QApplication.instance()
+    #     app.setStyle("fusion")
 
     def _init_next_and_previous_button(self):
         self.img.pushButton_next.clicked.connect(self.on_next_clicked)
@@ -665,8 +677,7 @@ class MainWindowImpl(MainWindow):
 
     def _init_clear_button(self):
         self.grad.pushButton_clear.clicked.connect(self.on_clear_clicked)
-        
-        
+
     def _init_labels(self):
         pass
 
@@ -927,10 +938,3 @@ class MainWindowImpl(MainWindow):
         self.df_database
         self.patient_id, self.visit_date, self.eye
         self.df_database.to_csv("test.csv")
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    mwimpl = MainWindowImpl(test_mode=TEST_MODE)
-    mwimpl.show()
-    sys.exit(app.exec())

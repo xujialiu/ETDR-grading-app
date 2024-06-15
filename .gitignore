@@ -6,6 +6,6 @@ __pycache__/
 .data/
 build/
 dist/
-main.spec
+*.spec
 .releases/
 .samples/
