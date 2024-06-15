@@ -16,7 +16,6 @@ from concurrent.futures import ThreadPoolExecutor
 from functools import partial
 import hashlib
 import json
-from time import sleep
 from typing import Literal
 from PySide6.QtCore import QEvent, QSettings, Qt, Slot
 from PySide6.QtGui import QAction, QIcon
@@ -32,7 +31,6 @@ from PySide6.QtWidgets import (
 import numpy as np
 from MainWindow import MainWindow
 import GradWidget, SetWidget, ImgDock
-import sys
 from PySide6.QtWidgets import QApplication
 from util import (
     OptionScoreImgPath,
@@ -79,7 +77,7 @@ class MainWindowImpl(MainWindow):
         self._init_comboboxes()
         self._init_combobox_gradable()
         self._init_combobox_is_dr()
-        # self._init_app()
+        self._init_app()
         self._init_clear_button()
         self._init_login_button()
         self._init_folder_button()
@@ -93,15 +91,19 @@ class MainWindowImpl(MainWindow):
         self.setFocusPolicy(Qt.StrongFocus)  # 确保窗口可以接收键盘事件
 
         self._init_menu()  # 放在最后, 因为需要连接其他控件
-        self._init_test_mode()
+
+        if self.test_mode:
+            self._init_test_mode()
 
     def _init_test_mode(self):
-        # if self.test_mode:
-        #     self.set.lineEdit_user.setText("xujialiu")
-        #     self.set.lineEdit_password.setText("3")
-        #     self.set.pushButton_login.click()
 
-        pass
+        self.menu.debug = QAction("Debug", self)
+        self.menu.help_menu.addAction(self.menu.debug)
+        self.menu.debug.triggered.connect(self.on_debug_clicked)
+
+        self.menu.data_inject = QAction("Data inject", self)
+        self.menu.help_menu.addAction(self.menu.data_inject)
+        self.menu.data_inject.triggered.connect(self.on_data_inject_clicked)
 
     def closeEvent(self, event):
         if not self.df_database.empty:
@@ -114,16 +116,16 @@ class MainWindowImpl(MainWindow):
                     ".data/df_graded.parquet",
                     self.df_graded,
                 )
-                
+
         self.save_settings()
         event.accept()
-    
+
     def save_settings(self):
         settings = QSettings("MyCompany", "MyApp")
         settings.setValue("geometry", self.saveGeometry())
         settings.setValue("windowState", self.saveState())
         settings.setValue("username", self.set.lineEdit_user.text())
-        
+
     def load_settings(self):
         settings = QSettings("MyCompany", "MyApp")
         self.restoreGeometry(settings.value("geometry"))
@@ -302,9 +304,9 @@ class MainWindowImpl(MainWindow):
         ]
         self.total_score = sum(list_score)
 
-    # def _init_app(self):
-    #     app = QApplication.instance()
-    #     app.setStyle("fusion")
+    def _init_app(self):
+        app = QApplication.instance()
+        app.setStyle("fusion")
 
     def _init_next_and_previous_button(self):
         self.img.pushButton_next.clicked.connect(self.on_next_clicked)
@@ -366,18 +368,6 @@ class MainWindowImpl(MainWindow):
 
         self.menu.open_folder.triggered.connect(self.select_folder_clicked)
 
-        if self.test_mode:
-            self.menu.debug = QAction("Debug", self)
-            self.menu.help_menu.addAction(self.menu.debug)
-            self.menu.debug.triggered.connect(self.on_debug_clicked)
-
-            self.menu.data_inject = QAction("Data inject", self)
-            self.menu.help_menu.addAction(self.menu.data_inject)
-            self.menu.data_inject.triggered.connect(self.on_data_inject_clicked)
-
-        else:
-            pass
-
         self.menu.exit.triggered.connect(self.on_exit_clicked)
         self.menu.about.triggered.connect(self.on_about_clicked)
 
@@ -394,7 +384,7 @@ class MainWindowImpl(MainWindow):
         self.menu.reset.setEnabled(False)
 
     def on_data_inject_clicked(self):
-        self.grad.comboBox_HMA.setCurrentText("Quest")  ###############
+        self.grad.comboBox_HMA.setCurrentText("Quest")
         self.grad.comboBox_HE.setCurrentText("Quest")
         self.grad.comboBox_SE.setCurrentText("Quest")
         self.grad.comboBox_IRMA.setCurrentText("Quest")
