@@ -23,8 +23,6 @@ def copy_folder_recursively(src, dst):
 if __name__ == "__main__":
 
     VERSION = "1.1.0"
-    source_folder = ".meta"
-    destination_folder = "./dist/main/.meta"
 
     # 清除上一次pyinstaller编译过程中的文件
     try:
@@ -38,9 +36,10 @@ if __name__ == "__main__":
     cmd = r"pyinstaller main.py -y -w --icon=.meta/icon.ico"
     subprocess.run(cmd, shell=True, stdout=sys.stdout, stderr=sys.stderr)
 
-    # 复制.meta文件到dist/main
-    copy_folder_recursively(source_folder, destination_folder)
-
+    # 复制.meta, .standards文件夹到dist/main
+    copy_folder_recursively(".meta", "./dist/main/.meta")
+    copy_folder_recursively(".standards", "./dist/main/.standards")
+    
     # 创建.data文件dist/main
     data_folder = Path("./dist/main/.data")
     if not data_folder.exists():
