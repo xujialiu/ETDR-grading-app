@@ -22,7 +22,7 @@ def copy_folder_recursively(src, dst):
 
 if __name__ == "__main__":
 
-    VERSION = "1.0.2"
+    VERSION = "1.1.0"
     source_folder = ".meta"
     destination_folder = "./dist/main/.meta"
 
@@ -35,7 +35,7 @@ if __name__ == "__main__":
         pass
 
     # pyinstaller
-    cmd = r"pyinstaller main.py -y --icon=.meta/icon.ico"
+    cmd = r"pyinstaller main.py -y -w --icon=.meta/icon.ico"
     subprocess.run(cmd, shell=True, stdout=sys.stdout, stderr=sys.stderr)
 
     # 复制.meta文件到dist/main
@@ -46,11 +46,11 @@ if __name__ == "__main__":
     if not data_folder.exists():
         data_folder.mkdir(parents=True)
 
-    # # 创建setup.exe目录, 如.releases/1.0.2
-    # release_folder = Path(f".releases/{VERSION}")
-    # if release_folder.exists():
-    #     shutil.rmtree(release_folder)
-    # release_folder.mkdir(parents=True)
+    # 创建setup.exe目录, 如.releases/1.0.0
+    release_folder = Path(f".releases/{VERSION}")
+    if release_folder.exists():
+        shutil.rmtree(release_folder)
+    release_folder.mkdir(parents=True)
 
-    # cmd = f"ISCC install.iss /DMyAppVersion={VERSION}"
-    # subprocess.run(cmd, shell=True, stdout=sys.stdout, stderr=sys.stderr)
+    cmd = f"ISCC install.iss /DMyAppVersion={VERSION}"
+    subprocess.run(cmd, shell=True, stdout=sys.stdout, stderr=sys.stderr)

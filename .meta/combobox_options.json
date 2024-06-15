@@ -1,104 +1,106 @@
 {
     "HMA": {
-        "None": {"score": 0, "image": ".meta/icon.png"},
+        "None": {"score": 0, "image": ""},
         "Quest": {"score": 1, "image": ""},
-        "<std 1": {"score": 2, "image": ".meta/icon.png"},
-        "≥std 1": {"score": 3, "image": ".meta/icon.png"},
-        "≥std 2A": {"score": 4, "image": ".meta/icon.png"},
-        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+        "<std 1": {"score": 2, "image": ""},
+        "≥std 1": {"score": 3, "image": ".standards/HMA/01_L Haem and MA.jpg"},
+        "≥std 2A": {"score": 4, "image": ".standards/HMA/02A_L Haem and MA.jpg"},
+        "≥std 2A (2/3 flds)": {"score": 4, "image": ".standards/HMA/01_L Haem and MA.jpg"},
+        "≥std 2A (all flds)": {"score": 4, "image": ".standards/HMA/01_L Haem and MA.jpg"},
+        "Could not grade": {"score": 8, "image": ""}
     },
     "HE": {
-        "None": {"score": 0, "image": ".meta/icon.png"},
-        "Quest": {"score": 1, "image": ".meta/icon.png"},
-        "<std 3": {"score": 2, "image": ".meta/icon.png"},
-        "≥std 3 - <std 4": {"score": 3, "image": ".meta/icon.png"},
-        "≥std 4": {"score": 4, "image": ".meta/icon.png"}
+        "None": {"score": 0, "image": ""},
+        "Quest": {"score": 1, "image": ""},
+        "<std 3": {"score": 2, "image": ".standards/HE/01A_L 50 hard drusen.jpg"},
+        "≥std 3 - <std 4": {"score": 3, "image": ".standards/HE/03_L Hard Exudate.jpg"},
+        "≥std 4": {"score": 4, "image": ".standards/HE/04_L Ring of Hard Exudate.jpg"}
     },
     "SE": {
-        "None": {"score": 0, "image": ".meta/icon.png"},
-        "Quest": {"score": 1, "image": ".meta/icon.png"},
-        "Definite": {"score": 2, "image": ".meta/icon.png"}
+        "None": {"score": 0, "image": ""},
+        "Quest": {"score": 1, "image": ""},
+        "Definite": {"score": 2, "image": ".standards/SE/08A_L soft exudate, irma.jpg"}
     },
     "IRMA": {
-        "None": {"score": 0, "image": ".meta/icon.png"},
-        "Quest": {"score": 1, "image": ".meta/icon.png"},
-        "Definite": {"score": 2, "image": ".meta/icon.png"},
-        "Definite (all fields)": {"score": 3, "image": ".meta/icon.png"},
-        "≥std 8A": {"score": 4, "image": ".meta/icon.png"},
-        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+        "None": {"score": 0, "image": ""},
+        "Quest": {"score": 1, "image": ""},
+        "Definite": {"score": 2, "image": ""},
+        "Definite (all fields)": {"score": 3, "image": ""},
+        "≥std 8A": {"score": 4, "image": ".standards/IRMA/08B_L irma.jpg"},
+        "Could not grade": {"score": 8, "image": ""}
     },
     "VB": {
-        "None": {"score": 0, "image": ".meta/icon.png"},
-        "Quest": {"score": 1, "image": ".meta/icon.png"},
-        "Definite": {"score": 2, "image": ".meta/icon.png"},
-        "Definite (2+ fields)": {"score": 3, "image": ".meta/icon.png"},
-        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+        "None": {"score": 0, "image": ""},
+        "Quest": {"score": 1, "image": ""},
+        "Definite": {"score": 2, "image": ".standards/VB/06A_L Venous Beading.jpg"},
+        "Definite (2+ fields)": {"score": 3, "image": ".standards/VB/06A_L Venous Beading.jpg"},
+        "Could not grade": {"score": 8, "image": ""}
     },
     "NVD": {
-        "None": {"score": 0, "image": ".meta/icon.png"},
-        "Quest": {"score": 1, "image": ".meta/icon.png"},
-        "<std 10A": {"score": 2, "image": ".meta/icon.png"},
-        "≥std 10A": {"score": 3, "image": ".meta/icon.png"},
-        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+        "None": {"score": 0, "image": ""},
+        "Quest": {"score": 1, "image": ""},
+        "<std 10A": {"score": 2, "image": ".standards/NVD/10A_L NVD.jpg"},
+        "≥std 10A": {"score": 3, "image": ".standards/NVD/10C_L NVD.jpg"},
+        "Could not grade": {"score": 8, "image": ""}
     },
     "NVE": {
-        "None": {"score": 0, "image": ".meta/icon.png"},
-        "Quest": {"score": 1, "image": ".meta/icon.png"},
-        "<1/2 Disc area": {"score": 2, "image": ".meta/icon.png"},
-        "≥1/2 Disc area": {"score": 3, "image": ".meta/icon.png"}
+        "None": {"score": 0, "image": ""},
+        "Quest": {"score": 1, "image": ""},
+        "<1/2 Disc area": {"score": 2, "image": ".standards/NVE/07_L NVE + other pathology.jpg"},
+        "≥1/2 Disc area": {"score": 3, "image": ".standards/NVE/07_L NVE + other pathology.jpg"}
     },
     "FP": {
-        "None": {"score": 0, "image": ".meta/icon.png"},
-        "Quest": {"score": 1, "image": ".meta/icon.png"},
-        "FPE only": {"score": 2, "image": ".meta/icon.png"},
-        "FPD only": {"score": 3, "image": ".meta/icon.png"},
-        "FPD + FPE": {"score": 4, "image": ".meta/icon.png"},
-        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+        "None": {"score": 0, "image": ""},
+        "Quest": {"score": 1, "image": ""},
+        "FPE only": {"score": 2, "image": ".standards/FP/11_L Fibrous proliferation elsewhere, arteriolar narrowing.jpg"},
+        "FPD only": {"score": 3, "image": ".standards/FP/10B_L Fibrous proliferation of disc.jpg"},
+        "FPD + FPE": {"score": 4, "image": ""},
+        "Could not grade": {"score": 8, "image": ""}
     },
     "PRH_VH": {
-        "None": {"score": 0, "image": ".meta/icon.png"},
-        "Quest": {"score": 1, "image": ".meta/icon.png"},
-        "PRH only": {"score": 2, "image": ".meta/icon.png"},
-        "VH only": {"score": 3, "image": ".meta/icon.png"},
-        "PRH+VH": {"score": 4, "image": ".meta/icon.png"},
-        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+        "None": {"score": 0, "image": ""},
+        "Quest": {"score": 1, "image": ""},
+        "PRH only": {"score": 2, "image": ".standards/PRH-VH/13_L pre retinal haemorrhage.jpg"},
+        "VH only": {"score": 3, "image": ""},
+        "PRH+VH": {"score": 4, "image": ""},
+        "Could not grade": {"score": 8, "image": ""}
     },
     "EDEMA": {
-        "None": {"score": 0, "image": ".meta/icon.png"},
-        "Quest": {"score": 1, "image": ".meta/icon.png"},
-        "Present, not CSME": {"score": 2, "image": ".meta/icon.png"},
-        "Present, CSME": {"score": 3, "image": ".meta/icon.png"},
-        "Non-Diab": {"score": 4, "image": ".meta/icon.png"},
-        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+        "None": {"score": 0, "image": ""},
+        "Quest": {"score": 1, "image": ""},
+        "Present, not CSME": {"score": 2, "image": ""},
+        "Present, CSME": {"score": 3, "image": ""},
+        "Non-Diab": {"score": 4, "image": ""},
+        "Could not grade": {"score": 8, "image": ""}
     },
     "CTR": {
-        "None": {"score": 0, "image": ".meta/icon.png"},
-        "Quest": {"score": 1, "image": ".meta/icon.png"},
-        "Present, not CSME": {"score": 2, "image": ".meta/icon.png"},
-        "Present, CSME": {"score": 3, "image": ".meta/icon.png"},
-        "Non-Diab": {"score": 4, "image": ".meta/icon.png"},
-        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+        "None": {"score": 0, "image": ""},
+        "Quest": {"score": 1, "image": ""},
+        "Present, not CSME": {"score": 2, "image": ""},
+        "Present, CSME": {"score": 3, "image": ""},
+        "Non-Diab": {"score": 4, "image": ""},
+        "Could not grade": {"score": 8, "image": ""}
     },
     "VEN": {
-        "None": {"score": 0, "image": ".meta/icon.png"},
-        "Quest": {"score": 1, "image": ".meta/icon.png"},
-        "Definite": {"score": 2, "image": ".meta/icon.png"},
-        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+        "None": {"score": 0, "image": ""},
+        "Quest": {"score": 1, "image": ""},
+        "Definite": {"score": 2, "image": ""},
+        "Could not grade": {"score": 8, "image": ""}
     },
     "LASER": {
-        "None": {"score": 0, "image": ".meta/icon.png"},
-        "Quest/incomplete": {"score": 1, "image": ".meta/icon.png"},
-        "Focal": {"score": 2, "image": ".meta/icon.png"},
-        "Scatter only": {"score": 3, "image": ".meta/icon.png"},
-        "Scatter + Focal": {"score": 4, "image": ".meta/icon.png"},
-        "Could grade": {"score": 8, "image": ".meta/icon.png"}
+        "None": {"score": 0, "image": ""},
+        "Quest/incomplete": {"score": 1, "image": ""},
+        "Focal": {"score": 2, "image": ""},
+        "Scatter only": {"score": 3, "image": ""},
+        "Scatter + Focal": {"score": 4, "image": ""},
+        "Could not grade": {"score": 8, "image": ""}
     },
     "RX": {
-        "None": {"score": 0, "image": ".meta/icon.png"},
-        "Quest": {"score": 1, "image": ".meta/icon.png"},
-        "Focal RX only": {"score": 2, "image": ".meta/icon.png"},
-        "Grid RX only": {"score": 3, "image": ".meta/icon.png"},
-        "Focal + Grid": {"score": 4, "image": ".meta/icon.png"},
-        "CG": {"score": 8, "image": ".meta/icon.png"}
+        "None": {"score": 0, "image": ""},
+        "Quest": {"score": 1, "image": ""},
+        "Focal RX only": {"score": 2, "image": ""},
+        "Grid RX only": {"score": 3, "image": ""},
+        "Focal + Grid": {"score": 4, "image": ""},
+        "Could not grade": {"score": 8, "image": ""}
     }
 }

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ETDR grading application"
-#define MyAppVersion "1.0.2"
+#define MyAppVersion "1.1.0"
 #define MyAppPublisher "Xujia Liu"
 #define MyAppURL "https://github.com/xujialiu/ETDR-grading-app"
 #define MyAppExeName "main.exe"

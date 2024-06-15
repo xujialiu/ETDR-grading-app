@@ -12,6 +12,7 @@
   - is confident
 - fix install.iss problem
 - fix the app infinite recursion in startup caused by `if __name__ == "__main__":` in both main.py and MainWindowImpl.py
+- add logic of if not gradable, except comment, other choices disabled
 
 todo:
 - bug: piction in combobox option do not show properly

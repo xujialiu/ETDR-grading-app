@@ -1,7 +1,6 @@
 # MainWindowImpl.py
 # TODO list
 # [[chore]]: 添加license文件
-# [[feat]]: 增加如果not gradable, 其他选项变为灰色
 # [[feat]]: 重写calculate_total_score的逻辑
 # [[feat]]: 增加eventFilter全局按键监听
 # [[feat]]: 没login前, select folder 为灰色
@@ -51,7 +50,7 @@ from RegisterResetDialogImpl import RegisterDialog
 ICON_PATH = ".meta/icon.png"
 ROOT_USERNAME = "root"
 ROOT_PASSWORD = "root"
-VERSION = "1.0.2"
+VERSION = "1.1.0"
 TEST_MODE = True
 
 
