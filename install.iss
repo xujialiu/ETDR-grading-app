@@ -5,7 +5,7 @@
 #define MyAppVersion "1.1.0"
 #define MyAppPublisher "Xujia Liu"
 #define MyAppURL "https://github.com/xujialiu/ETDR-grading-app"
-#define MyAppExeName "main.exe"
+#define MyAppExeName "ETDR-grading-app.exe"
 #define MyAppAssocName MyAppName + " File"
 #define MyAppAssocExt ".myp"
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
@@ -49,8 +49,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\xujia\Git projects\Master\ETDR-grading-app\dist\main\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\xujia\Git projects\Master\ETDR-grading-app\dist\main\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\xujia\Git projects\Master\ETDR-grading-app\dist\ETDR-grading-app\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\xujia\Git projects\Master\ETDR-grading-app\dist\ETDR-grading-app\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]

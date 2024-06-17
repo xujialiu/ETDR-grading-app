@@ -3,19 +3,10 @@
 # [[chore]]: 添加license文件
 # [[feat]]: 重写calculate_total_score的逻辑
 # [[feat]]: 增加eventFilter全局按键监听
-# [[feat]]: 没login前, select folder 为灰色
-# [[feat]]: 保存和读取时使用多进程加速
-# [[feat]]: 如果gradable为no, 其他选项设为空字符
-
+# [[feat]]: 读取时使用多进程加速
 # [[feat]]: ICDR
-# [[feat]]: is_dr + quest
-# [[feat]]: 去除other diagnoses的disenble的逻辑
-# [[feat]]: login前, export disable
 
 
-# [[bug]]: load_or_create_df_graded存在bug
-
-# [[bug]]: 先处理pyinstaller打包后的文件不能正确关闭的问题
 
 
 from concurrent.futures import ThreadPoolExecutor
@@ -457,6 +448,10 @@ class MainWindowImpl(MainWindow):
         self.grad.comboBox_is_dr.setCurrentText("Yes")
         self.grad.comboBox_confident.setCurrentText("Yes")
         self.grad.textEdit_comment.setText("test comments")
+        self.grad.comboBox_diagnoses.setCurrentText("AMD")
+        self.grad.comboBox_confident.setCurrentText("Yes")
+        self.grad.comboBox_RD.setCurrentText("Present")
+        self.grad.lineEdit_other_diagnoses.setText("test other diagnosis")
 
     def on_menu_register_clicked(self):
         self.dialog = RegisterDialog(self)
@@ -811,6 +806,7 @@ class MainWindowImpl(MainWindow):
 
         # 如果gradable为Yes, 需要进一步判断combobox_with_hover
         if (
+            self.grad.comboBox_gradable.currentText() == "Yes" and
             all(comboboxes_choices)
             and self.grad.comboBox_confident.currentText()
             and self.grad.comboBox_clarity.currentText()
@@ -820,18 +816,6 @@ class MainWindowImpl(MainWindow):
         # 其余情况, 返回false
         else:
             return False
-
-    # def _init_combobox_is_dr(self):
-    #     self.grad.comboBox_is_dr.currentTextChanged.connect(self.on_is_dr_changed)
-
-    # def on_is_dr_changed(self):
-    #     if self.grad.comboBox_is_dr.currentText() == "Yes":
-    #         self.grad.lineEdit_other_diagnoses.setEnabled(False)
-    #         # 如果不是空字符, 把lineEdit_other_diagnoses设为空字符
-    #         self.grad.lineEdit_other_diagnoses.setText("")
-
-    #     if self.grad.comboBox_is_dr.currentText() == "No":
-    #         self.grad.lineEdit_other_diagnoses.setEnabled(True)
 
     def on_save_clicked(self):
         if not self.islogin:
