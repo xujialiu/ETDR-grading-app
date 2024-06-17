@@ -1,7 +1,8 @@
 import sys
 from PySide6.QtCore import Qt, QEvent, QTimerEvent
 from PySide6.QtGui import QFontMetrics, QPalette, QStandardItem
-from PySide6.QtWidgets import QApplication, QComboBox, QStyle, QStyleOptionButton, QStyledItemDelegate, QWidget, QVBoxLayout, QPushButton
+from PySide6.QtWidgets import QApplication, QComboBox, QStyledItemDelegate, QWidget, QVBoxLayout, QPushButton
+
 
 class CheckableComboBox(QComboBox):
 
@@ -72,5 +73,29 @@ class CheckableComboBox(QComboBox):
         elidedText = metrics.elidedText(text, Qt.ElideRight, self.lineEdit().width())
         self.lineEdit().setText(elidedText)
 
+    def addItem(self, text, data=None):
+        item = QStandardItem()
+        item.setText(text)
+        if data is None:
+            item.setData(text)
+        else:
+            item.setData(data)
+        item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsUserCheckable)
+        item.setData(Qt.Unchecked, Qt.CheckStateRole)
+        self.model().appendRow(item)
 
+    def addItems(self, texts, datalist=None):
+        for i, text in enumerate(texts):
+            try:
+                data = datalist[i]
+            except (TypeError, IndexError):
+                data = None
+            self.addItem(text, data)
+
+    def currentData(self):
+        res = []
+        for i in range(self.model().rowCount()):
+            if self.model().item(i).checkState() == Qt.Checked:
+                res.append(self.model().item(i).data())
+        return res
 

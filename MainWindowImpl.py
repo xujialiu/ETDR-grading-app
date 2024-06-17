@@ -4,12 +4,10 @@
 # [[feat]]: 重写calculate_total_score的逻辑
 # [[feat]]: 增加eventFilter全局按键监听
 # [[feat]]: 读取时使用多进程加速
-# [[feat]]: ICDR
-
-
 
 
 from concurrent.futures import ThreadPoolExecutor
+from ComboBoxWithToolTips import ComboBoxWithToolTips
 from functools import partial
 import hashlib
 import json
@@ -77,6 +75,7 @@ class MainWindowImpl(MainWindow):
         self._init_comboboxes()
         self._init_combobox_gradable()
         self._init_combobox_diagosis()
+        self._init_combobox_icdr()
         # self._init_combobox_is_dr()
         self._init_app()
         self._init_clear_button()
@@ -287,6 +286,31 @@ class MainWindowImpl(MainWindow):
             "RD": [self.grad.comboBox_RD, self.options_RD],
         }
 
+    def _init_combobox_icdr(self):
+        items = {
+            "No apparent DR": "No abnormalities",
+            "Mild NPDR": "Microaneurysms only",
+            "Moderate NPDR ": "More than just microaneurysms but less than severe nonproliferative diabetic retinopathy",
+            "Severe NPDR ": "Any of the following: more than 20 intraretinal hemorrhages in each of 4 quadrants; "
+            "definite venous beading in 2+ quadrants;\n"
+            "Prominent intraretinal microvascular abnormalities in 1 + quadrant And no signs of proliferative retinopathy",
+            "PDR": "One or more of the following: neovascularization, vitreous/preretinahemorrhage",
+        }
+        combobox_icdr = ComboBoxWithToolTips()
+        for text, tip in items.items():
+            combobox_icdr.addItem(text)
+            combobox_icdr.setItemData(combobox_icdr.count() - 1, tip, Qt.ToolTipRole)
+
+        layout = self.grad.comboBox_ICDR.parentWidget().layout()
+        fixed_width = 150
+        combobox_icdr.setCurrentIndex(-1)
+
+        combobox_icdr.setMinimumWidth(fixed_width)
+        combobox_icdr.setMaximumWidth(fixed_width)
+        layout.replaceWidget(self.grad.comboBox_ICDR, combobox_icdr)
+        self.grad.comboBox_ICDR.deleteLater()
+        setattr(self.grad, "comboBox_ICDR", combobox_icdr)
+
     def _init_combobox_diagosis(self):
         checkable_combobox = CheckableComboBox()
         with open(".meta/combobox_diagnoses.json", "r") as file:
@@ -444,11 +468,11 @@ class MainWindowImpl(MainWindow):
         self.grad.comboBox_VEN.setCurrentText("Quest")
         self.grad.comboBox_LASER.setCurrentText("Quest/incomplete")
         self.grad.comboBox_RX.setCurrentText("Quest")
-        self.grad.comboBox_RD.setCurrentText("Quest")
         self.grad.comboBox_is_dr.setCurrentText("Yes")
         self.grad.comboBox_confident.setCurrentText("Yes")
         self.grad.textEdit_comment.setText("test comments")
         self.grad.comboBox_diagnoses.setCurrentText("AMD")
+        self.grad.comboBox_ICDR.setCurrentText("PDR")
         self.grad.comboBox_confident.setCurrentText("Yes")
         self.grad.comboBox_RD.setCurrentText("Present")
         self.grad.lineEdit_other_diagnoses.setText("test other diagnosis")
@@ -748,6 +772,7 @@ class MainWindowImpl(MainWindow):
         self.grad.comboBox_is_dr.setCurrentIndex(-1)
         self.grad.lineEdit_other_diagnoses.setText("")
         self.grad.comboBox_diagnoses.setCurrentIndex(-1)
+        self.grad.comboBox_ICDR.setCurrentIndex(-1)
         self.grad.comboBox_confident.setCurrentIndex(-1)
         self.grad.comboBox_clarity.setCurrentIndex(-1)
         self.grad.textEdit_comment.setText("")
@@ -806,12 +831,12 @@ class MainWindowImpl(MainWindow):
 
         # 如果gradable为Yes, 需要进一步判断combobox_with_hover
         if (
-            self.grad.comboBox_gradable.currentText() == "Yes" and
-            all(comboboxes_choices)
+            self.grad.comboBox_gradable.currentText() == "Yes"
+            and all(comboboxes_choices)
             and self.grad.comboBox_confident.currentText()
             and self.grad.comboBox_clarity.currentText()
         ):
-                return True
+            return True
 
         # 其余情况, 返回false
         else:
@@ -936,7 +961,8 @@ class MainWindowImpl(MainWindow):
                 "is_gradable": self.grad.comboBox_gradable.currentText(),
                 "is_dr": self.grad.comboBox_is_dr.currentText(),
                 "other_diagnoses": self.grad.lineEdit_other_diagnoses.text(),
-                "other_diagnoses": self.grad.comboBox_diagnoses.currentText(),
+                "combobox_diagnoses": self.grad.comboBox_diagnoses.currentText(),
+                "ICDR": self.grad.comboBox_ICDR.currentText(),
                 "confident": self.grad.comboBox_confident.currentText(),
                 "clarity": self.grad.comboBox_clarity.currentText(),
                 "comment": self.grad.textEdit_comment.toPlainText(),
@@ -986,6 +1012,7 @@ class MainWindowImpl(MainWindow):
                 "is_gradable": "",
                 "is_dr": "",
                 "combobox_diagnoses": "",
+                "ICDR": "",
                 "other_diagnoses": "",
                 "confident": "",
                 "clarity": "",

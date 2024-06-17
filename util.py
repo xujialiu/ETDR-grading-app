@@ -65,6 +65,7 @@ def load_or_create_df_database(filename=".data/df_database.parquet"):
         "is_dr",
         "combobox_diagnoses",
         "other_diagnoses",
+        "ICDR",
         "HMA",
         "HE",
         "SE",
