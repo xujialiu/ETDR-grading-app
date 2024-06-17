@@ -9,12 +9,12 @@
 
 # [[feat]]: ICDR
 # [[feat]]: is_dr + quest
-# [[feat]]: 去除other diagnosis
+# [[feat]]: 去除other diagnoses的disenble的逻辑
 # [[feat]]: login前, export disable
 
 
 # [[bug]]: load_or_create_df_graded存在bug
-# [[bug]]: other_diagnosis为空, 不知道会不会导致问题, 试一下删除other_diagnosis
+
 # [[bug]]: 先处理pyinstaller打包后的文件不能正确关闭的问题
 
 
@@ -35,6 +35,7 @@ from PySide6.QtWidgets import (
     QTreeWidgetItem,
 )
 import numpy as np
+from CheckableComboBox import CheckableComboBox
 from MainWindow import MainWindow
 import GradWidget, SetWidget, ImgDock
 from PySide6.QtWidgets import QApplication
@@ -84,7 +85,8 @@ class MainWindowImpl(MainWindow):
         self._init_labels()
         self._init_comboboxes()
         self._init_combobox_gradable()
-        self._init_combobox_is_dr()
+        self._init_combobox_diagosis()
+        # self._init_combobox_is_dr()
         self._init_app()
         self._init_clear_button()
         self._init_login_button()
@@ -254,12 +256,14 @@ class MainWindowImpl(MainWindow):
             self.grad.comboBox_VEN: self.options_VEN,
             self.grad.comboBox_LASER: self.options_LASER,
             self.grad.comboBox_RX: self.options_RX,
+            self.grad.comboBox_RD: self.options_RD,
         }
         self.hover_label = HoverLabel()
 
         self.grad.list_comboboxes = []
         for comboBox, options in dict_comboboxes.items():
             hover_combobox = ComboBoxWithHover(self.hover_label, options)
+            # print(options)
             hover_combobox.addItems(list(options.keys()))
 
             layout = comboBox.parentWidget().layout()
@@ -289,7 +293,21 @@ class MainWindowImpl(MainWindow):
             "VEN": [self.grad.comboBox_VEN, self.options_VEN],
             "LASER": [self.grad.comboBox_LASER, self.options_LASER],
             "RX": [self.grad.comboBox_RX, self.options_RX],
+            "RD": [self.grad.comboBox_RD, self.options_RD],
         }
+
+    def _init_combobox_diagosis(self):
+        checkable_combobox = CheckableComboBox()
+        with open(".meta/combobox_diagnoses.json", "r") as file:
+            list_diagnoses = json.load(file)["diagnoses"]
+        checkable_combobox.addItems(list_diagnoses)
+        fixed_width = 150
+        checkable_combobox.setMinimumWidth(fixed_width)
+        checkable_combobox.setMaximumWidth(fixed_width)
+        layout = self.grad.comboBox_diagnoses.parentWidget().layout()
+        self.grad.comboBox_diagnoses.deleteLater()
+        layout.replaceWidget(self.grad.comboBox_diagnoses, checkable_combobox)
+        setattr(self.grad, "comboBox_diagnoses", checkable_combobox)
 
     def displace_total_score(self):
         self.calculate_total_score()
@@ -302,6 +320,29 @@ class MainWindowImpl(MainWindow):
         )
 
     def calculate_total_score(self):
+        # if self.grad.comboBox_gradable == "No":
+        #     return 99
+
+        # if self.grad.comboBox_HMA.currentIndex() <= 1:
+        #     return 10
+
+        # if (
+        #     (
+        #         (2 <= self.grad.comboBox_HE.currentIndex() < 5)
+        #         or (2 <= self.grad.comboBox_SE.currentIndex() < 3)
+        #         or (2 <= self.grad.comboBox_IRMA.currentIndex() < 5)
+        #     )
+        #     and (self.grad.comboBox_HMA.currentIndex() <= 1)
+        # ) or (3 <= self.grad.comboBox_HMA.currentIndex() < 7):
+        #     return 14
+
+        # if self.grad.comboBox_gradable == "No":
+        #     return 90
+        # if (1 <= self.grad.comboBox_PRH_VH.currentIndex() <=5) or self.grad.comboBox_RD==1:
+        #     return 85
+        # if
+
+        self.grad.comboBox_HMA.currentIndex()
         """计算总分数"""
         list_comboboxes = []
         list_options = []
@@ -412,6 +453,7 @@ class MainWindowImpl(MainWindow):
         self.grad.comboBox_VEN.setCurrentText("Quest")
         self.grad.comboBox_LASER.setCurrentText("Quest/incomplete")
         self.grad.comboBox_RX.setCurrentText("Quest")
+        self.grad.comboBox_RD.setCurrentText("Quest")
         self.grad.comboBox_is_dr.setCurrentText("Yes")
         self.grad.comboBox_confident.setCurrentText("Yes")
         self.grad.textEdit_comment.setText("test comments")
@@ -709,11 +751,11 @@ class MainWindowImpl(MainWindow):
             combobox.setCurrentIndex(-1)
         self.grad.comboBox_gradable.setCurrentIndex(-1)
         self.grad.comboBox_is_dr.setCurrentIndex(-1)
-        self.grad.lineEdit_other_diagnosis.setText("")
+        self.grad.lineEdit_other_diagnoses.setText("")
+        self.grad.comboBox_diagnoses.setCurrentIndex(-1)
         self.grad.comboBox_confident.setCurrentIndex(-1)
         self.grad.comboBox_clarity.setCurrentIndex(-1)
         self.grad.textEdit_comment.setText("")
-        
 
     def show_df_graded_df_database(self):
         self.show_df_database()
@@ -748,10 +790,6 @@ class MainWindowImpl(MainWindow):
             for combobox, _ in self.dict_comboboxes.values():
                 combobox.setEnabled(True)
             self.grad.comboBox_is_dr.setEnabled(True)
-            if self.grad.comboBox_is_dr.currentText() == "Yes":
-                self.grad.lineEdit_other_diagnosis.setEnabled(False)
-            else:
-                self.grad.lineEdit_other_diagnosis.setEnabled(True)
             self.grad.comboBox_confident.setEnabled(True)
             self.grad.comboBox_clarity.setEnabled(True)
 
@@ -759,7 +797,6 @@ class MainWindowImpl(MainWindow):
             for combobox, _ in self.dict_comboboxes.values():
                 combobox.setEnabled(False)
             self.grad.comboBox_is_dr.setEnabled(False)
-            self.grad.lineEdit_other_diagnosis.setEnabled(False)
             self.grad.comboBox_confident.setEnabled(False)
             self.grad.comboBox_clarity.setEnabled(False)
 
@@ -778,34 +815,23 @@ class MainWindowImpl(MainWindow):
             and self.grad.comboBox_confident.currentText()
             and self.grad.comboBox_clarity.currentText()
         ):
-            # 需要进一步判断is_dr
-
-            # 如果is_dr=="Yes", 直接返回True
-            if self.grad.comboBox_is_dr.currentText() == "Yes":
-                return True
-
-            # 如果is_dr=="No", 还需要other_diagnosis不为空
-            elif (
-                self.grad.comboBox_is_dr.currentText() == "No"
-                and self.grad.lineEdit_other_diagnosis.text()
-            ):
                 return True
 
         # 其余情况, 返回false
         else:
             return False
 
-    def _init_combobox_is_dr(self):
-        self.grad.comboBox_is_dr.currentTextChanged.connect(self.on_is_dr_changed)
+    # def _init_combobox_is_dr(self):
+    #     self.grad.comboBox_is_dr.currentTextChanged.connect(self.on_is_dr_changed)
 
-    def on_is_dr_changed(self):
-        if self.grad.comboBox_is_dr.currentText() == "Yes":
-            self.grad.lineEdit_other_diagnosis.setEnabled(False)
-            # 如果不是空字符, 把lineEdit_other_diagnosis设为空字符
-            self.grad.lineEdit_other_diagnosis.setText("")
+    # def on_is_dr_changed(self):
+    #     if self.grad.comboBox_is_dr.currentText() == "Yes":
+    #         self.grad.lineEdit_other_diagnoses.setEnabled(False)
+    #         # 如果不是空字符, 把lineEdit_other_diagnoses设为空字符
+    #         self.grad.lineEdit_other_diagnoses.setText("")
 
-        if self.grad.comboBox_is_dr.currentText() == "No":
-            self.grad.lineEdit_other_diagnosis.setEnabled(True)
+    #     if self.grad.comboBox_is_dr.currentText() == "No":
+    #         self.grad.lineEdit_other_diagnoses.setEnabled(True)
 
     def on_save_clicked(self):
         if not self.islogin:
@@ -925,7 +951,8 @@ class MainWindowImpl(MainWindow):
             other_result = {
                 "is_gradable": self.grad.comboBox_gradable.currentText(),
                 "is_dr": self.grad.comboBox_is_dr.currentText(),
-                "other_diagnosis": self.grad.lineEdit_other_diagnosis.text(),
+                "other_diagnoses": self.grad.lineEdit_other_diagnoses.text(),
+                "other_diagnoses": self.grad.comboBox_diagnoses.currentText(),
                 "confident": self.grad.comboBox_confident.currentText(),
                 "clarity": self.grad.comboBox_clarity.currentText(),
                 "comment": self.grad.textEdit_comment.toPlainText(),
@@ -956,6 +983,7 @@ class MainWindowImpl(MainWindow):
                 "VEN": "",
                 "LASER": "",
                 "RX": "",
+                "RD": "",
                 "HMA_score": 999,
                 "HE_score": 999,
                 "SE_score": 999,
@@ -970,9 +998,11 @@ class MainWindowImpl(MainWindow):
                 "VEN_score": 999,
                 "LASER_score": 999,
                 "RX_score": 999,
+                "RD_score": 999,
                 "is_gradable": "",
                 "is_dr": "",
-                "other_diagnosis": "",
+                "combobox_diagnoses": "",
+                "other_diagnoses": "",
                 "confident": "",
                 "clarity": "",
                 "comment": "",
@@ -1003,6 +1033,7 @@ class MainWindowImpl(MainWindow):
         self.options_VEN = self._parse_options(options_data["VEN"])
         self.options_LASER = self._parse_options(options_data["LASER"])
         self.options_RX = self._parse_options(options_data["RX"])
+        self.options_RD = self._parse_options(options_data["RD"])
 
     def _parse_options(self, options_dict):
         return {

@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(849, 964)
+        MainWindow.resize(849, 967)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_3 = QVBoxLayout(self.centralwidget)
@@ -118,6 +118,13 @@ class Ui_MainWindow(object):
         self.comboBox_gradable.addItem("")
         self.comboBox_gradable.addItem("")
         self.comboBox_gradable.setObjectName(u"comboBox_gradable")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.comboBox_gradable.sizePolicy().hasHeightForWidth())
+        self.comboBox_gradable.setSizePolicy(sizePolicy)
+        self.comboBox_gradable.setMinimumSize(QSize(150, 0))
+        self.comboBox_gradable.setMaximumSize(QSize(150, 16777215))
 
         self.horizontalLayout_4.addWidget(self.comboBox_gradable)
 
@@ -139,6 +146,10 @@ class Ui_MainWindow(object):
         self.comboBox_clarity.addItem("")
         self.comboBox_clarity.addItem("")
         self.comboBox_clarity.setObjectName(u"comboBox_clarity")
+        sizePolicy.setHeightForWidth(self.comboBox_clarity.sizePolicy().hasHeightForWidth())
+        self.comboBox_clarity.setSizePolicy(sizePolicy)
+        self.comboBox_clarity.setMinimumSize(QSize(150, 0))
+        self.comboBox_clarity.setMaximumSize(QSize(150, 16777215))
 
         self.horizontalLayout_19.addWidget(self.comboBox_clarity)
 
@@ -160,6 +171,10 @@ class Ui_MainWindow(object):
         self.comboBox_is_dr.addItem("")
         self.comboBox_is_dr.addItem("")
         self.comboBox_is_dr.setObjectName(u"comboBox_is_dr")
+        sizePolicy.setHeightForWidth(self.comboBox_is_dr.sizePolicy().hasHeightForWidth())
+        self.comboBox_is_dr.setSizePolicy(sizePolicy)
+        self.comboBox_is_dr.setMinimumSize(QSize(150, 0))
+        self.comboBox_is_dr.setMaximumSize(QSize(150, 16777215))
 
         self.horizontalLayout_18.addWidget(self.comboBox_is_dr)
 
@@ -177,13 +192,40 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addItem(self.horizontalSpacer_27)
 
-        self.lineEdit_other_diagnosis = QLineEdit(self.centralwidget)
-        self.lineEdit_other_diagnosis.setObjectName(u"lineEdit_other_diagnosis")
+        self.comboBox_diagnoses = QComboBox(self.centralwidget)
+        self.comboBox_diagnoses.setObjectName(u"comboBox_diagnoses")
+        sizePolicy.setHeightForWidth(self.comboBox_diagnoses.sizePolicy().hasHeightForWidth())
+        self.comboBox_diagnoses.setSizePolicy(sizePolicy)
+        self.comboBox_diagnoses.setMinimumSize(QSize(150, 0))
+        self.comboBox_diagnoses.setMaximumSize(QSize(150, 16777215))
 
-        self.horizontalLayout_3.addWidget(self.lineEdit_other_diagnosis)
+        self.horizontalLayout_3.addWidget(self.comboBox_diagnoses)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_3)
+
+        self.horizontalLayout_23 = QHBoxLayout()
+        self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
+        self.label_4 = QLabel(self.centralwidget)
+        self.label_4.setObjectName(u"label_4")
+
+        self.horizontalLayout_23.addWidget(self.label_4)
+
+        self.horizontalSpacer_33 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_23.addItem(self.horizontalSpacer_33)
+
+        self.lineEdit_other_diagnosis = QLineEdit(self.centralwidget)
+        self.lineEdit_other_diagnosis.setObjectName(u"lineEdit_other_diagnosis")
+        sizePolicy.setHeightForWidth(self.lineEdit_other_diagnosis.sizePolicy().hasHeightForWidth())
+        self.lineEdit_other_diagnosis.setSizePolicy(sizePolicy)
+        self.lineEdit_other_diagnosis.setMinimumSize(QSize(150, 0))
+        self.lineEdit_other_diagnosis.setMaximumSize(QSize(150, 16777215))
+
+        self.horizontalLayout_23.addWidget(self.lineEdit_other_diagnosis)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_23)
 
         self.horizontalLayout_21 = QHBoxLayout()
         self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
@@ -199,11 +241,11 @@ class Ui_MainWindow(object):
         self.comboBox_HMA = QComboBox(self.centralwidget)
         self.comboBox_HMA.setObjectName(u"comboBox_HMA")
         self.comboBox_HMA.setEnabled(True)
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.comboBox_HMA.sizePolicy().hasHeightForWidth())
-        self.comboBox_HMA.setSizePolicy(sizePolicy)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.comboBox_HMA.sizePolicy().hasHeightForWidth())
+        self.comboBox_HMA.setSizePolicy(sizePolicy1)
         self.comboBox_HMA.setMinimumSize(QSize(0, 0))
 
         self.horizontalLayout_21.addWidget(self.comboBox_HMA)
@@ -459,6 +501,25 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_17)
 
+        self.horizontalLayout_22 = QHBoxLayout()
+        self.horizontalLayout_22.setObjectName(u"horizontalLayout_22")
+        self.label_21 = QLabel(self.centralwidget)
+        self.label_21.setObjectName(u"label_21")
+
+        self.horizontalLayout_22.addWidget(self.label_21)
+
+        self.horizontalSpacer_32 = QSpacerItem(40, 18, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_22.addItem(self.horizontalSpacer_32)
+
+        self.comboBox_RD = QComboBox(self.centralwidget)
+        self.comboBox_RD.setObjectName(u"comboBox_RD")
+
+        self.horizontalLayout_22.addWidget(self.comboBox_RD)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_22)
+
         self.horizontalLayout_5 = QHBoxLayout()
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.label_3 = QLabel(self.centralwidget)
@@ -474,6 +535,10 @@ class Ui_MainWindow(object):
         self.comboBox_confident.addItem("")
         self.comboBox_confident.addItem("")
         self.comboBox_confident.setObjectName(u"comboBox_confident")
+        sizePolicy.setHeightForWidth(self.comboBox_confident.sizePolicy().hasHeightForWidth())
+        self.comboBox_confident.setSizePolicy(sizePolicy)
+        self.comboBox_confident.setMinimumSize(QSize(150, 0))
+        self.comboBox_confident.setMaximumSize(QSize(150, 16777215))
 
         self.horizontalLayout_5.addWidget(self.comboBox_confident)
 
@@ -569,7 +634,7 @@ class Ui_MainWindow(object):
         self.comboBox_gradable.setItemText(0, QCoreApplication.translate("MainWindow", u"Yes", None))
         self.comboBox_gradable.setItemText(1, QCoreApplication.translate("MainWindow", u"No", None))
 
-        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Clarity", None))
+        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Clarity:", None))
         self.comboBox_clarity.setItemText(0, QCoreApplication.translate("MainWindow", u"Blur", None))
         self.comboBox_clarity.setItemText(1, QCoreApplication.translate("MainWindow", u"Clear", None))
 
@@ -577,7 +642,8 @@ class Ui_MainWindow(object):
         self.comboBox_is_dr.setItemText(0, QCoreApplication.translate("MainWindow", u"Yes", None))
         self.comboBox_is_dr.setItemText(1, QCoreApplication.translate("MainWindow", u"No", None))
 
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"    Other diagnosis (if not DR)", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"    Other diagnoses:", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"    If not listed above:", None))
         self.label_HMA.setText(QCoreApplication.translate("MainWindow", u"Haemorrhage/Microaneurysms (HMA):", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Hard Exudates (HE):", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Soft Exudates (SE):", None))
@@ -592,6 +658,7 @@ class Ui_MainWindow(object):
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"VEN LOOPS", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"LASER SCARS", None))
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"FOCAL/GRID RX", None))
+        self.label_21.setText(QCoreApplication.translate("MainWindow", u"RD:", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Are you confident in this grading?", None))
         self.comboBox_confident.setItemText(0, QCoreApplication.translate("MainWindow", u"Yes", None))
         self.comboBox_confident.setItemText(1, QCoreApplication.translate("MainWindow", u"No", None))

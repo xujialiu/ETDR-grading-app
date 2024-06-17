@@ -1,4 +1,3 @@
-from math import e
 import shutil
 import os
 
@@ -33,7 +32,7 @@ if __name__ == "__main__":
         pass
 
     # pyinstaller
-    cmd = r"pyinstaller main.py -y -w --icon=.meta/icon.ico"
+    cmd = r"pyinstaller main.py -y -w --icon=.meta/icon.ico -n ETDR-grading-app"
     subprocess.run(cmd, shell=True, stdout=sys.stdout, stderr=sys.stderr)
 
     # 复制.meta, .standards文件夹到dist/main
