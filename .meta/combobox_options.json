@@ -28,7 +28,7 @@
             "score": 4,
             "image": ".standards/HMA/01_L Haem and MA.jpg"
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
@@ -54,7 +54,7 @@
             "score": 4,
             "image": ".standards/HE/04_L Ring of Hard Exudate.jpg"
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
@@ -72,7 +72,7 @@
             "score": 2,
             "image": ".standards/SE/08A_L soft exudate, irma.jpg"
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
@@ -98,7 +98,7 @@
             "score": 4,
             "image": ".standards/IRMA/08B_L irma.jpg"
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
@@ -120,7 +120,7 @@
             "score": 3,
             "image": ".standards/VB/06A_L Venous Beading.jpg"
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
@@ -142,7 +142,7 @@
             "score": 3,
             "image": ".standards/NVD/10C_L NVD.jpg"
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
@@ -164,7 +164,7 @@
             "score": 3,
             "image": ".standards/NVE/07_L NVE + other pathology.jpg"
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
@@ -191,7 +191,7 @@
             "score": 4,
             "image": ""
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
@@ -213,7 +213,7 @@
             "score": 3,
             "image": ""
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
@@ -239,7 +239,7 @@
             "score": 4,
             "image": ""
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
@@ -265,7 +265,7 @@
             "score": 4,
             "image": ""
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
@@ -283,7 +283,7 @@
             "score": 2,
             "image": ""
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
@@ -309,7 +309,7 @@
             "score": 4,
             "image": ""
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
@@ -335,7 +335,7 @@
             "score": 4,
             "image": ""
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
@@ -349,7 +349,7 @@
             "score": 1,
             "image": ""
         },
-        "Could not grade": {
+        "Cannot grade": {
             "score": 8,
             "image": ""
         }
