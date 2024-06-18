@@ -707,7 +707,7 @@ class MainWindowImpl(MainWindow):
                 self.set.lineEdit_password.setEnabled(False)
                 self.set.pushButton_login.setEnabled(False)
                 self.set.folder_button.setEnabled(True)
-                self.menu.export.setEnabled(False)
+                self.menu.export.setEnabled(True)
 
         else:
             QMessageBox.warning(self, "Login Failed", "Invalid username or password.")
