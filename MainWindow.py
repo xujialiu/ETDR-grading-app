@@ -31,7 +31,7 @@ class MainWindow(QMainWindow):
     def _init_docks(self):
 
         # Left dock widget
-        self.left_dock = QDockWidget("Left Dock", self)
+        self.left_dock = QDockWidget("Image Dock", self)
         self.left_dock.setObjectName("Left Dock")
         
         # 设置能够dock在左右, 但是pyside6的代码似乎有问题
@@ -39,12 +39,12 @@ class MainWindow(QMainWindow):
         # LeftDockWidgetArea和RightDockWidgetArea代表上下
         self.left_dock.setAllowedAreas(Qt.TopDockWidgetArea | Qt.BottomDockWidgetArea)
         self.left_dock.setFeatures(
-            QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetFloatable
+            QDockWidget.DockWidgetMovable
         )
         self.addDockWidget(Qt.TopDockWidgetArea, self.left_dock)
 
         # Right dock widget
-        self.right_dock = QDockWidget("Right Dock", self)
+        self.right_dock = QDockWidget("Grading and Setting Dock", self)
         self.right_dock.setObjectName("Right Dock")
         # 问题同上
         self.right_dock.setAllowedAreas(Qt.TopDockWidgetArea | Qt.BottomDockWidgetArea)
