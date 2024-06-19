@@ -9,3 +9,4 @@ dist/
 *.spec
 .releases/
 .samples/
+samples.zip
