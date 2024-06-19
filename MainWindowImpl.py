@@ -212,7 +212,7 @@ class MainWindowImpl(MainWindow):
     def _init_setwidge(self):
         self.set = SetWidget.Ui_MainWindow()
         self.set.setupUi(self)
-        self.tabwidget.addTab(self.set.centralwidget, "Settings")
+        self.tabwidget.addTab(self.set.centralwidget, "Setting")
 
     def _init_register_dialog(self):
 
@@ -222,7 +222,7 @@ class MainWindowImpl(MainWindow):
     def _init_gradwidge(self):
         self.grad = GradWidget.Ui_MainWindow()
         self.grad.setupUi(self)
-        self.tabwidget.addTab(self.grad.centralwidget, "Grading Area")
+        self.tabwidget.addTab(self.grad.centralwidget, "Grading")
 
     def _init_imgdock(self):
         self.img = ImgDock.Ui_MainWindow()
