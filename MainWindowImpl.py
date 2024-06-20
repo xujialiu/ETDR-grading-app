@@ -12,16 +12,21 @@ from functools import partial
 import hashlib
 import json
 from typing import Literal
-from PySide6.QtCore import QEvent, QSettings, Qt, Slot
+from PySide6.QtCore import QEvent, QSettings, QSize, Qt, Slot
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import (
     QFileDialog,
+    QHBoxLayout,
     QMenu,
     QMessageBox,
+    QScrollArea,
+    QScrollBar,
     QTabWidget,
     QTableWidgetItem,
     QTreeWidget,
     QTreeWidgetItem,
+    QVBoxLayout,
+    QWidget,
 )
 import numpy as np
 from CheckableComboBox import CheckableComboBox
@@ -222,7 +227,24 @@ class MainWindowImpl(MainWindow):
     def _init_gradwidge(self):
         self.grad = GradWidget.Ui_MainWindow()
         self.grad.setupUi(self)
-        self.tabwidget.addTab(self.grad.centralwidget, "Grading")
+
+        # 创建一个新的widget作为中间容器
+        container_widget = QWidget()
+        self.scroll_area = QScrollArea()
+
+        # 创建一个垂直布局，并将其对齐方式设置为居中
+        layout = QVBoxLayout(container_widget)
+        layout.setAlignment(Qt.AlignCenter)
+
+        # 将content添加到布局中
+        layout.addWidget(self.grad.centralwidget)
+
+        # 将容器widget设置为scroll_area的widget
+        self.scroll_area.setWidget(container_widget)
+        self.scroll_area.setWidgetResizable(True)
+
+        # 将scroll_area添加到tabwidget中
+        self.tabwidget.addTab(self.scroll_area, "Grading")
 
     def _init_imgdock(self):
         self.img = ImgDock.Ui_MainWindow()
