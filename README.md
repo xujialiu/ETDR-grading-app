@@ -18,11 +18,11 @@ Please visit [this link](https://github.com/xujialiu/ETDR-grading-app/releases) 
 
 For first-time users, you need to register a user account. First, log in as the root user; the username and password for the root user are both "root."
 
-<p align="center"><img src="./.attachments/Pasted image 20240620070131.png" alt="img" width="700" /></p>
+<p align="center"><img src="./.attachments/Pasted image 20240620070131.png" alt="img" width="300" /></p>
 
 After logging in, click on User - Register in the top left menu bar to register a new user (the software will record the username as the grader in the database every time it is saved). For future use, simply log in with the registered username and password.
 
-<p align="center"><img src="./.attachments/image-20240620062412044.png" alt="img" width="700" /></p>
+<p align="center"><img src="./.attachments/image-20240620062412044.png" alt="img" width="300" /></p>
 
 Select a folder. If you are unsure about the required folder format, please refer to this [samples.zip](https://github.com/xujialiu/ETDR-grading-app/releases/download/samples/samples.zip) dataset (needs to be unzipped).
 

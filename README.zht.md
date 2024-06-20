@@ -18,15 +18,16 @@
 
 首次使用時，您需要註冊一個用戶賬戶。首先，以 root 用戶登錄；root 用戶名和密碼都是 "root"。
 
-<p align="center"><img src="./.attachments/Pasted image 20240620070131.png" alt="img" width="700" /></p>
+<p align="center"><img src="./.attachments/Pasted image 20240620070131.png" alt="img" width="300" /></p>
 
 登錄後，點擊左上方菜單欄中的 User - Register，註冊一個新用戶（每次保存時，軟件會將用戶名記錄為數據庫中的評分者）。以後的使用中，只需使用註冊的用戶名和密碼登錄即可。
 
-<p align="center"><img src="./.attachments/image-20240620062412044.png" alt="img" width="700" /></p>
+<p align="center"><img src="./.attachments/image-20240620062412044.png" alt="img" width="300" /></p>
 
 選擇一個文件夾。如果您不確定所需文件夾格式，請參考此 [samples.zip](https://github.com/xujialiu/ETDR-grading-app/releases/download/samples/samples.zip) 數據集（需要解壓）。
 
 <p align="center"><img src="./.attachments/image-20240620062927388.png" alt="img" width="700" /></p>
+
 ### 如何評估
 <p align="center"><img src="./.attachments/image-20240620063054607.png" alt="img" width="700" /></p>
 

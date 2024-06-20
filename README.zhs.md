@@ -18,7 +18,7 @@
 
 首次使用时，您需要注册一个用户帐户。首先，以 root 用户登录；root 用户名和密码都是 "root"。
 
-<p align="center"><img src="./.attachments/Pasted image 20240620070131.png" alt="img" width="700" /></p>
+<p align="center"><img src="./.attachments/Pasted image 20240620070131.png" alt="img" width="300" /></p>
 
 登录后，点击左上方菜单栏中的 User - Register，注册一个新用户（每次保存时，软件会将用户名记录为数据库中的评分者）。以后的使用中，只需使用注册的用户名和密码登录即可。
 
@@ -26,7 +26,7 @@
 
 选择一个文件夹。如果您不确定所需文件夹格式，请参考此 [samples.zip](https://github.com/xujialiu/ETDR-grading-app/releases/download/samples/samples.zip) 数据集（需要解压）。
 
-<p align="center"><img src="./.attachments/image-20240620062927388.png" alt="img" width="700" /></p>
+<p align="center"><img src="./.attachments/image-20240620062927388.png" alt="img" width="300" /></p>
 ### 如何评估
 <p align="center"><img src="./.attachments/image-20240620063054607.png" alt="img" width="700" /></p>
 
