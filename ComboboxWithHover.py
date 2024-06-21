@@ -43,6 +43,10 @@ class ComboBoxWithHover(QComboBox):
         self.setMaximumWidth(fixed_width)
         self.setCurrentIndex(1)
 
+    # 禁用滚轮选择功能
+    def wheelEvent(self, event):
+        pass
+
     def eventFilter(self, source, event):
         if event.type() == QEvent.MouseMove and source == self.view().viewport():
             index = self.view().indexAt(event.pos())

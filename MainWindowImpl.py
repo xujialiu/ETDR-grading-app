@@ -16,6 +16,7 @@ from typing import Literal
 from PySide6.QtCore import QEvent, QSettings, QSize, Qt, Slot
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import (
+    QDockWidget,
     QFileDialog,
     QHBoxLayout,
     QMenu,
@@ -80,6 +81,7 @@ class MainWindowImpl(MainWindow):
         # 初始化其他
         self._init_labels()
         self._init_comboboxes()
+        self._init_combobox_confident()
         self._init_combobox_gradable()
         self._init_combobox_diagosis()
         self._init_combobox_icdr()
@@ -294,6 +296,13 @@ class MainWindowImpl(MainWindow):
     def _init_imgdock(self):
         self.img_dock = ImgDock.Ui_MainWindow()
         self.img_dock.setupUi(self)
+
+    def _init_combobox_confident(self):
+        # 禁用wheelevent
+        def new_wheelevent(event):
+            pass
+
+        self.grad.comboBox_confident.wheelEvent = new_wheelevent
 
     def _init_comboboxes(self):
         self.comboboxes_options()

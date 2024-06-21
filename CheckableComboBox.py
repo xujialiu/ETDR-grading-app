@@ -1,7 +1,14 @@
 import sys
 from PySide6.QtCore import Qt, QEvent, QTimerEvent
 from PySide6.QtGui import QFontMetrics, QPalette, QStandardItem
-from PySide6.QtWidgets import QApplication, QComboBox, QStyledItemDelegate, QWidget, QVBoxLayout, QPushButton
+from PySide6.QtWidgets import (
+    QApplication,
+    QComboBox,
+    QStyledItemDelegate,
+    QWidget,
+    QVBoxLayout,
+    QPushButton,
+)
 
 
 class CheckableComboBox(QComboBox):
@@ -24,6 +31,10 @@ class CheckableComboBox(QComboBox):
         self.lineEdit().installEventFilter(self)
         self.closeOnLineEditClick = False
         self.view().viewport().installEventFilter(self)
+
+    # 禁用滚轮选择功能
+    def wheelEvent(self, event):
+        pass
 
     def resizeEvent(self, event):
         self.updateText()
@@ -98,4 +109,3 @@ class CheckableComboBox(QComboBox):
             if self.model().item(i).checkState() == Qt.Checked:
                 res.append(self.model().item(i).data())
         return res
-
