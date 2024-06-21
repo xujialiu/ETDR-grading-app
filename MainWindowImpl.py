@@ -1,9 +1,10 @@
 # MainWindowImpl.py
 # TODO list
-# [[chore]]: 添加license文件
 # [[feat]]: 重写calculate_total_score的逻辑
 # [[feat]]: 增加eventFilter全局按键监听
 # [[feat]]: 读取时使用多进程加速
+# [[feat]]: 增加eval mode, 当为eval mode时, 只有df_database和df_graded的交集, 界面出现列表, 点击患者, 显示各项评分
+# [[feat]]: 修改数据库位置, 改为Path.home()
 
 
 from concurrent.futures import ThreadPoolExecutor
@@ -51,7 +52,7 @@ from RegisterResetDialogImpl import RegisterDialog
 ICON_PATH = ".meta/icon.png"
 ROOT_USERNAME = "root"
 ROOT_PASSWORD = "root"
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 TEST_MODE = True
 
 
@@ -70,6 +71,7 @@ class MainWindowImpl(MainWindow):
 
     def init_ui_impl(self):
         # 初始化布局组件
+        self._init_app()
         self._init_right_dock()
         self._init_left_dock()
         self._init_gradwidge()
@@ -81,8 +83,8 @@ class MainWindowImpl(MainWindow):
         self._init_combobox_gradable()
         self._init_combobox_diagosis()
         self._init_combobox_icdr()
+        self._init_img_slider()
         # self._init_combobox_is_dr()
-        self._init_app()
         self._init_clear_button()
         self._init_login_button()
         self._init_folder_button()
@@ -163,18 +165,18 @@ class MainWindowImpl(MainWindow):
         self._init_img_widget()
         self._init_imgdock()
         # set left dock
-        self.left_dock.setWidget(self.img.centralwidget)
-        img_layout = self.img.widget_img.parentWidget().layout()
-        img_layout.replaceWidget(self.img.widget_img, self.img_widget)
-        setattr(self.img, self.img.widget_img.objectName(), self.img_widget)
-        self.img.widget_img = self.img_widget
+        self.left_dock.setWidget(self.img_dock.centralwidget)
+        img_layout = self.img_dock.widget_img.parentWidget().layout()
+        img_layout.replaceWidget(self.img_dock.widget_img, self.widget_img)
+        setattr(self.img_dock, self.img_dock.widget_img.objectName(), self.widget_img)
+        self.img_dock.widget_img = self.widget_img
 
     def _init_img_widget(self):
         # 创建一个GraphicsLayoutWidget
-        self.img_widget = GraphicsLayoutWidget()
+        self.widget_img = GraphicsLayoutWidget()
 
         # 添加一个PlotItem
-        self.plot_item = self.img_widget.addPlot()
+        self.plot_item = self.widget_img.addPlot()
 
         # 禁用坐标轴
         self.plot_item.hideAxis("left")
@@ -196,10 +198,53 @@ class MainWindowImpl(MainWindow):
         self.plot_item.getViewBox().setAspectLocked(True)
 
     def display_img(self, path):
-        img = Image.open(path)
-        img = np.array(img)
-        img = np.rot90(img, -1)
-        self.img_item.setImage(img)
+        self.img = Image.open(path)
+        self.img = np.array(self.img)
+        self.img = np.rot90(self.img, -1)
+        self.img_item.setImage(self.img)
+
+    def on_update_image(self):
+        brightness = self.img_dock.horizontalSlider_brightness.value()
+        contrast = self.img_dock.horizontalSlider_contrast.value()
+
+        adjustedImage = self.img.astype(np.float32)
+        adjustedImage = adjustedImage * (contrast / 50.0 + 1) + brightness
+        adjustedImage = np.clip(adjustedImage, 0, 255).astype(np.uint8)
+
+        self.img_item.setImage(adjustedImage)
+
+    def _init_img_slider(self):
+        self.img_dock.horizontalSlider_brightness.valueChanged.connect(
+            self.on_update_image
+        )
+        self.img_dock.horizontalSlider_contrast.valueChanged.connect(
+            self.on_update_image
+        )
+
+        self.img_dock.horizontalSlider_brightness.valueChanged.connect(
+            lambda: self.img_dock.spinBox_brightness.setValue(
+                self.img_dock.horizontalSlider_brightness.value()
+            )
+        )
+
+        self.img_dock.horizontalSlider_contrast.valueChanged.connect(
+            lambda: self.img_dock.spinBox_contrast.setValue(
+                self.img_dock.horizontalSlider_contrast.value()
+            )
+        )
+
+    def _init_img_spinbox(self):
+        self.img_dock.spinBox_brightness.valueChanged.connect(
+            lambda: self.img_dock.horizontalSlider_brightness.setValue(
+                self.img_dock.spinBox_brightness.value()
+            )
+        )
+
+        self.img_dock.spinBox_contrast.valueChanged.connect(
+            lambda: self.img_dock.horizontalSlider_contrast.setValue(
+                self.img_dock.spinBox_contrast.value()
+            )
+        )
 
     def on_display_img(self):
         self.img_path = self.list_img_path[self.img_index]
@@ -247,8 +292,8 @@ class MainWindowImpl(MainWindow):
         self.tabwidget.addTab(self.scroll_area, "Grading")
 
     def _init_imgdock(self):
-        self.img = ImgDock.Ui_MainWindow()
-        self.img.setupUi(self)
+        self.img_dock = ImgDock.Ui_MainWindow()
+        self.img_dock.setupUi(self)
 
     def _init_comboboxes(self):
         self.comboboxes_options()
@@ -398,13 +443,13 @@ class MainWindowImpl(MainWindow):
         app.setStyle("fusion")
 
     def _init_next_and_previous_button(self):
-        self.img.pushButton_next.clicked.connect(self.on_next_clicked)
-        self.img.pushButton_next.clicked.connect(self.on_display_img)
-        self.img.pushButton_next.clicked.connect(self.displace_photo_number)
+        self.img_dock.pushButton_next.clicked.connect(self.on_next_clicked)
+        self.img_dock.pushButton_next.clicked.connect(self.on_display_img)
+        self.img_dock.pushButton_next.clicked.connect(self.displace_photo_number)
 
-        self.img.pushButton_previous.clicked.connect(self.on_previous_clicked)
-        self.img.pushButton_previous.clicked.connect(self.on_display_img)
-        self.img.pushButton_previous.clicked.connect(self.displace_photo_number)
+        self.img_dock.pushButton_previous.clicked.connect(self.on_previous_clicked)
+        self.img_dock.pushButton_previous.clicked.connect(self.on_display_img)
+        self.img_dock.pushButton_previous.clicked.connect(self.displace_photo_number)
 
     def on_next_clicked(self):
         if self.img_index < len(self.list_img_path) - 1:
