@@ -4,6 +4,10 @@ import re
 import pandas as pd
 from pathlib import Path
 
+DATA_BASE_PATH = Path.home() / "ETDR-grading-app"
+DF_DATABASE_PATH = DATA_BASE_PATH / "df_database.parquet"
+DF_GRADED_PATH = DATA_BASE_PATH / "df_graded.parquet"
+
 
 @dataclass(frozen=True)
 class OptionScoreImgPath:
@@ -55,7 +59,7 @@ def get_df_folder_contents(root_dir):
     return df
 
 
-def load_or_create_df_database(filename=".data/df_database.parquet"):
+def load_or_create_df_database(filename=DF_DATABASE_PATH):
     columns = [
         "patient_id",
         "visit_date",
@@ -113,7 +117,7 @@ def load_or_create_df_database(filename=".data/df_database.parquet"):
 
 
 # 出问题的地方
-def load_or_create_df_graded(filename=".data/df_graded.parquet"):
+def load_or_create_df_graded(filename=DF_GRADED_PATH):
     columns = [
         "patient_id",
         "visit_date",

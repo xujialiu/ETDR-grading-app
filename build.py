@@ -38,11 +38,6 @@ if __name__ == "__main__":
     # 复制.meta, .standards文件夹到dist/main
     copy_folder_recursively(".meta", "./dist/ETDR-grading-app/.meta")
     copy_folder_recursively(".standards", "./dist/ETDR-grading-app/.standards")
-    
-    # 创建.data文件dist/main
-    data_folder = Path("./dist/ETDR-grading-app/.data")
-    if not data_folder.exists():
-        data_folder.mkdir(parents=True)
 
     # 创建setup.exe目录, 如.releases/1.0.0
     release_folder = Path(f".releases/{VERSION}")

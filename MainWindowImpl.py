@@ -8,21 +8,18 @@
 
 
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 from ComboBoxWithToolTips import ComboBoxWithToolTips
 from functools import partial
 import hashlib
 import json
-from typing import Literal
 from PySide6.QtCore import QEvent, QSettings, QSize, Qt, Slot
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import (
-    QDockWidget,
     QFileDialog,
-    QHBoxLayout,
     QMenu,
     QMessageBox,
     QScrollArea,
-    QScrollBar,
     QTabWidget,
     QTableWidgetItem,
     QTreeWidget,
@@ -55,6 +52,12 @@ ROOT_USERNAME = "root"
 ROOT_PASSWORD = "root"
 VERSION = "1.2.0"
 TEST_MODE = True
+DATA_BASE_PATH = Path.home() / "ETDR-grading-app"
+DF_DATABASE_PATH = DATA_BASE_PATH / "df_database.parquet"
+DF_GRADED_PATH = DATA_BASE_PATH / "df_graded.parquet"
+
+if not DATA_BASE_PATH.exists():
+    DATA_BASE_PATH.mkdir()
 
 
 class MainWindowImpl(MainWindow):
@@ -86,6 +89,7 @@ class MainWindowImpl(MainWindow):
         self._init_combobox_diagosis()
         self._init_combobox_icdr()
         self._init_img_slider()
+        self._init_img_spinbox()
         # self._init_combobox_is_dr()
         self._init_clear_button()
         self._init_login_button()
@@ -105,9 +109,9 @@ class MainWindowImpl(MainWindow):
 
         # 初始化测试模块
         if self.test_mode:
-            self._init_test_mode()
+            self._init_debug_mode()
 
-    def _init_test_mode(self):
+    def _init_debug_mode(self):
 
         self.menu.debug = QAction("Debug", self)
         self.menu.help_menu.addAction(self.menu.debug)
@@ -120,12 +124,11 @@ class MainWindowImpl(MainWindow):
     def closeEvent(self, event):
         if not self.df_database.empty:
             with ThreadPoolExecutor() as executor:
-                executor.submit(
-                    self.save_parquet, ".data/df_database.parquet", self.df_database
-                )
+
+                executor.submit(self.save_parquet, DF_DATABASE_PATH, self.df_database)
                 executor.submit(
                     self.save_parquet,
-                    ".data/df_graded.parquet",
+                    DF_GRADED_PATH,
                     self.df_graded,
                 )
 
@@ -190,10 +193,6 @@ class MainWindowImpl(MainWindow):
 
         # 加载图像
         self.display_img(ICON_PATH)
-
-        # 设置放大缩小功能
-        self.plot_item.getViewBox().setMouseEnabled(x=True, y=True)
-        self.plot_item.getViewBox().setAspectLocked(True)
 
         # 设置放大缩小功能
         self.plot_item.getViewBox().setMouseEnabled(x=True, y=True)
