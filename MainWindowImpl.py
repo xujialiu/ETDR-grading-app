@@ -90,6 +90,7 @@ class MainWindowImpl(MainWindow):
         self._init_combobox_icdr()
         self._init_img_slider()
         self._init_img_spinbox()
+        self._init_img_reset_button()
         # self._init_combobox_is_dr()
         self._init_clear_button()
         self._init_login_button()
@@ -246,6 +247,15 @@ class MainWindowImpl(MainWindow):
                 self.img_dock.spinBox_contrast.value()
             )
         )
+        
+    def _init_img_reset_button(self):
+        self.img_dock.pushButton_img_reset.clicked.connect(
+            self.on_img_reset_clicked
+        )
+    
+    def on_img_reset_clicked(self):
+        self.img_dock.horizontalSlider_contrast.setValue(0)
+        self.img_dock.horizontalSlider_brightness.setValue(0)
 
     def on_display_img(self):
         self.img_path = self.list_img_path[self.img_index]

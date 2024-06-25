@@ -183,7 +183,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"User:", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Password::", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Password:", None))
         self.pushButton_login.setText(QCoreApplication.translate("MainWindow", u"Login", None))
         ___qtreewidgetitem = self.treeWidget_patient.headerItem()
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"Patient ID / Visit Date", None));
