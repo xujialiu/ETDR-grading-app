@@ -21,7 +21,7 @@ def copy_folder_recursively(src, dst):
 
 if __name__ == "__main__":
 
-    VERSION = "1.2.0"
+    VERSION = "1.2.1"
 
     # 清除上一次pyinstaller编译过程中的文件
     try:

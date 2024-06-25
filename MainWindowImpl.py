@@ -51,7 +51,7 @@ from pynput import keyboard
 ICON_PATH = ".meta/icon.png"
 ROOT_USERNAME = "root"
 ROOT_PASSWORD = "root"
-VERSION = "1.2.0"
+VERSION = "1.2.1"
 TEST_MODE = True
 DATA_BASE_PATH = Path.home() / "ETDR-grading-app"
 DF_DATABASE_PATH = DATA_BASE_PATH / "df_database.parquet"
