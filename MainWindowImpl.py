@@ -13,7 +13,7 @@ from ComboBoxWithToolTips import ComboBoxWithToolTips
 from functools import partial
 import hashlib
 import json
-from PySide6.QtCore import QEvent, QSettings, QSize, Qt, Slot
+from PySide6.QtCore import QEvent, QObject, QSettings, QSize, Qt, Signal, Slot
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import (
     QFileDialog,
@@ -45,6 +45,7 @@ from pyqtgraph import ImageItem, GraphicsLayoutWidget
 from PIL import Image
 from cryptography.fernet import Fernet
 from RegisterResetDialogImpl import RegisterDialog
+from pynput import keyboard
 
 
 ICON_PATH = ".meta/icon.png"
@@ -58,6 +59,21 @@ DF_GRADED_PATH = DATA_BASE_PATH / "df_graded.parquet"
 
 if not DATA_BASE_PATH.exists():
     DATA_BASE_PATH.mkdir()
+
+
+class KeyListener(QObject):
+    key_pressed = Signal(str)
+
+    def __init__(self):
+        super().__init__()
+        self.listener = keyboard.Listener(on_press=self.on_press)
+        self.listener.start()
+
+    def on_press(self, key):
+        if key == keyboard.Key.left:
+            self.key_pressed.emit("left")
+        elif key == keyboard.Key.right:
+            self.key_pressed.emit("right")
 
 
 class MainWindowImpl(MainWindow):
@@ -100,6 +116,7 @@ class MainWindowImpl(MainWindow):
         self._init_df_graded()
         self._init_save_button()
         self._init_next_and_previous_button()
+        self._init_key_listener()
 
         # 初始化事件相关函数
         self.installEventFilter(self)
@@ -135,6 +152,16 @@ class MainWindowImpl(MainWindow):
 
         self.save_settings()
         event.accept()
+        
+    def _init_key_listener(self):
+        self.key_listener = KeyListener()
+        self.key_listener.key_pressed.connect(self.on_key_pressed)
+        
+    def on_key_pressed(self, key_text):
+        if key_text == "right":
+            self.img_dock.pushButton_next.click()
+        if key_text == "left":
+            self.img_dock.pushButton_previous.click()
 
     def save_settings(self):
         settings = QSettings("MyCompany", "MyApp")
@@ -150,17 +177,6 @@ class MainWindowImpl(MainWindow):
 
     def save_parquet(self, file_path, df):
         df.to_parquet(file_path)
-
-    def eventFilter(self, source, event):
-        if event.type() == QEvent.KeyPress:
-            if event.key() == Qt.Key_Right:
-                # 触发按钮的点击事件
-                self.img.pushButton_next.click()
-                return True  # 事件已处理
-            if event.key() == Qt.Key_Left:
-                self.img.pushButton_previous.click()
-                return True  # 事件已处理
-        return super().eventFilter(source, event)
 
     def _init_right_dock(self):
         # set right dock
