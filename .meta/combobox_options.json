@@ -1,357 +1,356 @@
 {
-    "HMA": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Quest": {
-            "score": 1,
-            "image": ""
-        },
-        "<std 1": {
-            "score": 2,
-            "image": ""
-        },
-        "≥std 1": {
-            "score": 3,
-            "image": ".standards/HMA/01_L Haem and MA.jpg"
-        },
-        "≥std 2A": {
-            "score": 4,
-            "image": ".standards/HMA/02A_L Haem and MA.jpg"
-        },
-        "≥std 2A (2/3 flds)": {
-            "score": 4,
-            "image": ".standards/HMA/01_L Haem and MA.jpg"
-        },
-        "≥std 2A (all flds)": {
-            "score": 4,
-            "image": ".standards/HMA/01_L Haem and MA.jpg"
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
+  "HMA": {
+    "None": {
+      "score": 0,
+      "image": ""
     },
-    "HE": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Quest": {
-            "score": 1,
-            "image": ""
-        },
-        "<std 3": {
-            "score": 2,
-            "image": ".standards/HE/01A_L 50 hard drusen.jpg"
-        },
-        "≥std 3 - <std 4": {
-            "score": 3,
-            "image": ".standards/HE/03_L Hard Exudate.jpg"
-        },
-        "≥std 4": {
-            "score": 4,
-            "image": ".standards/HE/04_L Ring of Hard Exudate.jpg"
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
+    "Quest": {
+      "score": 1,
+      "image": ""
     },
-    "SE": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Quest": {
-            "score": 1,
-            "image": ""
-        },
-        "Definite": {
-            "score": 2,
-            "image": ".standards/SE/08A_L soft exudate, irma.jpg"
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
+    "<std 1": {
+      "score": 2,
+      "image": ""
     },
-    "IRMA": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Quest": {
-            "score": 1,
-            "image": ""
-        },
-        "Definite": {
-            "score": 2,
-            "image": ""
-        },
-        "Definite (all fields)": {
-            "score": 3,
-            "image": ""
-        },
-        "≥std 8A": {
-            "score": 4,
-            "image": ".standards/IRMA/08B_L irma.jpg"
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
+    "≥std 1": {
+      "score": 3,
+      "image": ".standards/HMA/01_L Haem and MA.jpg"
     },
-    "VB": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Quest": {
-            "score": 1,
-            "image": ""
-        },
-        "Definite": {
-            "score": 2,
-            "image": ".standards/VB/06A_L Venous Beading.jpg"
-        },
-        "Definite (2+ fields)": {
-            "score": 3,
-            "image": ".standards/VB/06A_L Venous Beading.jpg"
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
+    "≥std 2A": {
+      "score": 4,
+      "image": ".standards/HMA/02A_L Haem and MA.jpg"
     },
-    "NVD": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Quest": {
-            "score": 1,
-            "image": ""
-        },
-        "<std 10A": {
-            "score": 2,
-            "image": ".standards/NVD/10A_L NVD.jpg"
-        },
-        "≥std 10A": {
-            "score": 3,
-            "image": ".standards/NVD/10C_L NVD.jpg"
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
+    "≥std 2A (2/3 flds)": {
+      "score": 4,
+      "image": ".standards/HMA/01_L Haem and MA.jpg"
     },
-    "NVE": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Quest": {
-            "score": 1,
-            "image": ""
-        },
-        "<1/2 Disc area": {
-            "score": 2,
-            "image": ".standards/NVE/07_L NVE + other pathology.jpg"
-        },
-        "≥1/2 Disc area": {
-            "score": 3,
-            "image": ".standards/NVE/07_L NVE + other pathology.jpg"
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
-        
+    "≥std 2A (all flds)": {
+      "score": 4,
+      "image": ".standards/HMA/01_L Haem and MA.jpg"
     },
-    "FP": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Quest": {
-            "score": 1,
-            "image": ""
-        },
-        "FPE only": {
-            "score": 2,
-            "image": ".standards/FP/11_L Fibrous proliferation elsewhere, arteriolar narrowing.jpg"
-        },
-        "FPD only": {
-            "score": 3,
-            "image": ".standards/FP/10B_L Fibrous proliferation of disc.jpg"
-        },
-        "FPD + FPE": {
-            "score": 4,
-            "image": ""
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
-    },
-    "PRH_VH": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Quest": {
-            "score": 1,
-            "image": ""
-        },
-        "VH and/or PRH (not center)": {
-            "score": 2,
-            "image": ".standards/PRH-VH/13_L pre retinal haemorrhage.jpg"
-        },
-        "VH and/or PRH (center)": {
-            "score": 3,
-            "image": ""
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
-    },
-    "EDEMA": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Quest": {
-            "score": 1,
-            "image": ""
-        },
-        "Present, not CSME": {
-            "score": 2,
-            "image": ""
-        },
-        "Present, CSME": {
-            "score": 3,
-            "image": ""
-        },
-        "Non-Diab": {
-            "score": 4,
-            "image": ""
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
-    },
-    "CTR": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Quest": {
-            "score": 1,
-            "image": ""
-        },
-        "Present, not CSME": {
-            "score": 2,
-            "image": ""
-        },
-        "Present, CSME": {
-            "score": 3,
-            "image": ""
-        },
-        "Non-Diab": {
-            "score": 4,
-            "image": ""
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
-    },
-    "VEN": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Quest": {
-            "score": 1,
-            "image": ""
-        },
-        "Definite": {
-            "score": 2,
-            "image": ""
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
-    },
-    "LASER": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Quest/incomplete": {
-            "score": 1,
-            "image": ""
-        },
-        "Focal": {
-            "score": 2,
-            "image": ""
-        },
-        "Scatter only": {
-            "score": 3,
-            "image": ""
-        },
-        "Scatter + Focal": {
-            "score": 4,
-            "image": ""
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
-    },
-    "RX": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Quest": {
-            "score": 1,
-            "image": ""
-        },
-        "Focal RX only": {
-            "score": 2,
-            "image": ""
-        },
-        "Grid RX only": {
-            "score": 3,
-            "image": ""
-        },
-        "Focal + Grid": {
-            "score": 4,
-            "image": ""
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
-    },
-    "RD": {
-        "None": {
-            "score": 0,
-            "image": ""
-        },
-        "Present": {
-            "score": 1,
-            "image": ""
-        },
-        "Cannot grade": {
-            "score": 8,
-            "image": ""
-        }
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
     }
+  },
+  "HE": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Quest": {
+      "score": 1,
+      "image": ""
+    },
+    "<std 3": {
+      "score": 2,
+      "image": ".standards/HE/01A_L 50 hard drusen.jpg"
+    },
+    "≥std 3 - <std 4": {
+      "score": 3,
+      "image": ".standards/HE/03_L Hard Exudate.jpg"
+    },
+    "≥std 4": {
+      "score": 4,
+      "image": ".standards/HE/04_L Ring of Hard Exudate.jpg"
+    },
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
+    }
+  },
+  "SE": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Quest": {
+      "score": 1,
+      "image": ""
+    },
+    "Definite": {
+      "score": 2,
+      "image": ".standards/SE/08A_L soft exudate, irma.jpg"
+    },
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
+    }
+  },
+  "IRMA": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Quest": {
+      "score": 1,
+      "image": ""
+    },
+    "Definite": {
+      "score": 2,
+      "image": ""
+    },
+    "Definite (all fields)": {
+      "score": 3,
+      "image": ""
+    },
+    "≥std 8A": {
+      "score": 4,
+      "image": ".standards/IRMA/08B_L irma.jpg"
+    },
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
+    }
+  },
+  "VB": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Quest": {
+      "score": 1,
+      "image": ""
+    },
+    "Definite": {
+      "score": 2,
+      "image": ".standards/VB/06A_L Venous Beading.jpg"
+    },
+    "Definite (2+ fields)": {
+      "score": 3,
+      "image": ".standards/VB/06A_L Venous Beading.jpg"
+    },
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
+    }
+  },
+  "NVD": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Quest": {
+      "score": 1,
+      "image": ""
+    },
+    "<std 10A": {
+      "score": 2,
+      "image": ".standards/NVD/10A_L NVD.jpg"
+    },
+    "≥std 10A": {
+      "score": 3,
+      "image": ".standards/NVD/10C_L NVD.jpg"
+    },
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
+    }
+  },
+  "NVE": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Quest": {
+      "score": 1,
+      "image": ""
+    },
+    "<1/2 Disc area": {
+      "score": 2,
+      "image": ".standards/NVE/07_L NVE + other pathology.jpg"
+    },
+    "≥1/2 Disc area": {
+      "score": 3,
+      "image": ".standards/NVE/07_L NVE + other pathology.jpg"
+    },
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
+    }
+  },
+  "FP": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Quest": {
+      "score": 1,
+      "image": ""
+    },
+    "FPE only": {
+      "score": 2,
+      "image": ".standards/FP/11_L Fibrous proliferation elsewhere, arteriolar narrowing.jpg"
+    },
+    "FPD only": {
+      "score": 3,
+      "image": ".standards/FP/10B_L Fibrous proliferation of disc.jpg"
+    },
+    "FPD + FPE": {
+      "score": 4,
+      "image": ""
+    },
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
+    }
+  },
+  "PRH_VH": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Quest": {
+      "score": 1,
+      "image": ""
+    },
+    "VH and/or PRH (not center)": {
+      "score": 2,
+      "image": ".standards/PRH-VH/13_L pre retinal haemorrhage.jpg"
+    },
+    "VH and/or PRH (center)": {
+      "score": 3,
+      "image": ""
+    },
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
+    }
+  },
+  "EDEMA": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Quest": {
+      "score": 1,
+      "image": ""
+    },
+    "Present, not CSME": {
+      "score": 2,
+      "image": ""
+    },
+    "Present, CSME": {
+      "score": 3,
+      "image": ""
+    },
+    "Non-Diab": {
+      "score": 4,
+      "image": ""
+    },
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
+    }
+  },
+  "CTR": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Quest": {
+      "score": 1,
+      "image": ""
+    },
+    "Present, not CSME": {
+      "score": 2,
+      "image": ""
+    },
+    "Present, CSME": {
+      "score": 3,
+      "image": ""
+    },
+    "Non-Diab": {
+      "score": 4,
+      "image": ""
+    },
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
+    }
+  },
+  "VEN": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Quest": {
+      "score": 1,
+      "image": ""
+    },
+    "Definite": {
+      "score": 2,
+      "image": ""
+    },
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
+    }
+  },
+  "LASER": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Quest/incomplete": {
+      "score": 1,
+      "image": ""
+    },
+    "Focal": {
+      "score": 2,
+      "image": ""
+    },
+    "Scatter only": {
+      "score": 3,
+      "image": ""
+    },
+    "Scatter + Focal": {
+      "score": 4,
+      "image": ""
+    },
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
+    }
+  },
+  "RX": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Quest": {
+      "score": 1,
+      "image": ""
+    },
+    "Focal RX only": {
+      "score": 2,
+      "image": ""
+    },
+    "Grid RX only": {
+      "score": 3,
+      "image": ""
+    },
+    "Focal + Grid": {
+      "score": 4,
+      "image": ""
+    },
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
+    }
+  },
+  "RD": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Present": {
+      "score": 1,
+      "image": ""
+    },
+    "Cannot grade": {
+      "score": 8,
+      "image": ""
+    }
+  }
 }
