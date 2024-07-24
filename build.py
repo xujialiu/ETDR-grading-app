@@ -5,6 +5,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+from VERSION import VERSION
 
 
 def copy_folder_recursively(src, dst):
@@ -20,8 +21,6 @@ def copy_folder_recursively(src, dst):
 
 
 if __name__ == "__main__":
-
-    VERSION = "1.2.1"
 
     # 清除上一次pyinstaller编译过程中的文件
     try:
