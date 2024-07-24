@@ -9,4 +9,4 @@
 - feat: add image adjustment button
 - feat: change the data saving path from installation dir to /User/home/ETDR-grading-app
 - feat: add listen to global keyboard to control the next or previous image
-- bug: fix changing the spinbox, the corresponding slider value
+- bug: fix changing the spinbox, the corresponding slider value did not change
