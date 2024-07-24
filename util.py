@@ -107,12 +107,8 @@ def load_or_create_df_database(filename=DF_DATABASE_PATH):
 
     if file_path.exists():
         df = pd.read_parquet(file_path)
-        # score_columns = df.filter(like="score", axis=1)
-        # df[score_columns.columns] = score_columns.astype(int)
     else:
         df = pd.DataFrame(columns=columns)
-    # df = pd.DataFrame(columns=columns)
-
     return df
 
 
@@ -128,10 +124,6 @@ def load_or_create_df_graded(filename=DF_GRADED_PATH):
 
     if file_path.exists():
         df = pd.read_parquet(file_path)
-        # score_columns = df.filter(like="score", axis=1)
-        # df[score_columns.columns] = score_columns.astype(int)
     else:
         df = pd.DataFrame(columns=columns)
-    # df = pd.DataFrame(columns=columns)
-
     return df
