@@ -329,7 +329,8 @@ class MainWindowImpl(MainWindow):
         self.comboboxes_options()
 
         dict_comboboxes = {
-            self.grad.comboBox_HMA: self.options_HMA,
+            self.grad.comboBox_MA: self.options_MA,
+            self.grad.comboBox_RH: self.options_RH,
             self.grad.comboBox_HE: self.options_HE,
             self.grad.comboBox_SE: self.options_SE,
             self.grad.comboBox_IRMA: self.options_IRMA,
@@ -366,7 +367,8 @@ class MainWindowImpl(MainWindow):
             self.grad.list_comboboxes.append(hover_combobox)
 
         self.dict_comboboxes = {
-            "HMA": [self.grad.comboBox_HMA, self.options_HMA],
+            "MA": [self.grad.comboBox_MA, self.options_MA],
+            "RH": [self.grad.comboBox_RH, self.options_RH],
             "HE": [self.grad.comboBox_HE, self.options_HE],
             "SE": [self.grad.comboBox_SE, self.options_SE],
             "IRMA": [self.grad.comboBox_IRMA, self.options_IRMA],
@@ -432,29 +434,8 @@ class MainWindowImpl(MainWindow):
         )
 
     def calculate_total_score(self):
-        # if self.grad.comboBox_gradable == "No":
-        #     return 99
 
-        # if self.grad.comboBox_HMA.currentIndex() <= 1:
-        #     return 10
-
-        # if (
-        #     (
-        #         (2 <= self.grad.comboBox_HE.currentIndex() < 5)
-        #         or (2 <= self.grad.comboBox_SE.currentIndex() < 3)
-        #         or (2 <= self.grad.comboBox_IRMA.currentIndex() < 5)
-        #     )
-        #     and (self.grad.comboBox_HMA.currentIndex() <= 1)
-        # ) or (3 <= self.grad.comboBox_HMA.currentIndex() < 7):
-        #     return 14
-
-        # if self.grad.comboBox_gradable == "No":
-        #     return 90
-        # if (1 <= self.grad.comboBox_PRH_VH.currentIndex() <=5) or self.grad.comboBox_RD==1:
-        #     return 85
-        # if
-
-        self.grad.comboBox_HMA.currentIndex()
+        self.grad.comboBox_RH.currentIndex()
         """计算总分数"""
         list_comboboxes = []
         list_options = []
@@ -551,7 +532,8 @@ class MainWindowImpl(MainWindow):
     def on_data_inject_clicked(self):
         self.grad.comboBox_gradable.setCurrentText("Yes")
         self.grad.comboBox_clarity.setCurrentText("Clear")
-        self.grad.comboBox_HMA.setCurrentText("Quest")
+        self.grad.comboBox_MA.setCurrentText("Questionable")
+        self.grad.comboBox_RH.setCurrentText("Quest")
         self.grad.comboBox_HE.setCurrentText("Quest")
         self.grad.comboBox_SE.setCurrentText("Quest")
         self.grad.comboBox_IRMA.setCurrentText("Quest")
@@ -1076,7 +1058,8 @@ class MainWindowImpl(MainWindow):
 
         else:
             dict_results = {
-                "HMA": "",
+                "MA": "",
+                "RH": "",
                 "HE": "",
                 "SE": "",
                 "IRMA": "",
@@ -1091,7 +1074,8 @@ class MainWindowImpl(MainWindow):
                 "LASER": "",
                 "RX": "",
                 "RD": "",
-                "HMA_score": 999,
+                "MA_score": 999,
+                "RH_score": 999,
                 "HE_score": 999,
                 "SE_score": 999,
                 "IRMA_score": 999,
@@ -1127,7 +1111,8 @@ class MainWindowImpl(MainWindow):
         with open(".meta/combobox_options.json", "r", encoding="utf-8") as f:
             options_data = json.load(f)
 
-        self.options_HMA = self._parse_options(options_data["HMA"])
+        self.options_MA = self._parse_options(options_data["MA"])
+        self.options_RH = self._parse_options(options_data["RH"])
         self.options_HE = self._parse_options(options_data["HE"])
         self.options_SE = self._parse_options(options_data["SE"])
         self.options_IRMA = self._parse_options(options_data["IRMA"])

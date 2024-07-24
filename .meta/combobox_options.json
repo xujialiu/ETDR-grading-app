@@ -1,32 +1,35 @@
 {
-  "HMA": {
+  "MA": {
+    "Absent": { "score": 0, "image": "" },
+    "Questionable": {
+      "score": 1,
+      "image": ""
+    },
+    "Present": {
+      "score": 2,
+      "image": ""
+    }
+  },
+  "RH": {
     "None": {
       "score": 0,
       "image": ""
     },
-    "Quest": {
+    "Questionable": {
       "score": 1,
       "image": ""
     },
-    "<std 1": {
+    "< SP1": {
       "score": 2,
       "image": ""
     },
-    "≥std 1": {
+    "≥ SP1, < SP2A": {
       "score": 3,
       "image": ".standards/HMA/01_L Haem and MA.jpg"
     },
-    "≥std 2A": {
+    "≥ SP2A": {
       "score": 4,
       "image": ".standards/HMA/02A_L Haem and MA.jpg"
-    },
-    "≥std 2A (2/3 flds)": {
-      "score": 4,
-      "image": ".standards/HMA/01_L Haem and MA.jpg"
-    },
-    "≥std 2A (all flds)": {
-      "score": 4,
-      "image": ".standards/HMA/01_L Haem and MA.jpg"
     },
     "Cannot grade": {
       "score": 8,
