@@ -7,6 +7,7 @@
 
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+import sys
 from ComboBoxWithToolTips import ComboBoxWithToolTips
 from functools import partial
 import hashlib
@@ -434,20 +435,46 @@ class MainWindowImpl(MainWindow):
         )
 
     def calculate_total_score(self):
+        def set_disabled_except(list_excluded):
+            for name, (combobox, _) in self.dict_comboboxes.items():
+                if name in list_excluded:
+                    pass
+                else:
+                    combobox.setEnabled(False)
+                    
+        def set_enabled():
+            for _, (combobox, _) in self.dict_comboboxes.items():     
+                combobox.setEnabled(True)
+        
+        
+        if self.grad.comboBox_MA.currentText() == "Absent":
+            self.total_score = 10
+            set_disabled_except(["MA"])
+        elif self.grad.comboBox_MA.currentText() == "Questionable":
+            set_disabled_except(["MA"])
+            self.total_score = 15
+        else:
+            set_enabled()  
+            self.total_score = ""
+            
+        
+        # self.grad.comboBox_RH.setEnabled()
 
-        self.grad.comboBox_RH.currentIndex()
-        """计算总分数"""
-        list_comboboxes = []
-        list_options = []
-        for _, (combobox, option) in self.dict_comboboxes.items():
-            list_comboboxes.append(combobox)
-            list_options.append(option)
-        list_text = [combobox.currentText() for combobox in list_comboboxes]
-        list_score = [
-            option.get(text, OptionScoreImgPath(score=0, path="")).score
-            for option, text in zip(list_options, list_text)
-        ]
-        self.total_score = sum(list_score)
+        # self.grad.comboBox_RH.currentIndex()
+        # """计算总分数"""
+        # list_comboboxes = []
+        # list_options = []
+        # for _, (combobox, option) in self.dict_comboboxes.items():
+        #     list_comboboxes.append(combobox)
+        #     list_options.append(option)
+        # list_text = [combobox.currentText() for combobox in list_comboboxes]
+        # list_score = [
+        #     option.get(text, OptionScoreImgPath(score=0, path="")).score
+        #     for option, text in zip(list_options, list_text)
+        # ]
+        # self.total_score = sum(list_score)
+
+        # self.total_score = 0
 
     def _init_app(self):
         app = QApplication.instance()
@@ -532,7 +559,7 @@ class MainWindowImpl(MainWindow):
     def on_data_inject_clicked(self):
         self.grad.comboBox_gradable.setCurrentText("Yes")
         self.grad.comboBox_clarity.setCurrentText("Clear")
-        self.grad.comboBox_MA.setCurrentText("Questionable")
+        self.grad.comboBox_MA.setCurrentText("present")
         self.grad.comboBox_RH.setCurrentText("Questionable")
         self.grad.comboBox_HE.setCurrentText("Quest")
         self.grad.comboBox_SE.setCurrentText("Quest")
@@ -1054,9 +1081,9 @@ class MainWindowImpl(MainWindow):
             dict_results["visit_date"] = self.visit_date
             dict_results["eye"] = self.eye
             dict_results["total_score"] = self.total_score
-            self.dict = dict_results
 
         else:
+            """ungradable的情况"""
             dict_results = {
                 "MA": "",
                 "RH": "",
@@ -1090,7 +1117,7 @@ class MainWindowImpl(MainWindow):
                 "LASER_score": 999,
                 "RX_score": 999,
                 "RD_score": 999,
-                "is_gradable": "",
+                "is_gradable": self.grad.comboBox_gradable.currentText(),
                 "is_dr": "",
                 "combobox_diagnoses": "",
                 "ICDR": "",
@@ -1098,10 +1125,10 @@ class MainWindowImpl(MainWindow):
                 "confident": "",
                 "clarity": "",
                 "comment": "",
-                "user": "",
-                "patient_id": "",
-                "visit_date": "",
-                "eye": "",
+                "user": self.user,
+                "patient_id": self.patient_id,
+                "visit_date": self.visit_date,
+                "eye": self.eye,
                 "total_score": 999,
             }
 
@@ -1134,6 +1161,7 @@ class MainWindowImpl(MainWindow):
             for key, value in options_dict.items()
         }
 
+    # delete
     def _test_script(self):
         """This is test script and never expected to run on App"""
         self.df
@@ -1141,3 +1169,12 @@ class MainWindowImpl(MainWindow):
         self.df_database
         self.patient_id, self.visit_date, self.eye
         self.df_database.to_csv("test.csv")
+
+
+if __name__ == "__main__":
+    TEST_MODE = True
+
+    app = QApplication(sys.argv)
+    mwImpl = MainWindowImpl(test_mode=TEST_MODE)
+    mwImpl.show()
+    sys.exit(app.exec())
