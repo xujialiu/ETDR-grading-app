@@ -1,7 +1,7 @@
 # MainWindowImpl.py
 # TODO list
 # [[feat]]: 重写calculate_total_score的逻辑
-# [[feat]]: 读取时使用多进程加速
+# [[feat]]: 读取时使用多线程加速
 # [[feat]]: 增加eval mode, 当为eval mode时, 只有df_database和df_graded的交集, 界面出现列表, 点击患者, 显示各项评分
 
 
@@ -533,7 +533,7 @@ class MainWindowImpl(MainWindow):
         self.grad.comboBox_gradable.setCurrentText("Yes")
         self.grad.comboBox_clarity.setCurrentText("Clear")
         self.grad.comboBox_MA.setCurrentText("Questionable")
-        self.grad.comboBox_RH.setCurrentText("Quest")
+        self.grad.comboBox_RH.setCurrentText("Questionable")
         self.grad.comboBox_HE.setCurrentText("Quest")
         self.grad.comboBox_SE.setCurrentText("Quest")
         self.grad.comboBox_IRMA.setCurrentText("Quest")
