@@ -868,71 +868,11 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_13">
-          <item>
-           <widget class="QLabel" name="label_13">
-            <property name="minimumSize">
-             <size>
-              <width>131</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>MAC-EDEMA:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_10">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QComboBox" name="comboBox_EDEMA"/>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_14">
-          <item>
-           <widget class="QLabel" name="label_14">
-            <property name="text">
-             <string>MAC CTR:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_11">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QComboBox" name="comboBox_CTR"/>
-          </item>
-         </layout>
-        </item>
-        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_15">
           <item>
            <widget class="QLabel" name="label_15">
             <property name="text">
-             <string>VEN LOOPS</string>
+             <string>Venous Loops</string>
             </property>
            </widget>
           </item>
@@ -959,7 +899,7 @@
           <item>
            <widget class="QLabel" name="label_16">
             <property name="text">
-             <string>LASER SCARS</string>
+             <string>Laser Scars</string>
             </property>
            </widget>
           </item>
@@ -982,38 +922,11 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_17">
-          <item>
-           <widget class="QLabel" name="label_17">
-            <property name="text">
-             <string>FOCAL/GRID RX</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_14">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>18</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QComboBox" name="comboBox_RX"/>
-          </item>
-         </layout>
-        </item>
-        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_22">
           <item>
            <widget class="QLabel" name="label_21">
             <property name="text">
-             <string>RD:</string>
+             <string>Retinal Detachment (RD):</string>
             </property>
            </widget>
           </item>

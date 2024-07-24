@@ -340,11 +340,8 @@ class MainWindowImpl(MainWindow):
             self.grad.comboBox_NVE: self.options_NVE,
             self.grad.comboBox_FP: self.options_FP,
             self.grad.comboBox_PRH_VH: self.options_PRH_VH,
-            self.grad.comboBox_EDEMA: self.options_EDEMA,
-            self.grad.comboBox_CTR: self.options_CTR,
             self.grad.comboBox_VEN: self.options_VEN,
             self.grad.comboBox_LASER: self.options_LASER,
-            self.grad.comboBox_RX: self.options_RX,
             self.grad.comboBox_RD: self.options_RD,
         }
         self.hover_label = HoverLabel()
@@ -378,11 +375,8 @@ class MainWindowImpl(MainWindow):
             "NVE": [self.grad.comboBox_NVE, self.options_NVE],
             "FP": [self.grad.comboBox_FP, self.options_FP],
             "PRH_VH": [self.grad.comboBox_PRH_VH, self.options_PRH_VH],
-            "EDEMA": [self.grad.comboBox_EDEMA, self.options_EDEMA],
-            "CTR": [self.grad.comboBox_CTR, self.options_CTR],
             "VEN": [self.grad.comboBox_VEN, self.options_VEN],
             "LASER": [self.grad.comboBox_LASER, self.options_LASER],
-            "RX": [self.grad.comboBox_RX, self.options_RX],
             "RD": [self.grad.comboBox_RD, self.options_RD],
         }
 
@@ -559,21 +553,18 @@ class MainWindowImpl(MainWindow):
     def on_data_inject_clicked(self):
         self.grad.comboBox_gradable.setCurrentText("Yes")
         self.grad.comboBox_clarity.setCurrentText("Clear")
-        self.grad.comboBox_MA.setCurrentText("present")
+        self.grad.comboBox_MA.setCurrentText("Present")
         self.grad.comboBox_RH.setCurrentText("Questionable")
-        self.grad.comboBox_HE.setCurrentText("Quest")
-        self.grad.comboBox_SE.setCurrentText("Quest")
-        self.grad.comboBox_IRMA.setCurrentText("Quest")
-        self.grad.comboBox_VB.setCurrentText("Quest")
-        self.grad.comboBox_NVD.setCurrentText("Quest")
-        self.grad.comboBox_NVE.setCurrentText("Quest")
-        self.grad.comboBox_FP.setCurrentText("Quest")
-        self.grad.comboBox_PRH_VH.setCurrentText("Quest")
-        self.grad.comboBox_EDEMA.setCurrentText("Quest")
-        self.grad.comboBox_CTR.setCurrentText("Quest")
-        self.grad.comboBox_VEN.setCurrentText("Quest")
-        self.grad.comboBox_LASER.setCurrentText("Quest/incomplete")
-        self.grad.comboBox_RX.setCurrentText("Quest")
+        self.grad.comboBox_HE.setCurrentText("Questionable")
+        self.grad.comboBox_SE.setCurrentText("Questionable")
+        self.grad.comboBox_IRMA.setCurrentText("Questionable")
+        self.grad.comboBox_VB.setCurrentText("Questionable")
+        self.grad.comboBox_NVD.setCurrentText("Questionable")
+        self.grad.comboBox_NVE.setCurrentText("Questionable")
+        self.grad.comboBox_FP.setCurrentText("Questionable")
+        self.grad.comboBox_PRH_VH.setCurrentText("Questionable")
+        self.grad.comboBox_VEN.setCurrentText("Questionable")
+        self.grad.comboBox_LASER.setCurrentText("Questionable/incomplete")
         self.grad.comboBox_is_dr.setCurrentText("Yes")
         self.grad.comboBox_confident.setCurrentText("Yes")
         self.grad.textEdit_comment.setText("test comments")
@@ -1095,11 +1086,8 @@ class MainWindowImpl(MainWindow):
                 "NVE": "",
                 "FP": "",
                 "PRH_VH": "",
-                "EDEMA": "",
-                "CTR": "",
                 "VEN": "",
                 "LASER": "",
-                "RX": "",
                 "RD": "",
                 "MA_score": 999,
                 "RH_score": 999,
@@ -1111,11 +1099,8 @@ class MainWindowImpl(MainWindow):
                 "NVE_score": 999,
                 "FP_score": 999,
                 "PRH_VH_score": 999,
-                "EDEMA_score": 999,
-                "CTR_score": 999,
                 "VEN_score": 999,
                 "LASER_score": 999,
-                "RX_score": 999,
                 "RD_score": 999,
                 "is_gradable": self.grad.comboBox_gradable.currentText(),
                 "is_dr": "",
@@ -1148,11 +1133,8 @@ class MainWindowImpl(MainWindow):
         self.options_NVE = self._parse_options(options_data["NVE"])
         self.options_FP = self._parse_options(options_data["FP"])
         self.options_PRH_VH = self._parse_options(options_data["PRH_VH"])
-        self.options_EDEMA = self._parse_options(options_data["EDEMA"])
-        self.options_CTR = self._parse_options(options_data["CTR"])
         self.options_VEN = self._parse_options(options_data["VEN"])
         self.options_LASER = self._parse_options(options_data["LASER"])
-        self.options_RX = self._parse_options(options_data["RX"])
         self.options_RD = self._parse_options(options_data["RD"])
 
     def _parse_options(self, options_dict):

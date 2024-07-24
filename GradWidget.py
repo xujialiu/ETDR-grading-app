@@ -529,45 +529,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5.addLayout(self.horizontalLayout_12)
 
-        self.horizontalLayout_13 = QHBoxLayout()
-        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
-        self.label_13 = QLabel(self.centralwidget)
-        self.label_13.setObjectName(u"label_13")
-        self.label_13.setMinimumSize(QSize(131, 0))
-
-        self.horizontalLayout_13.addWidget(self.label_13)
-
-        self.horizontalSpacer_10 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_13.addItem(self.horizontalSpacer_10)
-
-        self.comboBox_EDEMA = QComboBox(self.centralwidget)
-        self.comboBox_EDEMA.setObjectName(u"comboBox_EDEMA")
-
-        self.horizontalLayout_13.addWidget(self.comboBox_EDEMA)
-
-
-        self.verticalLayout_5.addLayout(self.horizontalLayout_13)
-
-        self.horizontalLayout_14 = QHBoxLayout()
-        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
-        self.label_14 = QLabel(self.centralwidget)
-        self.label_14.setObjectName(u"label_14")
-
-        self.horizontalLayout_14.addWidget(self.label_14)
-
-        self.horizontalSpacer_11 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_14.addItem(self.horizontalSpacer_11)
-
-        self.comboBox_CTR = QComboBox(self.centralwidget)
-        self.comboBox_CTR.setObjectName(u"comboBox_CTR")
-
-        self.horizontalLayout_14.addWidget(self.comboBox_CTR)
-
-
-        self.verticalLayout_5.addLayout(self.horizontalLayout_14)
-
         self.horizontalLayout_15 = QHBoxLayout()
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
         self.label_15 = QLabel(self.centralwidget)
@@ -605,25 +566,6 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_5.addLayout(self.horizontalLayout_16)
-
-        self.horizontalLayout_17 = QHBoxLayout()
-        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
-        self.label_17 = QLabel(self.centralwidget)
-        self.label_17.setObjectName(u"label_17")
-
-        self.horizontalLayout_17.addWidget(self.label_17)
-
-        self.horizontalSpacer_14 = QSpacerItem(40, 18, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_17.addItem(self.horizontalSpacer_14)
-
-        self.comboBox_RX = QComboBox(self.centralwidget)
-        self.comboBox_RX.setObjectName(u"comboBox_RX")
-
-        self.horizontalLayout_17.addWidget(self.comboBox_RX)
-
-
-        self.verticalLayout_5.addLayout(self.horizontalLayout_17)
 
         self.horizontalLayout_22 = QHBoxLayout()
         self.horizontalLayout_22.setObjectName(u"horizontalLayout_22")
@@ -815,12 +757,9 @@ class Ui_MainWindow(object):
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"New vessels Elsewhere (NVE):", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"Fibrous Proliferation (FP):", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Pre-retinal Haemorrhage-Vitreous Haemorrhage (PRH-VH):", None))
-        self.label_13.setText(QCoreApplication.translate("MainWindow", u"MAC-EDEMA:", None))
-        self.label_14.setText(QCoreApplication.translate("MainWindow", u"MAC CTR:", None))
-        self.label_15.setText(QCoreApplication.translate("MainWindow", u"VEN LOOPS", None))
-        self.label_16.setText(QCoreApplication.translate("MainWindow", u"LASER SCARS", None))
-        self.label_17.setText(QCoreApplication.translate("MainWindow", u"FOCAL/GRID RX", None))
-        self.label_21.setText(QCoreApplication.translate("MainWindow", u"RD:", None))
+        self.label_15.setText(QCoreApplication.translate("MainWindow", u"Venous Loops", None))
+        self.label_16.setText(QCoreApplication.translate("MainWindow", u"Laser Scars", None))
+        self.label_21.setText(QCoreApplication.translate("MainWindow", u"Retinal Detachment (RD):", None))
         self.label_25.setText(QCoreApplication.translate("MainWindow", u"Others:", None))
         self.label_28.setText("")
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Are you confident in this grading?", None))
