@@ -71,7 +71,7 @@ def load_or_create_df_database(filename=DF_DATABASE_PATH):
         "other_diagnoses",
         "ICDR",
         "MA",
-        "H",
+        "RH",
         "HE",
         "SE",
         "IRMA",
