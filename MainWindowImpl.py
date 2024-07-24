@@ -1,10 +1,8 @@
 # MainWindowImpl.py
 # TODO list
 # [[feat]]: 重写calculate_total_score的逻辑
-# [[feat]]: 增加eventFilter全局按键监听
 # [[feat]]: 读取时使用多进程加速
 # [[feat]]: 增加eval mode, 当为eval mode时, 只有df_database和df_graded的交集, 界面出现列表, 点击患者, 显示各项评分
-# [[feat]]: 修改数据库位置, 改为Path.home()
 
 
 from concurrent.futures import ThreadPoolExecutor
@@ -152,11 +150,11 @@ class MainWindowImpl(MainWindow):
 
         self.save_settings()
         event.accept()
-        
+
     def _init_key_listener(self):
         self.key_listener = KeyListener()
         self.key_listener.key_pressed.connect(self.on_key_pressed)
-        
+
     def on_key_pressed(self, key_text):
         if key_text == "right":
             self.img_dock.pushButton_next.click()
@@ -263,12 +261,10 @@ class MainWindowImpl(MainWindow):
                 self.img_dock.spinBox_contrast.value()
             )
         )
-        
+
     def _init_img_reset_button(self):
-        self.img_dock.pushButton_img_reset.clicked.connect(
-            self.on_img_reset_clicked
-        )
-    
+        self.img_dock.pushButton_img_reset.clicked.connect(self.on_img_reset_clicked)
+
     def on_img_reset_clicked(self):
         self.img_dock.horizontalSlider_contrast.setValue(0)
         self.img_dock.horizontalSlider_brightness.setValue(0)
@@ -724,7 +720,7 @@ class MainWindowImpl(MainWindow):
     @Slot(str)
     def execute_code(self, code):
         try:
-            exec(f"print({code})")
+            exec(f"{code}")
         except Exception as e:
             print(e)
 
