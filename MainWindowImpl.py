@@ -3,6 +3,7 @@
 # [[feat]]: 重写calculate_total_score的逻辑
 # [[feat]]: 读取时使用多线程加速
 # [[feat]]: 增加eval mode, 当为eval mode时, 只有df_database和df_graded的交集, 界面出现列表, 点击患者, 显示各项评分
+# [[feat]]: 增加RH quadrant的情况
 
 
 from concurrent.futures import ThreadPoolExecutor
@@ -435,40 +436,51 @@ class MainWindowImpl(MainWindow):
                     pass
                 else:
                     combobox.setEnabled(False)
-                    
+
         def set_enabled():
-            for _, (combobox, _) in self.dict_comboboxes.items():     
+            for _, (combobox, _) in self.dict_comboboxes.items():
                 combobox.setEnabled(True)
-        
-        
-        if self.grad.comboBox_MA.currentText() == "Absent":
+
+        # 只根据MA和RH判断levels为10和15的情况
+        if (self.grad.comboBox_MA.currentText() == "Absent") and (
+            self.grad.comboBox_RH.currentText() == "None"
+        ):
             self.total_score = 10
-            set_disabled_except(["MA"])
-        elif self.grad.comboBox_MA.currentText() == "Questionable":
-            set_disabled_except(["MA"])
+            set_disabled_except(["MA", "RH"])
+        elif (self.grad.comboBox_MA.currentText() == "Absent") and (
+            self.grad.comboBox_RH.currentText() != "None"
+        ):
+            set_disabled_except(["MA", "RH"])
             self.total_score = 15
         else:
-            set_enabled()  
+            set_enabled()
             self.total_score = ""
+
+        # levels为20的情况
+        other_combobox_option = {}
+        for name, (combobox, option) in self.dict_comboboxes.items():
+            if name not in ["MA", "RH"]:
+                other_combobox_option[name] = combobox.currentText()
+
+        l = [i == "None" for i in other_combobox_option.values()]
+        if all(l):
+            self.total_score = 20
+
+        # levels为35的情况
+        if (self.grad.comboBox_RH.currentText() == "< SP1") and (
+            self.grad.comboBox_HE.currentIndex() > 0
+            or self.grad.comboBox_SE.currentIndex() > 0
+            or self.grad.comboBox_VEN.currentIndex() > 0
+            or (
+                self.grad.comboBox_IRMA.currentText() == "Questionable"
+                or self.grad.comboBox_VB.currentText() == "Questionable"
+            )
+        ):
+            self.total_score = 35
+
+        # levels为43的情况, 需要增加RH quadrant的情况
+        # if (self.grad.comboBox_RH.currentText()=="≥ SP1, < SP2A"):
             
-        
-        # self.grad.comboBox_RH.setEnabled()
-
-        # self.grad.comboBox_RH.currentIndex()
-        # """计算总分数"""
-        # list_comboboxes = []
-        # list_options = []
-        # for _, (combobox, option) in self.dict_comboboxes.items():
-        #     list_comboboxes.append(combobox)
-        #     list_options.append(option)
-        # list_text = [combobox.currentText() for combobox in list_comboboxes]
-        # list_score = [
-        #     option.get(text, OptionScoreImgPath(score=0, path="")).score
-        #     for option, text in zip(list_options, list_text)
-        # ]
-        # self.total_score = sum(list_score)
-
-        # self.total_score = 0
 
     def _init_app(self):
         app = QApplication.instance()
@@ -553,26 +565,29 @@ class MainWindowImpl(MainWindow):
     def on_data_inject_clicked(self):
         self.grad.comboBox_gradable.setCurrentText("Yes")
         self.grad.comboBox_clarity.setCurrentText("Clear")
-        self.grad.comboBox_MA.setCurrentText("Present")
-        self.grad.comboBox_RH.setCurrentText("Questionable")
-        self.grad.comboBox_HE.setCurrentText("Questionable")
-        self.grad.comboBox_SE.setCurrentText("Questionable")
-        self.grad.comboBox_IRMA.setCurrentText("Questionable")
-        self.grad.comboBox_VB.setCurrentText("Questionable")
-        self.grad.comboBox_NVD.setCurrentText("Questionable")
-        self.grad.comboBox_NVE.setCurrentText("Questionable")
-        self.grad.comboBox_FP.setCurrentText("Questionable")
-        self.grad.comboBox_PRH_VH.setCurrentText("Questionable")
-        self.grad.comboBox_VEN.setCurrentText("Questionable")
-        self.grad.comboBox_LASER.setCurrentText("Questionable/incomplete")
         self.grad.comboBox_is_dr.setCurrentText("Yes")
-        self.grad.comboBox_confident.setCurrentText("Yes")
-        self.grad.textEdit_comment.setText("test comments")
         self.grad.comboBox_diagnoses.setCurrentText("AMD")
-        self.grad.comboBox_ICDR.setCurrentText("PDR")
-        self.grad.comboBox_confident.setCurrentText("Yes")
-        self.grad.comboBox_RD.setCurrentText("Present")
         self.grad.lineEdit_other_diagnoses.setText("test other diagnosis")
+
+        self.grad.comboBox_ICDR.setCurrentText("PDR")
+
+        self.grad.comboBox_MA.setCurrentText("Present")
+        self.grad.comboBox_RH.setCurrentIndex(1)
+        self.grad.comboBox_HE.setCurrentIndex(0)
+        self.grad.comboBox_SE.setCurrentIndex(0)
+        self.grad.comboBox_IRMA.setCurrentIndex(0)
+        self.grad.comboBox_VB.setCurrentIndex(0)
+        self.grad.comboBox_NVD.setCurrentIndex(0)
+        self.grad.comboBox_NVE.setCurrentIndex(0)
+        self.grad.comboBox_FP.setCurrentIndex(0)
+        self.grad.comboBox_PRH_VH.setCurrentIndex(0)
+        self.grad.comboBox_VEN.setCurrentIndex(0)
+        self.grad.comboBox_LASER.setCurrentIndex(0)
+        self.grad.comboBox_RD.setCurrentIndex(0)
+
+        self.grad.comboBox_confident.setCurrentText("Yes")
+
+        self.grad.textEdit_comment.setText("test comments")
 
     def on_menu_register_clicked(self):
         self.dialog = RegisterDialog(self)
