@@ -689,7 +689,11 @@
              </spacer>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_RH_quadrants"/>
+             <widget class="QSpinBox" name="spinBox_RH_quadrants">
+              <property name="maximum">
+               <number>4</number>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>

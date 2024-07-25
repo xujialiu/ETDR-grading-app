@@ -399,6 +399,7 @@ class Ui_MainWindow(object):
 
         self.spinBox_RH_quadrants = QSpinBox(self.centralwidget)
         self.spinBox_RH_quadrants.setObjectName(u"spinBox_RH_quadrants")
+        self.spinBox_RH_quadrants.setMaximum(4)
 
         self.horizontalLayout_13.addWidget(self.spinBox_RH_quadrants)
 
