@@ -17,8 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QHBoxLayout,
     QLabel, QLineEdit, QMainWindow, QMenuBar,
-    QPushButton, QSizePolicy, QSpacerItem, QStatusBar,
-    QTextEdit, QVBoxLayout, QWidget)
+    QPushButton, QSizePolicy, QSpacerItem, QSpinBox,
+    QStatusBar, QTextEdit, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -27,7 +27,9 @@ class Ui_MainWindow(object):
         MainWindow.resize(1090, 1273)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_6 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_7 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.verticalLayout_6 = QVBoxLayout()
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
@@ -317,14 +319,14 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_6.addLayout(self.horizontalLayout_26)
 
-        self.horizontalLayout_29 = QHBoxLayout()
-        self.horizontalLayout_29.setObjectName(u"horizontalLayout_29")
+        self.horizontalLayout_14 = QHBoxLayout()
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
         self.label_30 = QLabel(self.centralwidget)
         self.label_30.setObjectName(u"label_30")
         sizePolicy.setHeightForWidth(self.label_30.sizePolicy().hasHeightForWidth())
         self.label_30.setSizePolicy(sizePolicy)
 
-        self.horizontalLayout_29.addWidget(self.label_30)
+        self.horizontalLayout_14.addWidget(self.label_30)
 
         self.verticalLayout_5 = QVBoxLayout()
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
@@ -376,6 +378,32 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_5.addLayout(self.horizontalLayout_21)
+
+        self.horizontalLayout_13 = QHBoxLayout()
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.label_31 = QLabel(self.centralwidget)
+        self.label_31.setObjectName(u"label_31")
+        sizePolicy.setHeightForWidth(self.label_31.sizePolicy().hasHeightForWidth())
+        self.label_31.setSizePolicy(sizePolicy)
+
+        self.horizontalLayout_13.addWidget(self.label_31)
+
+        self.label_HMA_2 = QLabel(self.centralwidget)
+        self.label_HMA_2.setObjectName(u"label_HMA_2")
+
+        self.horizontalLayout_13.addWidget(self.label_HMA_2)
+
+        self.horizontalSpacer_10 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_13.addItem(self.horizontalSpacer_10)
+
+        self.spinBox_RH_quadrants = QSpinBox(self.centralwidget)
+        self.spinBox_RH_quadrants.setObjectName(u"spinBox_RH_quadrants")
+
+        self.horizontalLayout_13.addWidget(self.spinBox_RH_quadrants)
+
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_13)
 
         self.horizontalLayout_SE = QHBoxLayout()
         self.horizontalLayout_SE.setObjectName(u"horizontalLayout_SE")
@@ -587,10 +615,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addLayout(self.horizontalLayout_22)
 
 
-        self.horizontalLayout_29.addLayout(self.verticalLayout_5)
+        self.horizontalLayout_14.addLayout(self.verticalLayout_5)
 
 
-        self.verticalLayout_6.addLayout(self.horizontalLayout_29)
+        self.verticalLayout_6.addLayout(self.horizontalLayout_14)
 
         self.horizontalLayout_27 = QHBoxLayout()
         self.horizontalLayout_27.setObjectName(u"horizontalLayout_27")
@@ -698,6 +726,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_6.addLayout(self.horizontalLayout_20)
 
+
+        self.verticalLayout_7.addLayout(self.verticalLayout_6)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -726,7 +757,7 @@ class Ui_MainWindow(object):
         self.label_num_photo.setText(QCoreApplication.translate("MainWindow", u"NO. photo / Total photos:", None))
         self.label_user.setText(QCoreApplication.translate("MainWindow", u"Grader: ", None))
         self.label_eye.setText(QCoreApplication.translate("MainWindow", u"Eye: ", None))
-        self.label_score.setText(QCoreApplication.translate("MainWindow", u"Total score: ", None))
+        self.label_score.setText(QCoreApplication.translate("MainWindow", u"Levels: ", None))
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"General:", None))
         self.label_29.setText("")
         self.label.setText(QCoreApplication.translate("MainWindow", u"Is fundus photos gradable?", None))
@@ -749,6 +780,8 @@ class Ui_MainWindow(object):
         self.label_30.setText("")
         self.label_HMA_3.setText(QCoreApplication.translate("MainWindow", u"Microaneurysms:", None))
         self.label_HMA.setText(QCoreApplication.translate("MainWindow", u"Retinal Haemorrhage:", None))
+        self.label_31.setText("")
+        self.label_HMA_2.setText(QCoreApplication.translate("MainWindow", u"Haemorrhage Quadrants:", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Hard Exudates (HE):", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Soft Exudates (SE):", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Intraretinal Microvascular Abnormalities (IRMA):", None))
