@@ -1,10 +1,10 @@
 # MainWindowImpl.py
 # TODO list
-# [[feat]]: 读取时使用多线程加速
-# [[feat]]: 增加eval mode, 当为eval mode时, 只有df_database和df_graded的交集, 界面出现列表, 点击患者, 显示各项评分
-# [[feat]]: 修改update_dict_results, update_df_database, update_df_graded, update_df的逻辑
-# [[feat]]: 增加qlabel, 显示macula和disc, 增加
-# [[feat]]: 由于增加了项目, 需要需要修改util, 并且要删除score选项
+# [[feat, priority low]]: 读取时使用多线程加速
+# [[feat, priority low]]: 增加eval mode, 当为eval mode时, 只有df_database和df_graded的交集, 界面出现列表, 点击患者, 显示各项评分
+# [[feat, priority high]]: 修改update_dict_results, update_df_database, update_df_graded, update_df的逻辑
+# [[feat, priority high]]: 增加qlabel, 显示macula和disc, 增加一个内部计数器
+# [[feat, priority high]]: 由于增加了项目, 需要需要修改util
 
 
 from concurrent.futures import ThreadPoolExecutor
@@ -1091,7 +1091,6 @@ class MainWindowImpl(MainWindow):
     def on_clear_clicked(self):
         # general
         self.grad.comboBox_gradable.setCurrentIndex(0)
-        self.grad.comboBox_clarity.setCurrentIndex(1)
         self.grad.comboBox_is_dr.setCurrentText("Yes")
         self.grad.comboBox_diagnoses.setCurrentIndex(-1)
         self.grad.lineEdit_other_diagnoses.setText("")
@@ -1106,7 +1105,7 @@ class MainWindowImpl(MainWindow):
         self.grad.comboBox_VH_extent.setCurrentIndex(-1)
 
         # Others
-        self.grad.comboBox_confident.setCurrentIndex(-1)
+        self.grad.comboBox_confident.setCurrentText("Yes")
         self.grad.textEdit_comment.setText("")
 
     def show_df_graded_df_database(self):
@@ -1174,27 +1173,29 @@ class MainWindowImpl(MainWindow):
         else:
             return False
 
-    def on_save_clicked(self):
+    def _check_login_all_filled(self):
         if not self.islogin:
             QMessageBox.warning(self, "Error", "Please login!")
         elif not self.is_all_filled():
             QMessageBox.warning(self, "Error", "Please fill all options!")
 
-        elif self.is_all_filled():
+    # working
+    def on_save_clicked(self):
+        self._check_login_all_filled()
 
-            dict_results = self.update_dict_results()
-            self.update_df_database(dict_results)
+        self.update_dict_results()
+        self.update_df_database()
 
-            self.update_df_graded()
+        self.update_df_graded()
 
-            self.update_df()
-            self.show_patients_tree()
-            self.find_and_activate_tree_item()
-            self.show_df_graded_df_database()
-            self.on_clear_clicked()
+        self.update_df()
+        self.show_patients_tree()
+        self.find_and_activate_tree_item()
+        self.show_df_graded_df_database()
+        self.on_clear_clicked()
 
-            for combobox, _ in self.dict_comboboxes.values():
-                combobox.setEnabled(True)
+        for combobox, _ in self.dict_comboboxes.values():
+            combobox.setEnabled(True)
 
     def find_and_activate_tree_item(self):
         """
@@ -1272,87 +1273,48 @@ class MainWindowImpl(MainWindow):
             self.eye,
         )
 
-    def update_df_database(self, dict_results):
-        df_data = pd.DataFrame([dict_results])
+    def update_df_database(self):
+        df_data = pd.DataFrame([self.dict_result])
         self.df_database = pd.concat([self.df_database, df_data])
 
     def update_dict_results(self):
-        if self.grad.comboBox_gradable.currentText() == "Yes":
-            dict_results = {
-                label: combobox.currentText()
-                for label, (combobox, _) in self.dict_comboboxes.items()
-            }
-
-            dict_scores = {}
-            for key, label in dict_results.items():
-                options = getattr(self, f"options_{key}")
-                dict_scores[f"{key}_score"] = options[label].score
-            dict_results.update(dict_scores)
-
-            other_result = {
-                "is_gradable": self.grad.comboBox_gradable.currentText(),
-                "is_dr": self.grad.comboBox_is_dr.currentText(),
-                "other_diagnoses": self.grad.lineEdit_other_diagnoses.text(),
-                "combobox_diagnoses": self.grad.comboBox_diagnoses.currentText(),
-                "ICDR": self.grad.comboBox_ICDR.currentText(),
-                "confident": self.grad.comboBox_confident.currentText(),
-                "clarity": self.grad.comboBox_clarity.currentText(),
-                "comment": self.grad.textEdit_comment.toPlainText(),
-            }
-
-            dict_results.update(other_result)
-
-            dict_results["user"] = self.user
-            dict_results["patient_id"] = self.patient_id
-            dict_results["visit_date"] = self.visit_date
-            dict_results["eye"] = self.eye
-            dict_results["total_score"] = self.levels
-
-        else:
-            """ungradable的情况"""
-            dict_results = {
-                "MA": "",
-                "RH": "",
-                "HE": "",
-                "SE": "",
-                "IRMA": "",
-                "VB": "",
-                "NVD": "",
-                "NVE": "",
-                "FP": "",
-                "PRH_VH": "",
-                "VEN": "",
-                "LASER": "",
-                "RD": "",
-                "MA_score": -1,
-                "RH_score": -1,
-                "HE_score": -1,
-                "SE_score": -1,
-                "IRMA_score": -1,
-                "VB_score": -1,
-                "NVD_score": -1,
-                "NVE_score": -1,
-                "FP_score": -1,
-                "PRH_VH_score": -1,
-                "VEN_score": -1,
-                "LASER_score": -1,
-                "RD_score": -1,
-                "is_gradable": self.grad.comboBox_gradable.currentText(),
-                "is_dr": "",
-                "combobox_diagnoses": "",
-                "ICDR": "",
-                "other_diagnoses": "",
-                "confident": "",
-                "clarity": "",
-                "user": self.user,
-                "patient_id": self.patient_id,
-                "visit_date": self.visit_date,
-                "eye": self.eye,
-                "total_score": -1,
-                "comment": "",
-            }
-
-        return dict_results
+        self.dict_result = {
+            # basic info
+            "patient_id": self.patient_id,
+            "visit_date": self.visit_date,
+            "grader": self.user,
+            "eye": self.eye,
+            "levels": self.levels,
+            "FP_type": "",  # 先占位, 先macular, 再disc
+            # general
+            "is_gradable": self.grad.comboBox_gradable.currentText(),
+            "clarity": self.grad.comboBox_clarity.currentText(),
+            "is_dr": self.grad.comboBox_is_dr.currentText(),
+            "combobox_diagnoses": self.grad.comboBox_diagnoses.currentText(),
+            "other_diagnoses": self.grad.lineEdit_other_diagnoses.text(),
+            "ICDR": self.grad.comboBox_ICDR.currentText(),
+            # etdr
+            "MA": self.grad.comboBox_MA.currentText(),
+            "RH": self.grad.comboBox_RH.currentText(),
+            "RH_quadrants": self.grad.spinBox_RH_quadrants.value(),
+            "HE": self.grad.comboBox_HE.currentText(),
+            "SE": self.grad.comboBox_SE.currentText(),
+            "IRMA": self.grad.comboBox_IRMA.currentText(),
+            "IRMA_quadrants": self.grad.spinBox_IRMA_quadrants.value(),
+            "VB": self.grad.comboBox_VB.currentText(),
+            "VB_quadrants": self.grad.spinBox_VB_quadrants.value(),
+            "NVD": self.grad.comboBox_NVD.currentText(),
+            "NVE": self.grad.comboBox_NVE.currentText(),
+            "NVE_quadrants": self.grad.spinBox_NVE_quadrants.value(),
+            "FP": self.grad.comboBox_FP.currentText(),
+            "PRH_VH": self.grad.comboBox_PRH_VH.currentText(),
+            "VEN": self.grad.comboBox_VEN.currentText(),
+            "LASER": self.grad.comboBox_LASER.currentText(),
+            "RD": self.grad.comboBox_RD.currentText(),
+            # others
+            "confident": self.grad.comboBox_confident.currentText(),
+            "comment": self.grad.textEdit_comment.toPlainText(),
+        }
 
     def comboboxes_options(self):
         with open(".meta/combobox_options.json", "r", encoding="utf-8") as f:
@@ -1377,15 +1339,6 @@ class MainWindowImpl(MainWindow):
             key: OptionScoreImgPath(value["score"], value["image"])
             for key, value in options_dict.items()
         }
-
-    # delete
-    def _test_script(self):
-        """This is test script and never expected to run on App"""
-        self.df
-        self.df_graded
-        self.df_database
-        self.patient_id, self.visit_date, self.eye
-        self.df_database.to_csv("test.csv")
 
 
 if __name__ == "__main__":

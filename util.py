@@ -61,42 +61,41 @@ def get_df_folder_contents(root_dir):
 
 def load_or_create_df_database(filename=DF_DATABASE_PATH):
     columns = [
+        # basic info
         "patient_id",
         "visit_date",
+        "grader",
         "eye",
+        "levels",
+        "FP_type",
+        # general
         "is_gradable",
         "clarity",
         "is_dr",
         "combobox_diagnoses",
         "other_diagnoses",
         "ICDR",
+        # etdr
         "MA",
         "RH",
+        "RH_quadrants",
         "HE",
         "SE",
         "IRMA",
+        "IRMA_quadrants",
         "VB",
+        "VB_quadrants",
         "NVD",
         "NVE",
+        "NVE_quadrants",
         "FP",
         "PRH_VH",
         "VEN",
         "LASER",
-        "MA_score",
-        "RH_score",
-        "HE_score",
-        "SE_score",
-        "IRMA_score",
-        "VB_score",
-        "NVD_score",
-        "NVE_score",
-        "FP_score",
-        "PRH_VH_score",
-        "VEN_score",
-        "LASER_score",
+        "RD"
+        # others
         "confident",
         "comment",
-        "total_score",
     ]
 
     file_path = Path(filename)
@@ -108,7 +107,6 @@ def load_or_create_df_database(filename=DF_DATABASE_PATH):
     return df
 
 
-# 出问题的地方
 def load_or_create_df_graded(filename=DF_GRADED_PATH):
     columns = [
         "patient_id",
