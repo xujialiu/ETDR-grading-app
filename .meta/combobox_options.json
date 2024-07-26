@@ -29,15 +29,15 @@
       "score": 0,
       "image": ""
     },
-    "<std 3": {
+    "< SP3": {
       "score": 1,
       "image": ".standards/HE/01A_L 50 hard drusen.jpg"
     },
-    "≥std 3 - <std 4": {
+    "≥ SP3, < SP4": {
       "score": 2,
       "image": ".standards/HE/03_L Hard Exudate.jpg"
     },
-    "≥std 4": {
+    "≥ SP4": {
       "score": 3,
       "image": ".standards/HE/04_L Ring of Hard Exudate.jpg"
     }
