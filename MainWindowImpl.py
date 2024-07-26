@@ -439,7 +439,7 @@ class MainWindowImpl(MainWindow):
         self.grad.label_num_photo.setText(
             f"NO. photo / Total photos: {self.img_index+1} / {num_img}"
         )
-        
+
     def _set_disabled_except(self, list_combobox_excluded):
         for name, (combobox, _) in self.dict_comboboxes.items():
             if name in list_combobox_excluded:
@@ -448,11 +448,11 @@ class MainWindowImpl(MainWindow):
                 # 设置除了list_combobox_excluded外的其他combobox不能被修改
                 combobox.setEnabled(False)
                 combobox.setCurrentIndex(-1)
-                
+
                 # 设置comboBox_VH_extent为空字符串, 并设置他们不能被修改
                 self.grad.comboBox_VH_extent.setCurrentText("")
                 self.grad.comboBox_VH_extent.setEnabled(False)
-                
+
                 # 设置spinbox为" ", 并设置他们不能被修改
                 for spinBox in self.list_spinBox:
                     spinBox.setEnabled(False)
@@ -462,9 +462,9 @@ class MainWindowImpl(MainWindow):
     def _set_enabled(self):
         for _, (combobox, _) in self.dict_comboboxes.items():
             combobox.setEnabled(True)
-        
+
         self.grad.comboBox_VH_extent.setCurrentText("")
-        self.grad.comboBox_VH_extent.setEnabled(False)
+        self.grad.comboBox_VH_extent.setEnabled(True)
 
         for spinBox in self.list_spinBox:
             spinBox.setEnabled(True)
@@ -1046,16 +1046,24 @@ class MainWindowImpl(MainWindow):
         pass
 
     def on_clear_clicked(self):
+        # general
+        self.grad.comboBox_gradable.setCurrentIndex(0)
+        self.grad.comboBox_clarity.setCurrentIndex(1)
+        self.grad.comboBox_is_dr.setCurrentText("Yes")
+        self.grad.comboBox_diagnoses.setCurrentIndex(-1)
+        self.grad.lineEdit_other_diagnoses.setText("")
+        self.grad.comboBox_ICDR.setCurrentIndex(-1)
+
+        # ETDR
         comboboxes = (combobox for _, (combobox, _) in self.dict_comboboxes.items())
         for combobox in comboboxes:
             combobox.setCurrentIndex(-1)
-        self.grad.comboBox_gradable.setCurrentIndex(-1)
-        self.grad.comboBox_is_dr.setCurrentIndex(-1)
-        self.grad.lineEdit_other_diagnoses.setText("")
-        self.grad.comboBox_diagnoses.setCurrentIndex(-1)
-        self.grad.comboBox_ICDR.setCurrentIndex(-1)
+            
+        self._set_enabled()
+        self.grad.comboBox_VH_extent.setCurrentIndex(-1)
+
+        # Others
         self.grad.comboBox_confident.setCurrentIndex(-1)
-        self.grad.comboBox_clarity.setCurrentIndex(-1)
         self.grad.textEdit_comment.setText("")
 
     def show_df_graded_df_database(self):

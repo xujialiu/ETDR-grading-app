@@ -895,10 +895,10 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.comboBox_gradable.setCurrentIndex(0)
-        self.comboBox_clarity.setCurrentIndex(-1)
-        self.comboBox_is_dr.setCurrentIndex(-1)
+        self.comboBox_clarity.setCurrentIndex(1)
+        self.comboBox_is_dr.setCurrentIndex(0)
         self.comboBox_VH_extent.setCurrentIndex(-1)
-        self.comboBox_confident.setCurrentIndex(-1)
+        self.comboBox_confident.setCurrentIndex(0)
         self.pushButton_clear.setDefault(False)
 
 
@@ -924,6 +924,7 @@ class Ui_MainWindow(object):
         self.comboBox_clarity.setItemText(0, QCoreApplication.translate("MainWindow", u"Blur", None))
         self.comboBox_clarity.setItemText(1, QCoreApplication.translate("MainWindow", u"Clear", None))
 
+        self.comboBox_clarity.setCurrentText(QCoreApplication.translate("MainWindow", u"Clear", None))
         self.label_19.setText(QCoreApplication.translate("MainWindow", u"Whether it is DR?", None))
         self.comboBox_is_dr.setItemText(0, QCoreApplication.translate("MainWindow", u"Yes", None))
         self.comboBox_is_dr.setItemText(1, QCoreApplication.translate("MainWindow", u"No", None))
