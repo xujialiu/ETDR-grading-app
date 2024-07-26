@@ -338,8 +338,11 @@
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="currentText">
+                 <string>Clear</string>
+                </property>
                 <property name="currentIndex">
-                 <number>-1</number>
+                 <number>1</number>
                 </property>
                 <item>
                  <property name="text">
@@ -698,6 +701,12 @@
             </item>
             <item>
              <widget class="QSpinBox" name="spinBox_RH_quadrants">
+              <property name="specialValueText">
+               <string/>
+              </property>
+              <property name="minimum">
+               <number>-1</number>
+              </property>
               <property name="maximum">
                <number>4</number>
               </property>
@@ -827,6 +836,9 @@
             </item>
             <item>
              <widget class="QSpinBox" name="spinBox_IRMA_quadrants">
+              <property name="minimum">
+               <number>-1</number>
+              </property>
               <property name="maximum">
                <number>4</number>
               </property>
@@ -902,6 +914,9 @@
             </item>
             <item>
              <widget class="QSpinBox" name="spinBox_VB_quadrants">
+              <property name="minimum">
+               <number>-1</number>
+              </property>
               <property name="maximum">
                <number>4</number>
               </property>
@@ -1004,6 +1019,9 @@
             </item>
             <item>
              <widget class="QSpinBox" name="spinBox_NVE_quadrants">
+              <property name="minimum">
+               <number>-1</number>
+              </property>
               <property name="maximum">
                <number>4</number>
               </property>
@@ -1323,7 +1341,7 @@
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>-1</number>
+                 <number>0</number>
                 </property>
                 <item>
                  <property name="text">

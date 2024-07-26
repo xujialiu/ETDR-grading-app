@@ -409,6 +409,7 @@ class Ui_MainWindow(object):
 
         self.spinBox_RH_quadrants = QSpinBox(self.centralwidget)
         self.spinBox_RH_quadrants.setObjectName(u"spinBox_RH_quadrants")
+        self.spinBox_RH_quadrants.setMinimum(-1)
         self.spinBox_RH_quadrants.setMaximum(4)
 
         self.horizontalLayout_13.addWidget(self.spinBox_RH_quadrants)
@@ -498,6 +499,7 @@ class Ui_MainWindow(object):
 
         self.spinBox_IRMA_quadrants = QSpinBox(self.centralwidget)
         self.spinBox_IRMA_quadrants.setObjectName(u"spinBox_IRMA_quadrants")
+        self.spinBox_IRMA_quadrants.setMinimum(-1)
         self.spinBox_IRMA_quadrants.setMaximum(4)
 
         self.horizontalLayout_14.addWidget(self.spinBox_IRMA_quadrants)
@@ -549,6 +551,7 @@ class Ui_MainWindow(object):
 
         self.spinBox_VB_quadrants = QSpinBox(self.centralwidget)
         self.spinBox_VB_quadrants.setObjectName(u"spinBox_VB_quadrants")
+        self.spinBox_VB_quadrants.setMinimum(-1)
         self.spinBox_VB_quadrants.setMaximum(4)
 
         self.horizontalLayout_17.addWidget(self.spinBox_VB_quadrants)
@@ -619,6 +622,7 @@ class Ui_MainWindow(object):
 
         self.spinBox_NVE_quadrants = QSpinBox(self.centralwidget)
         self.spinBox_NVE_quadrants.setObjectName(u"spinBox_NVE_quadrants")
+        self.spinBox_NVE_quadrants.setMinimum(-1)
         self.spinBox_NVE_quadrants.setMaximum(4)
 
         self.horizontalLayout_29.addWidget(self.spinBox_NVE_quadrants)
@@ -933,6 +937,7 @@ class Ui_MainWindow(object):
         self.label_HMA.setText(QCoreApplication.translate("MainWindow", u"Retinal Haemorrhage:", None))
         self.label_31.setText("")
         self.label_HMA_2.setText(QCoreApplication.translate("MainWindow", u"Haemorrhage Quadrants:", None))
+        self.spinBox_RH_quadrants.setSpecialValueText("")
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Hard Exudates (HE):", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Soft Exudates (SE):", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Intraretinal Microvascular Abnormalities (IRMA):", None))
