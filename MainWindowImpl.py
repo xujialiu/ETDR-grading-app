@@ -466,28 +466,158 @@ class MainWindowImpl(MainWindow):
         if all(l):
             self.total_score = 20
 
+        # levels为90需要跳转到35的情况
+        condition_lv_90_focal_scar = (
+            self.grad.comboBox_LASER.currentIndex() == 1
+        ) and (
+            (self.grad.comboBox_NVD.currentIndex() == 0)
+            and (self.grad.comboBox_NVE.currentIndex() == 0)
+        )
+        if condition_lv_90_focal_scar:
+            self.total_score = 35
+
         # levels为35的情况
-        if (self.grad.comboBox_RH.currentText() == "< SP1") and (
-            self.grad.comboBox_HE.currentIndex() > 0
-            or self.grad.comboBox_SE.currentIndex() > 0
-            or self.grad.comboBox_VEN.currentIndex() > 0
+        if (self.grad.comboBox_RH.currentText() == "< SP1") or (
+            (self.grad.comboBox_RH.currentText() == "< SP1")
             or (
-                self.grad.comboBox_IRMA.currentText() == "Questionable"
-                or self.grad.comboBox_VB.currentText() == "Questionable"
+                self.grad.comboBox_HE.currentIndex() > 0
+                or self.grad.comboBox_SE.currentIndex() > 0
+                or self.grad.comboBox_VEN.currentIndex() > 0
+                or (
+                    self.grad.comboBox_IRMA.currentText() == "Questionable"
+                    or self.grad.comboBox_VB.currentText() == "Questionable"
+                )
             )
         ):
             self.total_score = 35
 
         # levels为43的情况, 需要增加RH quadrant的情况
-        if (
+        condition_lv_43_1 = (
             self.grad.comboBox_RH.currentText() == "≥ SP1, < SP2A"
-            and self.grad.spinBox_RH_quadrants >= 0
+            and int(self.grad.spinBox_RH_quadrants.text) >= 0
         ) or (
             self.grad.comboBox_RH.currentText() == "≥ SP2A"
-            and self.grad.spinBox_RH_quadrants == 1
+            and self.grad.spinBox_RH_quadrants.text() == "1"
+        )
+        condition_lv_43_2 = (self.grad.comboBox_IRMA.currentText() == "< SP8A") and (
+            self.grad.spinBox_IRMA_quadrants.text() in ("1", "2", "3")
+        )
+
+        if condition_lv_43_1 or condition_lv_43_2:
+            self.total_score = 43
+
+        # levels为47的情况
+        # Mild `IRMA<SP8A` in 4 quadrants
+        condition_lv_47_1 = (self.grad.comboBox_IRMA.currentText() == "< SP8A") and (
+            self.grad.spinBox_IRMA_quadrants.text() == "4"
+        )
+
+        # Severe RH>SP2A in 2 to 3 quadrants
+        condition_lv_47_2 = (
+            self.grad.comboBox_RH.currentText() in ("≥ SP1, < SP2A", "≥ SP2A")
+        ) and (self.grad.spinBox_RH_quadrants.text() in ("2", "3"))
+
+        # `VB>SP6A` in 1 quadrant
+        conditon_lv_47_3 = (self.grad.comboBox_VB.currentText() == "≥ SP6A") and (
+            self.grad.spinBox_VB_quadrants.text() == "1"
+        )
+
+        if condition_lv_47_1 or condition_lv_47_2 or conditon_lv_47_3:
+            self.total_score = 47
+
+        # levels为53的情况
+        # >2 of the 4 level 47 characteristics
+        condition_lv_53_1 = (
+            (condition_lv_47_1 and condition_lv_47_2)
+            or (condition_lv_47_1 and conditon_lv_47_3)
+            or (condition_lv_47_2 and conditon_lv_47_3)
+        )
+
+        # Severe `RH>SP2A` in 4 quadrants
+        condition_lv_53_2 = (self.grad.comboBox_RH.currentText() == "≥ SP2A") and (
+            self.grad.spinBox_RH_quadrants.text() == "4"
+        )
+
+        # Moderate to Severe IRMA>=SP8A in at least one quadrant
+        condition_lv_53_3 = (self.grad.comboBox_IRMA.currentText() == "≥ SP8A") and (
+            int(self.grad.spinBox_IRMA_quadrants.text()) >= 1
+        )
+
+        # VB ("≥ SP6A") in at least 2 quadrants
+        condition_lv_53_4 = (self.grad.comboBox_VB.currentText() == "≥ SP6A") and (
+            int(self.grad.spinBox_VB_quadrants.text()) >= 2
+        )
+        if (
+            condition_lv_53_1
+            or condition_lv_53_2
+            or condition_lv_53_3
+            or condition_lv_53_4
         ):
-            # self.to
-            print(1)
+            self.total_score = 53
+
+        # levels为61的情况
+        # NVE<0.5 DA in 1 or more quadrants
+        condition_lv_61 = (
+            self.grad.comboBox_NVE.currentText() == "< 1/2 Disc area"
+        ) and (int(self.grad.spinBox_NVE_quadrants.text()) >= 1)
+
+        if condition_lv_61:
+            self.total_score = 61
+
+        # levels为65的情况
+        # NVE > 0.5 DA or (VH or PRH)
+        condition_lv_65_1 = (
+            self.grad.comboBox_NVE.currentText() == "≥ 1/2 Disc area"
+        ) or (self.grad.comboBox_PRH_VH.currentIndex() > 0)
+
+        # NVD <SP 10A
+        condition_lv_65_2 = self.grad.comboBox_NVD.currentText() == "< SP 10A"
+
+        if condition_lv_65_1 or condition_lv_65_2:
+            self.total_score = 65
+
+        # levels为71的情况
+        # NVE > 0.5 DA and VH or PRH
+        condition_lv_71_1 = (
+            self.grad.comboBox_NVE.currentText() == "≥ 1/2 Disc area"
+        ) and (self.grad.comboBox_PRH_VH.currentIndex() > 0)
+
+        # NVD >=SP 10A or (NVD `<SP 10A` and VH or PRH )
+        condition_lv_71_2 = self.grad.comboBox_NVD.currentText() == "≥ SP 10A" or (
+            (self.grad.comboBox_NVD.currentText() == "< SP 10A")
+            and (self.grad.comboBox_PRH_VH.currentIndex() > 0)
+        )
+
+        # VH or PRH > 1 DA
+        condition_lv_71_3 = self.grad.comboBox_PRH_VH.currentIndex() > 1
+
+        if condition_lv_71_1 or condition_lv_71_2 or condition_lv_71_3:
+            self.total_score = 71
+
+        # levels为 81&85 的情况
+        condition_lv_81_85 = (self.grad.comboBox_VH_extent.currentIndex() == 2) or (
+            self.grad.comboBox_RD.currentIndex() > 1
+        )
+
+        if condition_lv_81_85:
+            self.total_score = 81
+
+        # levels为 90 的情况
+        # Laser scars or FPD or FPE, but NVD and NVE absent
+        condition_lv_90 = (
+            self.grad.comboBox_LASER.currentIndex() > 1
+            or self.grad.comboBox_FP.currentIndex() > 0
+        ) and (
+            (self.grad.comboBox_NVD.currentIndex() == 0)
+            and (self.grad.comboBox_NVE.currentIndex() == 0)
+        )
+        if condition_lv_90:
+            self.total_score = 90
+            
+        # levels为 99 的情况
+        condition_lv_99 = self.grad.comboBox_gradable.currentText()=="No"
+        if condition_lv_99:
+            self.total_score = 99
 
     def _init_app(self):
         app = QApplication.instance()
