@@ -2,10 +2,9 @@
 # TODO list
 # [[feat]]: 读取时使用多线程加速
 # [[feat]]: 增加eval mode, 当为eval mode时, 只有df_database和df_graded的交集, 界面出现列表, 点击患者, 显示各项评分
-# [[feat]]: 增加RH quadrant的情况
-# [[feat]]: 修改clear btn的逻辑
 # [[feat]]: 修改update_dict_results, update_df_database, update_df_graded, update_df的逻辑
 # [[feat]]: 增加qlabel, 显示macula和disc, 增加
+# [[feat]]: 由于增加了项目, 需要需要修改util, 并且要删除score选项
 
 
 from concurrent.futures import ThreadPoolExecutor
@@ -372,7 +371,7 @@ class MainWindowImpl(MainWindow):
                 self.grad, comboBox.objectName(), hover_combobox
             )  # 绑定到新的变量上
             hover_combobox.setCurrentIndex(-1)
-            hover_combobox.currentTextChanged.connect(self.displace_total_score)
+            hover_combobox.currentTextChanged.connect(self.displace_levels)
 
             self.grad.list_comboboxes.append(hover_combobox)
 
@@ -430,9 +429,9 @@ class MainWindowImpl(MainWindow):
         layout.replaceWidget(self.grad.comboBox_diagnoses, checkable_combobox)
         setattr(self.grad, "comboBox_diagnoses", checkable_combobox)
 
-    def displace_total_score(self):
+    def displace_levels(self):
         self.calculate_levels()
-        self.grad.label_score.setText(f"Total score: {self.levels}")
+        self.grad.label_levels.setText(f"Levels: {self.levels}")
 
     def displace_photo_number(self):
         num_img = len(self.list_img_path)
@@ -1058,7 +1057,7 @@ class MainWindowImpl(MainWindow):
         comboboxes = (combobox for _, (combobox, _) in self.dict_comboboxes.items())
         for combobox in comboboxes:
             combobox.setCurrentIndex(-1)
-            
+
         self._set_enabled()
         self.grad.comboBox_VH_extent.setCurrentIndex(-1)
 
@@ -1281,19 +1280,19 @@ class MainWindowImpl(MainWindow):
                 "VEN": "",
                 "LASER": "",
                 "RD": "",
-                "MA_score": 999,
-                "RH_score": 999,
-                "HE_score": 999,
-                "SE_score": 999,
-                "IRMA_score": 999,
-                "VB_score": 999,
-                "NVD_score": 999,
-                "NVE_score": 999,
-                "FP_score": 999,
-                "PRH_VH_score": 999,
-                "VEN_score": 999,
-                "LASER_score": 999,
-                "RD_score": 999,
+                "MA_score": -1,
+                "RH_score": -1,
+                "HE_score": -1,
+                "SE_score": -1,
+                "IRMA_score": -1,
+                "VB_score": -1,
+                "NVD_score": -1,
+                "NVE_score": -1,
+                "FP_score": -1,
+                "PRH_VH_score": -1,
+                "VEN_score": -1,
+                "LASER_score": -1,
+                "RD_score": -1,
                 "is_gradable": self.grad.comboBox_gradable.currentText(),
                 "is_dr": "",
                 "combobox_diagnoses": "",
@@ -1306,7 +1305,7 @@ class MainWindowImpl(MainWindow):
                 "patient_id": self.patient_id,
                 "visit_date": self.visit_date,
                 "eye": self.eye,
-                "total_score": 999,
+                "total_score": -1,
             }
 
         return dict_results
