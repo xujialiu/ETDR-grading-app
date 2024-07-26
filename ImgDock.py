@@ -125,8 +125,8 @@ class Ui_MainWindow(object):
 
         self.horizontalSlider_brightness = QSlider(self.centralwidget)
         self.horizontalSlider_brightness.setObjectName(u"horizontalSlider_brightness")
-        self.horizontalSlider_brightness.setMinimum(-100)
-        self.horizontalSlider_brightness.setMaximum(100)
+        self.horizontalSlider_brightness.setMinimum(-50)
+        self.horizontalSlider_brightness.setMaximum(50)
         self.horizontalSlider_brightness.setOrientation(Qt.Horizontal)
 
         self.horizontalLayout_2.addWidget(self.horizontalSlider_brightness)
@@ -158,8 +158,8 @@ class Ui_MainWindow(object):
 
         self.horizontalSlider_contrast = QSlider(self.centralwidget)
         self.horizontalSlider_contrast.setObjectName(u"horizontalSlider_contrast")
-        self.horizontalSlider_contrast.setMinimum(-100)
-        self.horizontalSlider_contrast.setMaximum(100)
+        self.horizontalSlider_contrast.setMinimum(-50)
+        self.horizontalSlider_contrast.setMaximum(50)
         self.horizontalSlider_contrast.setOrientation(Qt.Horizontal)
 
         self.horizontalLayout_3.addWidget(self.horizontalSlider_contrast)

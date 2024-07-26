@@ -175,10 +175,10 @@
           <item>
            <widget class="QSlider" name="horizontalSlider_brightness">
             <property name="minimum">
-             <number>-100</number>
+             <number>-50</number>
             </property>
             <property name="maximum">
-             <number>100</number>
+             <number>50</number>
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -235,10 +235,10 @@
           <item>
            <widget class="QSlider" name="horizontalSlider_contrast">
             <property name="minimum">
-             <number>-100</number>
+             <number>-50</number>
             </property>
             <property name="maximum">
-             <number>100</number>
+             <number>50</number>
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
