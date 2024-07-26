@@ -479,8 +479,15 @@ class MainWindowImpl(MainWindow):
             self.total_score = 35
 
         # levels为43的情况, 需要增加RH quadrant的情况
-        # if (self.grad.comboBox_RH.currentText()=="≥ SP1, < SP2A"):
-            
+        if (
+            self.grad.comboBox_RH.currentText() == "≥ SP1, < SP2A"
+            and self.grad.spinBox_RH_quadrants >= 0
+        ) or (
+            self.grad.comboBox_RH.currentText() == "≥ SP2A"
+            and self.grad.spinBox_RH_quadrants == 1
+        ):
+            # self.to
+            print(1)
 
     def _init_app(self):
         app = QApplication.instance()
