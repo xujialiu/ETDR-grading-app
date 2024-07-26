@@ -1183,7 +1183,6 @@ class MainWindowImpl(MainWindow):
     def on_save_clicked(self):
         self._check_login_all_filled()
 
-        self.update_dict_results()
         self.update_df_database()
 
         self.update_df_graded()
@@ -1274,11 +1273,7 @@ class MainWindowImpl(MainWindow):
         )
 
     def update_df_database(self):
-        df_data = pd.DataFrame([self.dict_result])
-        self.df_database = pd.concat([self.df_database, df_data])
-
-    def update_dict_results(self):
-        self.dict_result = {
+        dict_results = {
             # basic info
             "patient_id": self.patient_id,
             "visit_date": self.visit_date,
@@ -1315,6 +1310,8 @@ class MainWindowImpl(MainWindow):
             "confident": self.grad.comboBox_confident.currentText(),
             "comment": self.grad.textEdit_comment.toPlainText(),
         }
+        df_data = pd.DataFrame([dict_results])
+        self.df_database = pd.concat([self.df_database, df_data])
 
     def comboboxes_options(self):
         with open(".meta/combobox_options.json", "r", encoding="utf-8") as f:
