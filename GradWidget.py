@@ -39,19 +39,19 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_25)
 
-        self.label_visit_date = QLabel(self.centralwidget)
-        self.label_visit_date.setObjectName(u"label_visit_date")
+        self.label_patient_id = QLabel(self.centralwidget)
+        self.label_patient_id.setObjectName(u"label_patient_id")
 
-        self.horizontalLayout_2.addWidget(self.label_visit_date)
+        self.horizontalLayout_2.addWidget(self.label_patient_id)
 
         self.horizontalSpacer_20 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_20)
 
-        self.label_patient_id = QLabel(self.centralwidget)
-        self.label_patient_id.setObjectName(u"label_patient_id")
+        self.label_visit_date = QLabel(self.centralwidget)
+        self.label_visit_date.setObjectName(u"label_visit_date")
 
-        self.horizontalLayout_2.addWidget(self.label_patient_id)
+        self.horizontalLayout_2.addWidget(self.label_visit_date)
 
         self.horizontalSpacer_21 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -905,7 +905,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.comboBox_gradable.setCurrentIndex(0)
-        self.comboBox_clarity.setCurrentIndex(1)
+        self.comboBox_clarity.setCurrentIndex(-1)
         self.comboBox_is_dr.setCurrentIndex(0)
         self.comboBox_VH_extent.setCurrentIndex(-1)
         self.comboBox_confident.setCurrentIndex(0)
@@ -917,8 +917,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.label_visit_date.setText(QCoreApplication.translate("MainWindow", u"Visit date:", None))
         self.label_patient_id.setText(QCoreApplication.translate("MainWindow", u"Patient ID: ", None))
+        self.label_visit_date.setText(QCoreApplication.translate("MainWindow", u"Visit date:", None))
         self.label_num_photo.setText(QCoreApplication.translate("MainWindow", u"NO. photo / Total photos:", None))
         self.label_user.setText(QCoreApplication.translate("MainWindow", u"Grader: ", None))
         self.label_eye.setText(QCoreApplication.translate("MainWindow", u"Eye: ", None))
@@ -933,7 +933,7 @@ class Ui_MainWindow(object):
         self.comboBox_clarity.setItemText(0, QCoreApplication.translate("MainWindow", u"Blur", None))
         self.comboBox_clarity.setItemText(1, QCoreApplication.translate("MainWindow", u"Clear", None))
 
-        self.comboBox_clarity.setCurrentText(QCoreApplication.translate("MainWindow", u"Clear", None))
+        self.comboBox_clarity.setCurrentText("")
         self.label_19.setText(QCoreApplication.translate("MainWindow", u"Whether it is DR?", None))
         self.comboBox_is_dr.setItemText(0, QCoreApplication.translate("MainWindow", u"Yes", None))
         self.comboBox_is_dr.setItemText(1, QCoreApplication.translate("MainWindow", u"No", None))

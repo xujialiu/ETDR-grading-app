@@ -35,9 +35,9 @@
            </spacer>
           </item>
           <item>
-           <widget class="QLabel" name="label_visit_date">
+           <widget class="QLabel" name="label_patient_id">
             <property name="text">
-             <string>Visit date:</string>
+             <string>Patient ID: </string>
             </property>
            </widget>
           </item>
@@ -55,9 +55,9 @@
            </spacer>
           </item>
           <item>
-           <widget class="QLabel" name="label_patient_id">
+           <widget class="QLabel" name="label_visit_date">
             <property name="text">
-             <string>Patient ID: </string>
+             <string>Visit date:</string>
             </property>
            </widget>
           </item>
@@ -326,10 +326,10 @@
                  </size>
                 </property>
                 <property name="currentText">
-                 <string>Clear</string>
+                 <string/>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>-1</number>
                 </property>
                 <item>
                  <property name="text">

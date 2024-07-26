@@ -99,7 +99,6 @@ class MainWindowImpl(MainWindow):
         self._init_setwidge()
 
         # 初始化其他
-        self._init_grad_spinbox()
         self._init_labels()
         self._init_comboboxes()
         self._init_combobox_confident()
@@ -119,6 +118,8 @@ class MainWindowImpl(MainWindow):
         self._init_save_button()
         self._init_next_and_previous_button()
         self._init_key_listener()
+        self._init_grad_spinbox()
+        self._init_grad_general_others()
 
         # 初始化事件相关函数
         self.installEventFilter(self)
@@ -162,6 +163,19 @@ class MainWindowImpl(MainWindow):
             self.grad.spinBox_VB_quadrants,
             self.grad.spinBox_NVE_quadrants,
         ]
+
+    def _init_grad_general_others(self):
+        # general+others
+        self.list_general_others = [
+            self.grad.comboBox_gradable,
+            self.grad.comboBox_clarity,
+            self.grad.comboBox_is_dr,
+            self.grad.comboBox_diagnoses,
+            self.grad.lineEdit_other_diagnoses,
+            self.grad.comboBox_ICDR,
+        ] + [self.grad.comboBox_confident]
+
+        self.grad.comboBox_gradable.currentTextChanged.connect(self.displace_levels)
 
     def _init_key_listener(self):
         self.key_listener = KeyListener()
@@ -458,7 +472,7 @@ class MainWindowImpl(MainWindow):
                     spinBox.setSpecialValueText(" ")
                     spinBox.setValue(-1)
 
-    def _set_enabled(self):
+    def _set_enabled_etdr(self):
         for _, (combobox, _) in self.dict_comboboxes.items():
             combobox.setEnabled(True)
 
@@ -468,6 +482,32 @@ class MainWindowImpl(MainWindow):
         for spinBox in self.list_spinBox:
             spinBox.setEnabled(True)
             spinBox.setValue(0)
+
+    def _set_disable_all_except_gradable(self):
+        # disable general and others
+        for widget in self.list_general_others[1:]:
+            widget.setEnabled(False)
+
+        # set general and others to ''
+        self.grad.comboBox_clarity.setCurrentIndex(-1)
+        self.grad.comboBox_is_dr.setCurrentIndex(-1)
+        self.grad.comboBox_confident.setCurrentIndex(-1)
+
+        # disable etdr
+        self._set_disabled_except([])
+
+    def _set_enabled_all(self):
+        # set general and others to correct text
+        self.grad.comboBox_clarity.setCurrentText("No")
+        self.grad.comboBox_is_dr.setCurrentText("Yes")
+        self.grad.comboBox_confident.setCurrentText("Yes")
+
+        # enable general and others
+        for widget in self.list_general_others[1:]:
+            widget.setEnabled(True)
+
+        # enable etdr
+        self._set_enabled_etdr()
 
     def calculate_levels(self):
 
@@ -483,7 +523,7 @@ class MainWindowImpl(MainWindow):
             self._set_disabled_except(["MA", "RH"])
             self.levels = 15
         else:
-            self._set_enabled()
+            self._set_enabled_etdr()
             self.levels = ""
 
         # levels为20的情况
@@ -646,8 +686,12 @@ class MainWindowImpl(MainWindow):
 
         # levels为 99 的情况
         condition_lv_99 = self.grad.comboBox_gradable.currentText() == "No"
+        # (self.grad.comboBox_clarity, self.grad.comboBox_is_dr, self.grad.lineEdit_other_diagnoses)
         if condition_lv_99:
             self.levels = 99
+            self._set_disable_all_except_gradable()
+        else:
+            self._set_enabled_all()
 
     def _init_app(self):
         app = QApplication.instance()
@@ -1058,7 +1102,7 @@ class MainWindowImpl(MainWindow):
         for combobox in comboboxes:
             combobox.setCurrentIndex(-1)
 
-        self._set_enabled()
+        self._set_enabled_etdr()
         self.grad.comboBox_VH_extent.setCurrentIndex(-1)
 
         # Others
@@ -1300,12 +1344,12 @@ class MainWindowImpl(MainWindow):
                 "other_diagnoses": "",
                 "confident": "",
                 "clarity": "",
-                "comment": "",
                 "user": self.user,
                 "patient_id": self.patient_id,
                 "visit_date": self.visit_date,
                 "eye": self.eye,
                 "total_score": -1,
+                "comment": "",
             }
 
         return dict_results
