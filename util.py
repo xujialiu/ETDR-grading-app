@@ -55,6 +55,13 @@ def get_df_folder_contents(root_dir):
             "eye": eye_list,
         }
     )
+    
+    df_copy = df.copy()
+    df_copy['fp_type'] = "disc"
+    
+    df['fp_type'] = "macula"
+    
+    df = pd.concat([df, df_copy], ignore_index=True)
 
     return df
 
@@ -112,6 +119,7 @@ def load_or_create_df_graded(filename=DF_GRADED_PATH):
         "patient_id",
         "visit_date",
         "eye",
+        "fp_type"
     ]
 
     file_path = Path(filename)

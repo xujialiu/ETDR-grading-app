@@ -5,6 +5,7 @@
 # [[feat, priority high]]: 修改update_dict_results, update_df_database, update_df_graded, update_df的逻辑
 # [[feat, priority high]]: 增加qlabel, 显示macula和disc, 增加一个内部计数器
 # [[feat, priority high]]: 由于增加了项目, 需要需要修改util
+# [[feat, priority high]]: 修改is_all_filled方法
 
 
 from concurrent.futures import ThreadPoolExecutor
@@ -758,7 +759,7 @@ class MainWindowImpl(MainWindow):
         self.menu.register.triggered.connect(self.on_menu_register_clicked)
         self.menu.reset.triggered.connect(self.on_menu_reset_clicked)
 
-        self.menu.open_folder.triggered.connect(self.select_folder_clicked)
+        self.menu.open_folder.triggered.connect(self.folder_widget_popup)
 
         self.menu.exit.triggered.connect(self.on_exit_clicked)
         self.menu.about.triggered.connect(self.on_about_clicked)
@@ -953,7 +954,7 @@ class MainWindowImpl(MainWindow):
         except Exception as e:
             print(e)
 
-    def select_folder_clicked(self):
+    def folder_widget_popup(self):
         if not self.islogin:
             QMessageBox.warning(self, "Error", "Please login!")
         else:
@@ -969,8 +970,9 @@ class MainWindowImpl(MainWindow):
         self.grad.label_user.setText(f"Grader: {self.user}")
         self.grad.label_visit_date.setText(f"Visit date: {self.visit_date}")
 
+    # working
     def _init_folder_button(self):
-        self.set.folder_button.clicked.connect(self.select_folder_clicked)
+        self.set.folder_button.clicked.connect(self.folder_widget_popup)
         self.set.folder_button.clicked.connect(self.get_df)
         self.set.folder_button.clicked.connect(self.show_patients_tree)
         self.set.folder_button.clicked.connect(self.find_first_tree_item)
@@ -985,7 +987,7 @@ class MainWindowImpl(MainWindow):
         self.img_index = 0
 
     def _init_df_graded(self):
-        """储存graded的患者信息, 包括patient_id, visit_date, eye"""
+        """储存graded的患者信息, 包括patient_id, visit_date, eye, fp-type"""
         self.df_graded = load_or_create_df_graded()
 
     def _init_patients_tree(self):
@@ -1008,7 +1010,9 @@ class MainWindowImpl(MainWindow):
         self.df_database = load_or_create_df_database()
 
     def get_df(self):
-        self.df = get_df_folder_contents(self.set.folder_path)
+        self.df = get_df_folder_contents(
+            self.set.folder_path
+        )  # self.set.folder_path是folder_widget_popup方法获取的
         self.df_remove_row_in_df_graded()
 
     def on_login_clicked(self):
@@ -1059,6 +1063,7 @@ class MainWindowImpl(MainWindow):
 
     def show_patients_tree(self):
         self.set.treeWidget_patient.clear()
+
         grouped = self.df.groupby("patient_id")
         for patient_id, group in grouped:
             # 创建顶级条目
@@ -1067,11 +1072,11 @@ class MainWindowImpl(MainWindow):
 
             # 获取 unique 的 visit_date 和 eye 组合
             visit_date_eye_combinations = (
-                group[["visit_date", "eye"]].drop_duplicates().values
+                group[["visit_date", "eye", "fp_type"]].drop_duplicates().values
             )
 
-            for visit_date, eye in visit_date_eye_combinations:
-                visit_date_eye_item = QTreeWidgetItem([f"{visit_date} {eye}"])
+            for visit_date, eye, fp_type in visit_date_eye_combinations:
+                visit_date_eye_item = QTreeWidgetItem([f"{visit_date} {eye} {fp_type}"])
                 patient_item.addChild(visit_date_eye_item)
                 visit_date_eye_item.setData(0, 1, visit_date)
 
@@ -1080,8 +1085,8 @@ class MainWindowImpl(MainWindow):
     def on_visit_date_clicked(self, item, column):
         if item.childCount() == 0:  # 如果点击的是 visit_date (eye) item
 
-            # 获取点击的visit_date, eye和patient_id
-            self.visit_date, self.eye = item.text(0).split()
+            # 获取点击的visit_date, eye, fp_type和patient_id
+            self.visit_date, self.eye, self.fp_type = item.text(0).split()
             self.patient_id = item.parent().text(0)
 
     def _init_clear_button(self):
@@ -1162,8 +1167,6 @@ class MainWindowImpl(MainWindow):
         comboboxes_choices = [
             combobox.currentText() for (combobox, _) in self.dict_comboboxes.values()
         ]
-        
-        
 
         # 如果gradable为Yes, 需要进一步判断combobox_with_hover
         if (
@@ -1173,7 +1176,7 @@ class MainWindowImpl(MainWindow):
             and self.grad.comboBox_clarity.currentText()
         ):
             return True
-        
+
         # 其余情况, 返回false
         else:
             return False
@@ -1188,19 +1191,29 @@ class MainWindowImpl(MainWindow):
         else:
             return True
 
+    def update_previous_info(self):
+        self.patient_id_previous = self.patient_id
+        self.visit_date_previous = self.visit_date
+        self.eye_previous = self.eye
+
     # working
     def on_save_clicked(self):
         if self._check_login_all_filled():
+            self.update_previous_info()
 
             self.update_df_database()
             self.update_df_graded()
             self.update_df()
-            
-            
+
             self.show_patients_tree()
             self.find_and_activate_tree_item()
             self.show_df_graded_df_database()
-            self.on_clear_clicked()
+            if not (
+                (self.patient_id_previous == self.patient_id)
+                and (self.visit_date_previous == self.visit_date)
+                and (self.eye_previous == self.eye)
+            ):
+                self.on_clear_clicked()
 
             for combobox, _ in self.dict_comboboxes.values():
                 combobox.setEnabled(True)
@@ -1226,7 +1239,7 @@ class MainWindowImpl(MainWindow):
                 if top_level_item.text(0) == self.patient_id:
                     # 直接返回第一个
                     self.item = top_level_item.child(0)
-                    self.visit_date, self.eye = self.item.text(0).split()
+                    self.visit_date, self.eye, self.fp_type = self.item.text(0).split()
                     self.set.treeWidget_patient.setCurrentItem(self.item)
                     self.set.treeWidget_patient.scrollToItem(
                         self.item, QTreeWidget.PositionAtCenter
@@ -1242,7 +1255,7 @@ class MainWindowImpl(MainWindow):
             self.set.treeWidget_patient.scrollToItem(
                 self.item, QTreeWidget.PositionAtCenter
             )
-            self.visit_date, self.eye = self.item.text(0).split()
+            self.visit_date, self.eye, self.fp_type = self.item.text(0).split()
         except IndexError as e:
             QMessageBox.information(self, "Warning", "Do not find ungraded patient.")
 
@@ -1251,11 +1264,12 @@ class MainWindowImpl(MainWindow):
         self.df = self.df[~df_mask]
 
     def get_df_mask(self):
-        """返回一个根据patient_id, visit_date, eye的全是布尔值的dataframe"""
+        """返回一个根据patient_id, visit_date, eye, fp_type的全是布尔值的dataframe"""
         return (
             (self.df.patient_id == self.patient_id)
             & (self.df.visit_date == self.visit_date)
             & (self.df.eye == self.eye)
+            & (self.df.fp_type == self.fp_type)
         )
 
     def df_remove_row_in_df_graded(self):
@@ -1263,7 +1277,7 @@ class MainWindowImpl(MainWindow):
         # 合并两个DataFrame，并标记出第二个DataFrame中的行
         merged_df = self.df.merge(
             self.df_graded,
-            on=["patient_id", "visit_date", "eye"],
+            on=["patient_id", "visit_date", "eye", "fp_type"],
             how="left",
             indicator=True,
         )
@@ -1279,6 +1293,7 @@ class MainWindowImpl(MainWindow):
             self.patient_id,
             self.visit_date,
             self.eye,
+            self.fp_type,
         )
 
     def update_df_database(self):
@@ -1289,7 +1304,7 @@ class MainWindowImpl(MainWindow):
             "grader": self.user,
             "eye": self.eye,
             "levels": self.levels,
-            "FP_type": "",  # 先占位, 先macular, 再disc
+            "FP_type": self.fp_type,  # 先占位, 先macular, 再disc
             # general
             "is_gradable": self.grad.comboBox_gradable.currentText(),
             "clarity": self.grad.comboBox_clarity.currentText(),

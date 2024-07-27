@@ -144,6 +144,25 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.horizontalLayout_35 = QHBoxLayout()
+        self.horizontalLayout_35.setObjectName(u"horizontalLayout_35")
+        self.label_27 = QLabel(self.centralwidget)
+        self.label_27.setObjectName(u"label_27")
+
+        self.horizontalLayout_35.addWidget(self.label_27)
+
+        self.horizontalSpacer_36 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_35.addItem(self.horizontalSpacer_36)
+
+        self.label_fundus_type = QLabel(self.centralwidget)
+        self.label_fundus_type.setObjectName(u"label_fundus_type")
+
+        self.horizontalLayout_35.addWidget(self.label_fundus_type)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_35)
+
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.label = QLabel(self.centralwidget)
@@ -925,6 +944,8 @@ class Ui_MainWindow(object):
         self.label_levels.setText(QCoreApplication.translate("MainWindow", u"Levels: ", None))
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"General:", None))
         self.label_29.setText("")
+        self.label_27.setText(QCoreApplication.translate("MainWindow", u"Fundus type (Disc or Macula):", None))
+        self.label_fundus_type.setText("")
         self.label.setText(QCoreApplication.translate("MainWindow", u"Is fundus photos gradable?", None))
         self.comboBox_gradable.setItemText(0, QCoreApplication.translate("MainWindow", u"Yes", None))
         self.comboBox_gradable.setItemText(1, QCoreApplication.translate("MainWindow", u"No", None))
