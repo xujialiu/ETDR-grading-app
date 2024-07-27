@@ -163,9 +163,11 @@ class MainWindowImpl(MainWindow):
             self.grad.spinBox_VB_quadrants,
             self.grad.spinBox_NVE_quadrants,
         ]
+        for spinbox in self.list_spinBox:
+            spinbox.setSpecialValueText(" ")
 
     def _init_grad_general_others(self):
-        # general+others
+        # general + others
         self.list_general_others = [
             self.grad.comboBox_gradable,
             self.grad.comboBox_clarity,
@@ -469,7 +471,7 @@ class MainWindowImpl(MainWindow):
                 # 设置spinbox为" ", 并设置他们不能被修改
                 for spinBox in self.list_spinBox:
                     spinBox.setEnabled(False)
-                    spinBox.setSpecialValueText(" ")
+
                     spinBox.setValue(-1)
 
     def _set_enabled_etdr(self):
@@ -1091,6 +1093,7 @@ class MainWindowImpl(MainWindow):
     def on_clear_clicked(self):
         # general
         self.grad.comboBox_gradable.setCurrentIndex(0)
+        self.grad.comboBox_clarity.setCurrentIndex(-1)
         self.grad.comboBox_is_dr.setCurrentText("Yes")
         self.grad.comboBox_diagnoses.setCurrentIndex(-1)
         self.grad.lineEdit_other_diagnoses.setText("")
@@ -1152,13 +1155,15 @@ class MainWindowImpl(MainWindow):
             self.grad.comboBox_clarity.setEnabled(False)
 
     def is_all_filled(self):
-        # 如果是gradable为No, 直接返回True
+        # 如果是gradable为No, 直接返回True(其他选项不需要填写)
         if self.grad.comboBox_gradable.currentText() == "No":
             return True
 
         comboboxes_choices = [
             combobox.currentText() for (combobox, _) in self.dict_comboboxes.values()
         ]
+        
+        
 
         # 如果gradable为Yes, 需要进一步判断combobox_with_hover
         if (
@@ -1168,7 +1173,7 @@ class MainWindowImpl(MainWindow):
             and self.grad.comboBox_clarity.currentText()
         ):
             return True
-
+        
         # 其余情况, 返回false
         else:
             return False
@@ -1176,25 +1181,29 @@ class MainWindowImpl(MainWindow):
     def _check_login_all_filled(self):
         if not self.islogin:
             QMessageBox.warning(self, "Error", "Please login!")
+            return False
         elif not self.is_all_filled():
             QMessageBox.warning(self, "Error", "Please fill all options!")
+            return False
+        else:
+            return True
 
     # working
     def on_save_clicked(self):
-        self._check_login_all_filled()
+        if self._check_login_all_filled():
 
-        self.update_df_database()
+            self.update_df_database()
+            self.update_df_graded()
+            self.update_df()
+            
+            
+            self.show_patients_tree()
+            self.find_and_activate_tree_item()
+            self.show_df_graded_df_database()
+            self.on_clear_clicked()
 
-        self.update_df_graded()
-
-        self.update_df()
-        self.show_patients_tree()
-        self.find_and_activate_tree_item()
-        self.show_df_graded_df_database()
-        self.on_clear_clicked()
-
-        for combobox, _ in self.dict_comboboxes.values():
-            combobox.setEnabled(True)
+            for combobox, _ in self.dict_comboboxes.values():
+                combobox.setEnabled(True)
 
     def find_and_activate_tree_item(self):
         """
