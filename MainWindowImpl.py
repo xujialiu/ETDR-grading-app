@@ -450,9 +450,13 @@ class MainWindowImpl(MainWindow):
         self.grad.label_levels.setText(f"Levels: {self.levels}")
 
     def displace_photo_number(self):
-        num_img = len(self.list_img_path)
+        self.num_img = len(self.list_img_path)
+
         self.grad.label_num_photo.setText(
-            f"NO. photo / Total photos: {self.img_index+1} / {num_img}"
+            f"NO. photo / Total photos: {self.img_index+1} / {self.num_img}"
+        )
+        self.img_dock.label_num_photo.setText(
+            f"NO. photo / Total photos: {self.img_index+1} / {self.num_img}"
         )
 
     def _set_disabled_except(self, list_combobox_excluded):
@@ -707,9 +711,32 @@ class MainWindowImpl(MainWindow):
         self.img_dock.pushButton_next.clicked.connect(self.on_display_img)
         self.img_dock.pushButton_next.clicked.connect(self.displace_photo_number)
 
+        self.img_dock.pushButton_next.clicked.connect(self.disable_next_button)
+
+        self.img_dock.pushButton_next.clicked.connect(self.enable_previous_button)
+
         self.img_dock.pushButton_previous.clicked.connect(self.on_previous_clicked)
         self.img_dock.pushButton_previous.clicked.connect(self.on_display_img)
         self.img_dock.pushButton_previous.clicked.connect(self.displace_photo_number)
+        self.img_dock.pushButton_previous.clicked.connect(self.disable_previous_button)
+        
+        self.img_dock.pushButton_previous.clicked.connect(self.enable_next_button)
+
+    def disable_next_button(self):
+        if self.img_index + 1 == self.num_img:
+            self.img_dock.pushButton_next.setEnabled(False)
+
+    def disable_previous_button(self):
+        if self.img_index + 1 == 1:
+            self.img_dock.pushButton_previous.setEnabled(False)
+
+    def enable_previous_button(self):
+        if  self.img_index + 1 != 1:
+            self.img_dock.pushButton_previous.setEnabled(True)
+
+    def enable_next_button(self):
+        if  self.img_index + 1 != self.num_img:
+            self.img_dock.pushButton_next.setEnabled(True)
 
     def on_next_clicked(self):
         if self.img_index < len(self.list_img_path) - 1:
