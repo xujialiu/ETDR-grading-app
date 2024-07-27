@@ -464,15 +464,15 @@ class MainWindowImpl(MainWindow):
                 combobox.setEnabled(False)
                 combobox.setCurrentIndex(-1)
 
-                # 设置comboBox_VH_extent为空字符串, 并设置他们不能被修改
-                self.grad.comboBox_VH_extent.setCurrentText("")
-                self.grad.comboBox_VH_extent.setEnabled(False)
+        # 设置comboBox_VH_extent为空字符串, 并设置他们不能被修改
+        self.grad.comboBox_VH_extent.setCurrentText("")
+        self.grad.comboBox_VH_extent.setEnabled(False)
 
-                # 设置spinbox为" ", 并设置他们不能被修改
-                for spinBox in self.list_spinBox:
-                    spinBox.setEnabled(False)
+        # 设置spinbox为" ", 并设置他们不能被修改
+        for spinBox in self.list_spinBox:
+            spinBox.setEnabled(False)
 
-                    spinBox.setValue(-1)
+            spinBox.setValue(-1)
 
     def _set_enabled_etdr(self):
         for _, (combobox, _) in self.dict_comboboxes.items():
@@ -512,6 +512,15 @@ class MainWindowImpl(MainWindow):
         self._set_enabled_etdr()
 
     def calculate_levels(self):
+        # levels为 99 的情况
+        condition_lv_99 = self.grad.comboBox_gradable.currentText() == "No"
+        if condition_lv_99:
+            self.levels = 99
+            self._set_disable_all_except_gradable()
+        else:
+            self._set_enabled_all()
+
+        must_conditon = self.grad.comboBox_MA.currentText() == "Present"
 
         # 只根据MA和RH判断levels为10和15的情况
         if (self.grad.comboBox_MA.currentText() == "Absent") and (
@@ -549,15 +558,18 @@ class MainWindowImpl(MainWindow):
             self.levels = 35
 
         # levels为35的情况
-        if (self.grad.comboBox_RH.currentText() == "< SP1") or (
+        if must_conditon and (
             (self.grad.comboBox_RH.currentText() == "< SP1")
             or (
-                self.grad.comboBox_HE.currentIndex() > 0
-                or self.grad.comboBox_SE.currentIndex() > 0
-                or self.grad.comboBox_VEN.currentIndex() > 0
+                (self.grad.comboBox_RH.currentText() == "< SP1")
                 or (
-                    self.grad.comboBox_IRMA.currentText() == "Questionable"
-                    or self.grad.comboBox_VB.currentText() == "Questionable"
+                    self.grad.comboBox_HE.currentIndex() > 0
+                    or self.grad.comboBox_SE.currentIndex() > 0
+                    or self.grad.comboBox_VEN.currentIndex() > 0
+                    or (
+                        self.grad.comboBox_IRMA.currentText() == "Questionable"
+                        or self.grad.comboBox_VB.currentText() == "Questionable"
+                    )
                 )
             )
         ):
@@ -685,15 +697,6 @@ class MainWindowImpl(MainWindow):
         )
         if condition_lv_90:
             self.levels = 90
-
-        # levels为 99 的情况
-        condition_lv_99 = self.grad.comboBox_gradable.currentText() == "No"
-        # (self.grad.comboBox_clarity, self.grad.comboBox_is_dr, self.grad.lineEdit_other_diagnoses)
-        if condition_lv_99:
-            self.levels = 99
-            self._set_disable_all_except_gradable()
-        else:
-            self._set_enabled_all()
 
     def _init_app(self):
         app = QApplication.instance()
@@ -1162,8 +1165,6 @@ class MainWindowImpl(MainWindow):
         comboboxes_choices = [
             combobox.currentText() for (combobox, _) in self.dict_comboboxes.values()
         ]
-        
-        
 
         # 如果gradable为Yes, 需要进一步判断combobox_with_hover
         if (
@@ -1173,7 +1174,7 @@ class MainWindowImpl(MainWindow):
             and self.grad.comboBox_clarity.currentText()
         ):
             return True
-        
+
         # 其余情况, 返回false
         else:
             return False
@@ -1195,8 +1196,7 @@ class MainWindowImpl(MainWindow):
             self.update_df_database()
             self.update_df_graded()
             self.update_df()
-            
-            
+
             self.show_patients_tree()
             self.find_and_activate_tree_item()
             self.show_df_graded_df_database()
