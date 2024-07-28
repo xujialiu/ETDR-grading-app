@@ -67,7 +67,7 @@ def load_or_create_df_database(filename=DF_DATABASE_PATH):
         "grader",
         "eye",
         "levels",
-        "FP_type",
+        "severity",
         # general
         "is_gradable",
         "clarity",

@@ -6,6 +6,8 @@
 # [[feat, priority high]]: 增加qlabel, 显示macula和disc, 增加一个内部计数器
 # [[feat, priority high]]: 由于增加了项目, 需要需要修改util
 
+# 增加levels对应的DR严重程度
+
 
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -108,7 +110,6 @@ class MainWindowImpl(MainWindow):
         self._init_img_slider()
         self._init_img_spinbox()
         self._init_img_reset_button()
-        # self._init_combobox_is_dr()
         self._init_clear_button()
         self._init_login_button()
         self._init_folder_button()
@@ -120,6 +121,7 @@ class MainWindowImpl(MainWindow):
         self._init_key_listener()
         self._init_grad_spinbox()
         self._init_grad_general_others()
+        self._init_dr_severity_dict()
 
         # 初始化事件相关函数
         self.installEventFilter(self)
@@ -131,6 +133,24 @@ class MainWindowImpl(MainWindow):
         # 初始化测试模块
         if self.test_mode:
             self._init_debug_mode()
+
+    def _init_dr_severity_dict(self):
+        self.dict_level_severity = {
+            "": "",
+            "10": "Absent",
+            "14 & 15": "Questionable DR",
+            "20": "Minimal DR",
+            "35": "Mild NPDR",
+            "43": "Moderate NPDR",
+            "47": "Moderately Severe NPDR",
+            "53": "Severe DR",
+            "61": "Mild PDR",
+            "65": "Moderate PDR",
+            "71": "Severe PDR",
+            "81 & 85": "Advanced PDR",
+            "90": "Inactive PDR",
+            "99": "Ungradable",
+        }
 
     def _init_debug_mode(self):
 
@@ -163,8 +183,35 @@ class MainWindowImpl(MainWindow):
             self.grad.spinBox_VB_quadrants,
             self.grad.spinBox_NVE_quadrants,
         ]
+        self.dict_combobox_spinbox = {
+            "RH": (self.grad.comboBox_RH, self.grad.spinBox_RH_quadrants),
+            "IRMA": (self.grad.comboBox_IRMA, self.grad.spinBox_IRMA_quadrants),
+            "VB": (self.grad.comboBox_VB, self.grad.spinBox_VB_quadrants),
+            "NVE": (self.grad.comboBox_NVE, self.grad.spinBox_NVE_quadrants),
+        }
+
         for spinbox in self.list_spinBox:
             spinbox.setSpecialValueText(" ")
+            spinbox.valueChanged.connect(self.calculate_display_levels_severity)
+
+        self.set_combobox_none_to_disable_spinbox()
+
+    # working
+    def set_combobox_none_to_disable_spinbox(self):
+
+        def enable_disable_combobox(current_text, spinbox):
+            if current_text == "None":
+                spinbox.setEnabled(False)
+                spinbox.setValue(0)
+            else:
+                spinbox.setEnabled(True)
+                spinbox.setValue(1)
+
+        for combobox, spinbox in self.dict_combobox_spinbox.values():
+            # 使用 partial 时不传递 combobox 的 currentText()
+            func = partial(enable_disable_combobox, spinbox=spinbox)
+            # 连接信号，传递的 current_text 由信号提供
+            combobox.currentTextChanged.connect(func)
 
     def _init_grad_general_others(self):
         # general + others
@@ -177,7 +224,9 @@ class MainWindowImpl(MainWindow):
             self.grad.comboBox_ICDR,
         ] + [self.grad.comboBox_confident]
 
-        self.grad.comboBox_gradable.currentTextChanged.connect(self.displace_levels)
+        self.grad.comboBox_gradable.currentTextChanged.connect(
+            self.calculate_display_levels_severity
+        )
 
     def _init_key_listener(self):
         self.key_listener = KeyListener()
@@ -387,7 +436,9 @@ class MainWindowImpl(MainWindow):
                 self.grad, comboBox.objectName(), hover_combobox
             )  # 绑定到新的变量上
             hover_combobox.setCurrentIndex(-1)
-            hover_combobox.currentTextChanged.connect(self.displace_levels)
+            hover_combobox.currentTextChanged.connect(
+                self.calculate_display_levels_severity
+            )
 
             self.grad.list_comboboxes.append(hover_combobox)
 
@@ -445,9 +496,12 @@ class MainWindowImpl(MainWindow):
         layout.replaceWidget(self.grad.comboBox_diagnoses, checkable_combobox)
         setattr(self.grad, "comboBox_diagnoses", checkable_combobox)
 
-    def displace_levels(self):
+    def calculate_display_levels_severity(self):
         self.calculate_levels()
-        self.grad.label_levels.setText(f"Levels: {self.levels}")
+        self.grad.label_levels.setText(f"DR levels: {self.levels}")
+
+        self.severity = self.dict_level_severity[self.levels]
+        self.grad.label_severity.setText(f"DR severity: {self.severity}")
 
     def displace_photo_number(self):
         self.num_img = len(self.list_img_path)
@@ -479,15 +533,16 @@ class MainWindowImpl(MainWindow):
             spinBox.setValue(-1)
 
     def _set_enabled_etdr(self):
-        for _, (combobox, _) in self.dict_comboboxes.items():
-            combobox.setEnabled(True)
+        if not self.grad.comboBox_HE.isEnabled():
+            for _, (combobox, _) in self.dict_comboboxes.items():
+                combobox.setEnabled(True)
 
-        self.grad.comboBox_VH_extent.setCurrentText("")
-        self.grad.comboBox_VH_extent.setEnabled(True)
+            self.grad.comboBox_VH_extent.setCurrentText("")
+            self.grad.comboBox_VH_extent.setEnabled(True)
 
-        for spinBox in self.list_spinBox:
-            spinBox.setEnabled(True)
-            spinBox.setValue(0)
+            for spinBox in self.list_spinBox:
+                spinBox.setEnabled(True)
+                spinBox.setValue(0)
 
     def _set_disable_all_except_gradable(self):
         # disable general and others
@@ -519,37 +574,43 @@ class MainWindowImpl(MainWindow):
         # levels为 99 的情况
         condition_lv_99 = self.grad.comboBox_gradable.currentText() == "No"
         if condition_lv_99:
-            self.levels = 99
+            self.levels = "99"
             self._set_disable_all_except_gradable()
         else:
             self._set_enabled_all()
 
         must_conditon = self.grad.comboBox_MA.currentText() == "Present"
 
-        # 只根据MA和RH判断levels为10和15的情况
-        if (self.grad.comboBox_MA.currentText() == "Absent") and (
+        # levels为10的情况
+        condition_lv_10 = (self.grad.comboBox_MA.currentText() == "Absent") and (
             self.grad.comboBox_RH.currentText() == "None"
-        ):
-            self.levels = 10
+        )
+        if condition_lv_10:
+            self.levels = "10"
             self._set_disabled_except(["MA", "RH"])
-        elif (self.grad.comboBox_MA.currentText() == "Absent") and (
-            self.grad.comboBox_RH.currentText() != "None"
-        ):
+
+        # levels为14&15的情况
+
+        condition_lv_14_15 = (self.grad.comboBox_MA.currentText() == "Absent") and (
+            self.grad.comboBox_RH.currentIndex() > 0
+        )
+        if condition_lv_14_15:
+            self.levels = "14 & 15"
             self._set_disabled_except(["MA", "RH"])
-            self.levels = 15
-        else:
+
+        # 除了levels为10和14&15情况的其他情况, 需要评其他选项
+        if not (condition_lv_10 or condition_lv_14_15):
             self._set_enabled_etdr()
-            self.levels = ""
 
         # levels为20的情况
-        other_combobox_option = {}
+        self.other_combobox_option = {}
         for name, (combobox, option) in self.dict_comboboxes.items():
             if name not in ["MA", "RH"]:
-                other_combobox_option[name] = combobox.currentText()
+                self.other_combobox_option[name] = combobox.currentText()
 
-        l = [i == "None" for i in other_combobox_option.values()]
+        l = [i == "None" for i in self.other_combobox_option.values()]
         if all(l):
-            self.levels = 20
+            self.levels = "20"
 
         # levels为90需要跳转到35的情况
         condition_lv_90_focal_scar = (
@@ -559,14 +620,13 @@ class MainWindowImpl(MainWindow):
             and (self.grad.comboBox_NVE.currentIndex() == 0)
         )
         if condition_lv_90_focal_scar:
-            self.levels = 35
+            self.levels = "35"
 
         # levels为35的情况
         if must_conditon and (
-            (self.grad.comboBox_RH.currentText() == "< SP1")
-            or (
+            (
                 (self.grad.comboBox_RH.currentText() == "< SP1")
-                or (
+                and (
                     self.grad.comboBox_HE.currentIndex() > 0
                     or self.grad.comboBox_SE.currentIndex() > 0
                     or self.grad.comboBox_VEN.currentIndex() > 0
@@ -577,22 +637,23 @@ class MainWindowImpl(MainWindow):
                 )
             )
         ):
-            self.levels = 35
+            self.levels = "35"
 
         # levels为43的情况, 需要增加RH quadrant的情况
-        condition_lv_43_1 = (
-            self.grad.comboBox_RH.currentText() == "≥ SP1, < SP2A"
-            and self.grad.spinBox_RH_quadrants.value() >= 0
+        self.condition_lv_43_1 = (
+            (self.grad.comboBox_RH.currentText() == "≥ SP1, < SP2A")
+            and (self.grad.spinBox_RH_quadrants.value() >= 1)
         ) or (
-            self.grad.comboBox_RH.currentText() == "≥ SP2A"
-            and self.grad.spinBox_RH_quadrants.value() == 1
-        )
-        condition_lv_43_2 = (self.grad.comboBox_IRMA.currentText() == "< SP8A") and (
-            self.grad.spinBox_IRMA_quadrants.value() in (1, 2, 3)
+            (self.grad.comboBox_RH.currentText() == "≥ SP2A")
+            and (self.grad.spinBox_RH_quadrants.value() == 1)
         )
 
-        if condition_lv_43_1 or condition_lv_43_2:
-            self.levels = 43
+        self.condition_lv_43_2 = (
+            self.grad.comboBox_IRMA.currentText() == "< SP8A"
+        ) and (self.grad.spinBox_IRMA_quadrants.value() in (1, 2, 3))
+
+        if self.condition_lv_43_1 or self.condition_lv_43_2:
+            self.levels = "43"
 
         # levels为47的情况
         # Mild `IRMA<SP8A` in 4 quadrants
@@ -601,9 +662,9 @@ class MainWindowImpl(MainWindow):
         )
 
         # Severe RH>SP2A in 2 to 3 quadrants
-        condition_lv_47_2 = (
-            self.grad.comboBox_RH.currentText() in ("≥ SP1, < SP2A", "≥ SP2A")
-        ) and (self.grad.spinBox_RH_quadrants.value() in (2, 3))
+        condition_lv_47_2 = (self.grad.comboBox_RH.currentText() == "≥ SP2A") and (
+            self.grad.spinBox_RH_quadrants.value() in (2, 3)
+        )
 
         # `VB>SP6A` in 1 quadrant
         conditon_lv_47_3 = (self.grad.comboBox_VB.currentText() == "≥ SP6A") and (
@@ -611,7 +672,7 @@ class MainWindowImpl(MainWindow):
         )
 
         if condition_lv_47_1 or condition_lv_47_2 or conditon_lv_47_3:
-            self.levels = 47
+            self.levels = "47"
 
         # levels为53的情况
         # >2 of the 4 level 47 characteristics
@@ -641,7 +702,7 @@ class MainWindowImpl(MainWindow):
             or condition_lv_53_3
             or condition_lv_53_4
         ):
-            self.levels = 53
+            self.levels = "53"
 
         # levels为61的情况
         # NVE<0.5 DA in 1 or more quadrants
@@ -650,7 +711,7 @@ class MainWindowImpl(MainWindow):
         ) and (self.grad.spinBox_NVE_quadrants.value() >= 1)
 
         if condition_lv_61:
-            self.levels = 61
+            self.levels = "61"
 
         # levels为65的情况
         # NVE > 0.5 DA or (VH or PRH)
@@ -662,7 +723,7 @@ class MainWindowImpl(MainWindow):
         condition_lv_65_2 = self.grad.comboBox_NVD.currentText() == "< SP 10A"
 
         if condition_lv_65_1 or condition_lv_65_2:
-            self.levels = 65
+            self.levels = "65"
 
         # levels为71的情况
         # NVE > 0.5 DA and VH or PRH
@@ -680,7 +741,7 @@ class MainWindowImpl(MainWindow):
         condition_lv_71_3 = self.grad.comboBox_PRH_VH.currentIndex() > 1
 
         if condition_lv_71_1 or condition_lv_71_2 or condition_lv_71_3:
-            self.levels = 71
+            self.levels = "71"
 
         # levels为 81&85 的情况
         condition_lv_81_85 = (self.grad.comboBox_VH_extent.currentIndex() == 2) or (
@@ -688,7 +749,7 @@ class MainWindowImpl(MainWindow):
         )
 
         if condition_lv_81_85:
-            self.levels = 81
+            self.levels = "81 & 85"
 
         # levels为 90 的情况
         # Laser scars or FPD or FPE, but NVD and NVE absent
@@ -700,7 +761,7 @@ class MainWindowImpl(MainWindow):
             and (self.grad.comboBox_NVE.currentIndex() == 0)
         )
         if condition_lv_90:
-            self.levels = 90
+            self.levels = "90"
 
     def _init_app(self):
         app = QApplication.instance()
@@ -719,7 +780,7 @@ class MainWindowImpl(MainWindow):
         self.img_dock.pushButton_previous.clicked.connect(self.on_display_img)
         self.img_dock.pushButton_previous.clicked.connect(self.displace_photo_number)
         self.img_dock.pushButton_previous.clicked.connect(self.disable_previous_button)
-        
+
         self.img_dock.pushButton_previous.clicked.connect(self.enable_next_button)
 
     def disable_next_button(self):
@@ -731,11 +792,11 @@ class MainWindowImpl(MainWindow):
             self.img_dock.pushButton_previous.setEnabled(False)
 
     def enable_previous_button(self):
-        if  self.img_index + 1 != 1:
+        if self.img_index + 1 != 1:
             self.img_dock.pushButton_previous.setEnabled(True)
 
     def enable_next_button(self):
-        if  self.img_index + 1 != self.num_img:
+        if self.img_index + 1 != self.num_img:
             self.img_dock.pushButton_next.setEnabled(True)
 
     def on_next_clicked(self):
@@ -1184,6 +1245,9 @@ class MainWindowImpl(MainWindow):
             self.grad.comboBox_confident.setEnabled(False)
             self.grad.comboBox_clarity.setEnabled(False)
 
+        self.calculate_levels()
+        self.calculate_display_levels_severity()
+
     def is_all_filled(self):
         # 如果是gradable为No, 直接返回True(其他选项不需要填写)
         if self.grad.comboBox_gradable.currentText() == "No":
@@ -1316,7 +1380,7 @@ class MainWindowImpl(MainWindow):
             "grader": self.user,
             "eye": self.eye,
             "levels": self.levels,
-            "FP_type": "",  # 先占位, 先macular, 再disc
+            "severity": self.severity,
             # general
             "is_gradable": self.grad.comboBox_gradable.currentText(),
             "clarity": self.grad.comboBox_clarity.currentText(),
