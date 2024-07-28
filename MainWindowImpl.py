@@ -200,7 +200,7 @@ class MainWindowImpl(MainWindow):
     def set_combobox_none_to_disable_spinbox(self):
 
         def enable_disable_combobox(current_text, spinbox):
-            if current_text == "None":
+            if current_text in ("None", ""):
                 spinbox.setEnabled(False)
                 spinbox.setValue(0)
             else:
@@ -572,12 +572,12 @@ class MainWindowImpl(MainWindow):
 
     def calculate_levels(self):
         # levels为 99 的情况
-        condition_lv_99 = self.grad.comboBox_gradable.currentText() == "No"
-        if condition_lv_99:
-            self.levels = "99"
-            self._set_disable_all_except_gradable()
-        else:
-            self._set_enabled_all()
+        # condition_lv_99 = self.grad.comboBox_gradable.currentText() == "No"
+        # if condition_lv_99:
+        #     self.levels = "99"
+        #     self._set_disable_all_except_gradable()
+        # else:
+        #     self._set_enabled_all()
 
         must_conditon = self.grad.comboBox_MA.currentText() == "Present"
 
@@ -599,16 +599,18 @@ class MainWindowImpl(MainWindow):
             self._set_disabled_except(["MA", "RH"])
 
         # 除了levels为10和14&15情况的其他情况, 需要评其他选项
-        if not (condition_lv_10 or condition_lv_14_15):
+        if (not (condition_lv_10 or condition_lv_14_15)) or (
+            not (self.grad.comboBox_gradable == "Yes")
+        ):
             self._set_enabled_etdr()
 
         # levels为20的情况
-        self.other_combobox_option = {}
+        self.other_combobox_text = {}
         for name, (combobox, option) in self.dict_comboboxes.items():
             if name not in ["MA", "RH"]:
-                self.other_combobox_option[name] = combobox.currentText()
+                self.other_combobox_text[name] = combobox.currentText()
 
-        l = [i == "None" for i in self.other_combobox_option.values()]
+        l = [i == "None" for i in self.other_combobox_text.values()]
         if all(l):
             self.levels = "20"
 
@@ -762,6 +764,23 @@ class MainWindowImpl(MainWindow):
         )
         if condition_lv_90:
             self.levels = "90"
+
+        # levels为 99 的情况
+        condition_lv_99 = self.grad.comboBox_gradable.currentText() == "No"
+        if condition_lv_99:
+            self.levels = "99"
+            self._set_disable_all_except_gradable()
+        else:
+            self._set_enabled_all()
+
+        # 从 gradable == "No" 切回 gradable == "Yes"的情况
+        l = [
+            combobox.currentIndex() == -1
+            for combobox, _ in self.dict_comboboxes.values()
+        ]
+
+        if self.grad.comboBox_gradable.currentText() == "Yes" and all(l):
+            self.levels = ""
 
     def _init_app(self):
         app = QApplication.instance()
@@ -1229,21 +1248,24 @@ class MainWindowImpl(MainWindow):
             self.on_gradable_text_changed
         )
 
+    # working
     def on_gradable_text_changed(self):
 
-        if self.grad.comboBox_gradable.currentText() == "Yes":
-            for combobox, _ in self.dict_comboboxes.values():
-                combobox.setEnabled(True)
-            self.grad.comboBox_is_dr.setEnabled(True)
-            self.grad.comboBox_confident.setEnabled(True)
-            self.grad.comboBox_clarity.setEnabled(True)
+        # if self.grad.comboBox_gradable.currentText() == "Yes":
+        #     for combobox, _ in self.dict_comboboxes.values():
+        #         combobox.setEnabled(True)
+        #     self.grad.comboBox_is_dr.setEnabled(True)
+        #     self.grad.comboBox_confident.setEnabled(True)
+        #     self.grad.comboBox_clarity.setEnabled(True)
 
-        if self.grad.comboBox_gradable.currentText() == "No":
-            for combobox, _ in self.dict_comboboxes.values():
-                combobox.setEnabled(False)
-            self.grad.comboBox_is_dr.setEnabled(False)
-            self.grad.comboBox_confident.setEnabled(False)
-            self.grad.comboBox_clarity.setEnabled(False)
+        # if self.grad.comboBox_gradable.currentText() == "No":
+        #     for combobox, _ in self.dict_comboboxes.values():
+        #         combobox.setEnabled(False)
+        #     self.grad.comboBox_is_dr.setEnabled(False)
+        #     self.grad.comboBox_confident.setEnabled(False)
+        #     self.grad.comboBox_clarity.setEnabled(False)
+        #     self.grad.lineEdit_other_diagnoses.setText("")
+        #     self.grad.comboBox_ICDR.setCurrentIndex(-1)
 
         self.calculate_levels()
         self.calculate_display_levels_severity()
@@ -1280,7 +1302,6 @@ class MainWindowImpl(MainWindow):
         else:
             return True
 
-    # working
     def on_save_clicked(self):
         if self._check_login_all_filled():
 
