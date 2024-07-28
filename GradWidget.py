@@ -27,9 +27,7 @@ class Ui_MainWindow(object):
         MainWindow.resize(1090, 1273)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_16 = QVBoxLayout(self.centralwidget)
-        self.verticalLayout_16.setObjectName(u"verticalLayout_16")
-        self.verticalLayout_15 = QVBoxLayout()
+        self.verticalLayout_15 = QVBoxLayout(self.centralwidget)
         self.verticalLayout_15.setObjectName(u"verticalLayout_15")
         self.verticalLayout_10 = QVBoxLayout()
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
@@ -93,17 +91,35 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer_26)
 
+
+        self.verticalLayout_10.addLayout(self.horizontalLayout)
+
+        self.horizontalLayout_35 = QHBoxLayout()
+        self.horizontalLayout_35.setObjectName(u"horizontalLayout_35")
+        self.horizontalSpacer_38 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_35.addItem(self.horizontalSpacer_38)
+
         self.label_levels = QLabel(self.centralwidget)
         self.label_levels.setObjectName(u"label_levels")
 
-        self.horizontalLayout.addWidget(self.label_levels)
+        self.horizontalLayout_35.addWidget(self.label_levels)
 
         self.horizontalSpacer_24 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.horizontalLayout.addItem(self.horizontalSpacer_24)
+        self.horizontalLayout_35.addItem(self.horizontalSpacer_24)
+
+        self.label_severity = QLabel(self.centralwidget)
+        self.label_severity.setObjectName(u"label_severity")
+
+        self.horizontalLayout_35.addWidget(self.label_severity)
+
+        self.horizontalSpacer_36 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_35.addItem(self.horizontalSpacer_36)
 
 
-        self.verticalLayout_10.addLayout(self.horizontalLayout)
+        self.verticalLayout_10.addLayout(self.horizontalLayout_35)
 
 
         self.verticalLayout_15.addLayout(self.verticalLayout_10)
@@ -413,7 +429,7 @@ class Ui_MainWindow(object):
 
         self.spinBox_RH_quadrants = QSpinBox(self.centralwidget)
         self.spinBox_RH_quadrants.setObjectName(u"spinBox_RH_quadrants")
-        self.spinBox_RH_quadrants.setMinimum(-1)
+        self.spinBox_RH_quadrants.setMinimum(0)
         self.spinBox_RH_quadrants.setMaximum(4)
 
         self.horizontalLayout_13.addWidget(self.spinBox_RH_quadrants)
@@ -503,7 +519,7 @@ class Ui_MainWindow(object):
 
         self.spinBox_IRMA_quadrants = QSpinBox(self.centralwidget)
         self.spinBox_IRMA_quadrants.setObjectName(u"spinBox_IRMA_quadrants")
-        self.spinBox_IRMA_quadrants.setMinimum(-1)
+        self.spinBox_IRMA_quadrants.setMinimum(0)
         self.spinBox_IRMA_quadrants.setMaximum(4)
 
         self.horizontalLayout_14.addWidget(self.spinBox_IRMA_quadrants)
@@ -555,7 +571,7 @@ class Ui_MainWindow(object):
 
         self.spinBox_VB_quadrants = QSpinBox(self.centralwidget)
         self.spinBox_VB_quadrants.setObjectName(u"spinBox_VB_quadrants")
-        self.spinBox_VB_quadrants.setMinimum(-1)
+        self.spinBox_VB_quadrants.setMinimum(0)
         self.spinBox_VB_quadrants.setMaximum(4)
 
         self.horizontalLayout_17.addWidget(self.spinBox_VB_quadrants)
@@ -626,7 +642,7 @@ class Ui_MainWindow(object):
 
         self.spinBox_NVE_quadrants = QSpinBox(self.centralwidget)
         self.spinBox_NVE_quadrants.setObjectName(u"spinBox_NVE_quadrants")
-        self.spinBox_NVE_quadrants.setMinimum(-1)
+        self.spinBox_NVE_quadrants.setMinimum(0)
         self.spinBox_NVE_quadrants.setMaximum(4)
 
         self.horizontalLayout_29.addWidget(self.spinBox_NVE_quadrants)
@@ -890,9 +906,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_15.addLayout(self.horizontalLayout_20)
 
-
-        self.verticalLayout_16.addLayout(self.verticalLayout_15)
-
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -922,7 +935,8 @@ class Ui_MainWindow(object):
         self.label_num_photo.setText(QCoreApplication.translate("MainWindow", u"NO. photo / Total photos:", None))
         self.label_user.setText(QCoreApplication.translate("MainWindow", u"Grader: ", None))
         self.label_eye.setText(QCoreApplication.translate("MainWindow", u"Eye: ", None))
-        self.label_levels.setText(QCoreApplication.translate("MainWindow", u"Levels: ", None))
+        self.label_levels.setText(QCoreApplication.translate("MainWindow", u"DR levels: ", None))
+        self.label_severity.setText(QCoreApplication.translate("MainWindow", u"DR severity:", None))
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"General:", None))
         self.label_29.setText("")
         self.label.setText(QCoreApplication.translate("MainWindow", u"Is fundus photos gradable?", None))
