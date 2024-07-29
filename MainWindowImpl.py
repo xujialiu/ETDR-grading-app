@@ -122,6 +122,8 @@ class MainWindowImpl(MainWindow):
         self._init_grad_spinbox()
         self._init_grad_general_others()
         self._init_dr_severity_dict()
+        self._init_combobox_gradable()
+        self._init_combobox_ma()
 
         # 初始化事件相关函数
         self.installEventFilter(self)
@@ -192,6 +194,7 @@ class MainWindowImpl(MainWindow):
 
         for spinbox in self.list_spinBox:
             spinbox.setSpecialValueText(" ")
+            spinbox.setEnabled(False)
             spinbox.valueChanged.connect(self.calculate_display_levels_severity)
 
         self.set_combobox_none_to_disable_spinbox()
@@ -223,10 +226,6 @@ class MainWindowImpl(MainWindow):
             self.grad.lineEdit_other_diagnoses,
             self.grad.comboBox_ICDR,
         ] + [self.grad.comboBox_confident]
-
-        self.grad.comboBox_gradable.currentTextChanged.connect(
-            self.calculate_display_levels_severity
-        )
 
     def _init_key_listener(self):
         self.key_listener = KeyListener()
@@ -513,7 +512,7 @@ class MainWindowImpl(MainWindow):
             f"NO. photo / Total photos: {self.img_index+1} / {self.num_img}"
         )
 
-    def _set_disabled_except(self, list_combobox_excluded):
+    def _set_disabled_etdr_except(self, list_combobox_excluded):
         for name, (combobox, _) in self.dict_comboboxes.items():
             if name in list_combobox_excluded:
                 pass
@@ -523,14 +522,8 @@ class MainWindowImpl(MainWindow):
                 combobox.setCurrentIndex(-1)
 
         # 设置comboBox_VH_extent为空字符串, 并设置他们不能被修改
-        self.grad.comboBox_VH_extent.setCurrentText("")
+        self.grad.comboBox_VH_extent.setCurrentIndex(-1)
         self.grad.comboBox_VH_extent.setEnabled(False)
-
-        # 设置spinbox为" ", 并设置他们不能被修改
-        for spinBox in self.list_spinBox:
-            spinBox.setEnabled(False)
-
-            spinBox.setValue(-1)
 
     def _set_enabled_etdr(self):
 
@@ -539,10 +532,6 @@ class MainWindowImpl(MainWindow):
 
         self.grad.comboBox_VH_extent.setCurrentText("")
         self.grad.comboBox_VH_extent.setEnabled(True)
-
-        for spinBox in self.list_spinBox:
-            spinBox.setEnabled(True)
-            spinBox.setValue(0)
 
     def _set_disable_all_except_gradable(self):
         # disable general and others
@@ -554,8 +543,11 @@ class MainWindowImpl(MainWindow):
         self.grad.comboBox_is_dr.setCurrentIndex(-1)
         self.grad.comboBox_confident.setCurrentIndex(-1)
 
+        self.grad.lineEdit_other_diagnoses.setText("")
+        self.grad.comboBox_ICDR.setCurrentIndex(-1)
+
         # disable etdr
-        self._set_disabled_except([])
+        self._set_disabled_etdr_except([])
 
     def _set_enabled_all(self):
         # set general and others to correct text
@@ -572,14 +564,11 @@ class MainWindowImpl(MainWindow):
 
     def calculate_levels(self):
         # levels为 99 的情况
-        # condition_lv_99 = self.grad.comboBox_gradable.currentText() == "No"
-        # if condition_lv_99:
-        #     self.levels = "99"
-        #     self._set_disable_all_except_gradable()
-        # else:
-        #     self._set_enabled_all()
-
-        must_conditon = self.grad.comboBox_MA.currentText() == "Present"
+        condition_lv_99 = self.grad.comboBox_gradable.currentText() == "No"
+        if condition_lv_99:
+            self.levels = "99"
+        else:
+            self.levels = ""
 
         # levels为10的情况
         condition_lv_10 = (self.grad.comboBox_MA.currentText() == "Absent") and (
@@ -587,7 +576,7 @@ class MainWindowImpl(MainWindow):
         )
         if condition_lv_10:
             self.levels = "10"
-            self._set_disabled_except(["MA", "RH"])
+            # self._set_disabled_except(["MA", "RH"])
 
         # levels为14&15的情况
         condition_lv_14_15 = (self.grad.comboBox_MA.currentText() == "Absent") and (
@@ -595,13 +584,11 @@ class MainWindowImpl(MainWindow):
         )
         if condition_lv_14_15:
             self.levels = "14 & 15"
-            self._set_disabled_except(["MA", "RH"])
+            # self._set_disabled_except(["MA", "RH"])
 
-        # 如果MA是present并且gradable为yes, 则enable所有的etdr选项
-        if (self.grad.comboBox_MA.currentText() == "Present") and (
-            self.grad.comboBox_gradable.currentText() == "Yes"
-        ):
-            self._set_enabled_etdr()
+        all_spinbox_status = []
+        for spinBox in self.list_spinBox:
+            all_spinbox_status.append(spinBox.isEnabled())
 
         # levels为20的情况
         self.other_combobox_text = {}
@@ -624,6 +611,7 @@ class MainWindowImpl(MainWindow):
             self.levels = "35"
 
         # levels为35的情况
+        must_conditon = self.grad.comboBox_MA.currentText() == "Present"
         if must_conditon and (
             (
                 (self.grad.comboBox_RH.currentText() == "< SP1")
@@ -763,21 +751,6 @@ class MainWindowImpl(MainWindow):
         )
         if condition_lv_90:
             self.levels = "90"
-
-        # levels为 99 的情况
-        condition_lv_99 = self.grad.comboBox_gradable.currentText() == "No"
-        if condition_lv_99:
-            self.levels = "99"
-            self._set_disable_all_except_gradable()
-
-        # 从 gradable == "No" 切回 gradable == "Yes"的情况
-        l = [
-            combobox.currentIndex() == -1
-            for combobox, _ in self.dict_comboboxes.values()
-        ]
-
-        if self.grad.comboBox_gradable.currentText() == "Yes" and all(l):
-            self.levels = ""
 
     def _init_app(self):
         app = QApplication.instance()
@@ -1038,8 +1011,9 @@ class MainWindowImpl(MainWindow):
             "This is a diabetic ETDR grading application.<br><br>"
             f"Version: {VERSION}<br><br>"
             "Author: Xujia Liu<br>"
-            "Email: xujialiuphd@gmail.com<br><br>"
-            'Website (building): <a href="https://github.com/xujialiu/ETDR-grading-app">https://github.com/xujialiu/ETDR-grading-app</a>'
+            "Email: xujialiuphd@gmail.com<br>"
+            'Website: <a href="github.com/xujialiu/ETDR-grading-app">https://github.com/xujialiu/ETDR-grading-app</a><br>'
+            ''
         )
         about_dialog.setIcon(QMessageBox.Information)
         about_dialog.exec()
@@ -1245,25 +1219,26 @@ class MainWindowImpl(MainWindow):
             self.on_gradable_text_changed
         )
 
+    def _init_combobox_ma(self):
+        self.grad.comboBox_MA.currentTextChanged.connect(self.on_ma_text_changed)
+
+    def on_ma_text_changed(self):
+        if self.grad.comboBox_MA.currentText() == "Absent":
+            self._set_disabled_etdr_except(["MA", "RH"])
+            print(1)
+        if self.grad.comboBox_MA.currentText() == "Present":
+            self._set_enabled_etdr()
+
     # working
     def on_gradable_text_changed(self):
+        if self.grad.comboBox_gradable.currentText() == "No":
+            # disable全部
+            self._set_disable_all_except_gradable()
+        if self.grad.comboBox_gradable.currentText() == "Yes":
+            # enable全部
+            self._set_enabled_all()
 
-        # if self.grad.comboBox_gradable.currentText() == "Yes":
-        #     for combobox, _ in self.dict_comboboxes.values():
-        #         combobox.setEnabled(True)
-        #     self.grad.comboBox_is_dr.setEnabled(True)
-        #     self.grad.comboBox_confident.setEnabled(True)
-        #     self.grad.comboBox_clarity.setEnabled(True)
-
-        # if self.grad.comboBox_gradable.currentText() == "No":
-        #     for combobox, _ in self.dict_comboboxes.values():
-        #         combobox.setEnabled(False)
-        #     self.grad.comboBox_is_dr.setEnabled(False)
-        #     self.grad.comboBox_confident.setEnabled(False)
-        #     self.grad.comboBox_clarity.setEnabled(False)
-        #     self.grad.lineEdit_other_diagnoses.setText("")
-        #     self.grad.comboBox_ICDR.setCurrentIndex(-1)
-
+        # self.enable_disable_all
         self.calculate_levels()
         self.calculate_display_levels_severity()
 
@@ -1273,7 +1248,8 @@ class MainWindowImpl(MainWindow):
             return True
 
         comboboxes_choices = [
-            combobox.currentText() for (combobox, _) in self.dict_comboboxes.values()
+            combobox.currentText() != ""
+            for (combobox, _) in self.dict_comboboxes.values()
         ]
 
         # 如果gradable为Yes, 需要进一步判断combobox_with_hover
