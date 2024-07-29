@@ -533,16 +533,16 @@ class MainWindowImpl(MainWindow):
             spinBox.setValue(-1)
 
     def _set_enabled_etdr(self):
-        if not self.grad.comboBox_HE.isEnabled():
-            for _, (combobox, _) in self.dict_comboboxes.items():
-                combobox.setEnabled(True)
 
-            self.grad.comboBox_VH_extent.setCurrentText("")
-            self.grad.comboBox_VH_extent.setEnabled(True)
+        for _, (combobox, _) in self.dict_comboboxes.items():
+            combobox.setEnabled(True)
 
-            for spinBox in self.list_spinBox:
-                spinBox.setEnabled(True)
-                spinBox.setValue(0)
+        self.grad.comboBox_VH_extent.setCurrentText("")
+        self.grad.comboBox_VH_extent.setEnabled(True)
+
+        for spinBox in self.list_spinBox:
+            spinBox.setEnabled(True)
+            spinBox.setValue(0)
 
     def _set_disable_all_except_gradable(self):
         # disable general and others
@@ -590,7 +590,6 @@ class MainWindowImpl(MainWindow):
             self._set_disabled_except(["MA", "RH"])
 
         # levels为14&15的情况
-
         condition_lv_14_15 = (self.grad.comboBox_MA.currentText() == "Absent") and (
             self.grad.comboBox_RH.currentIndex() > 0
         )
@@ -598,9 +597,9 @@ class MainWindowImpl(MainWindow):
             self.levels = "14 & 15"
             self._set_disabled_except(["MA", "RH"])
 
-        # 除了levels为10和14&15情况的其他情况, 需要评其他选项
-        if (not (condition_lv_10 or condition_lv_14_15)) or (
-            not (self.grad.comboBox_gradable == "Yes")
+        # 如果MA是present并且gradable为yes, 则enable所有的etdr选项
+        if (self.grad.comboBox_MA.currentText() == "Present") and (
+            self.grad.comboBox_gradable.currentText() == "Yes"
         ):
             self._set_enabled_etdr()
 
@@ -770,8 +769,6 @@ class MainWindowImpl(MainWindow):
         if condition_lv_99:
             self.levels = "99"
             self._set_disable_all_except_gradable()
-        else:
-            self._set_enabled_all()
 
         # 从 gradable == "No" 切回 gradable == "Yes"的情况
         l = [
