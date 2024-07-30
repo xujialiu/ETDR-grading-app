@@ -224,16 +224,16 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_18.addItem(self.horizontalSpacer_30)
 
-        self.comboBox_is_dr = QComboBox(self.centralwidget)
-        self.comboBox_is_dr.addItem("")
-        self.comboBox_is_dr.addItem("")
-        self.comboBox_is_dr.setObjectName(u"comboBox_is_dr")
-        sizePolicy1.setHeightForWidth(self.comboBox_is_dr.sizePolicy().hasHeightForWidth())
-        self.comboBox_is_dr.setSizePolicy(sizePolicy1)
-        self.comboBox_is_dr.setMinimumSize(QSize(150, 0))
-        self.comboBox_is_dr.setMaximumSize(QSize(150, 16777215))
+        self.comboBox_other_signs = QComboBox(self.centralwidget)
+        self.comboBox_other_signs.addItem("")
+        self.comboBox_other_signs.addItem("")
+        self.comboBox_other_signs.setObjectName(u"comboBox_other_signs")
+        sizePolicy1.setHeightForWidth(self.comboBox_other_signs.sizePolicy().hasHeightForWidth())
+        self.comboBox_other_signs.setSizePolicy(sizePolicy1)
+        self.comboBox_other_signs.setMinimumSize(QSize(150, 0))
+        self.comboBox_other_signs.setMaximumSize(QSize(150, 16777215))
 
-        self.horizontalLayout_18.addWidget(self.comboBox_is_dr)
+        self.horizontalLayout_18.addWidget(self.comboBox_other_signs)
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_18)
@@ -919,7 +919,7 @@ class Ui_MainWindow(object):
 
         self.comboBox_gradable.setCurrentIndex(0)
         self.comboBox_clarity.setCurrentIndex(-1)
-        self.comboBox_is_dr.setCurrentIndex(0)
+        self.comboBox_other_signs.setCurrentIndex(0)
         self.comboBox_VH_extent.setCurrentIndex(-1)
         self.comboBox_confident.setCurrentIndex(0)
         self.pushButton_clear.setDefault(False)
@@ -948,9 +948,9 @@ class Ui_MainWindow(object):
         self.comboBox_clarity.setItemText(1, QCoreApplication.translate("MainWindow", u"Clear", None))
 
         self.comboBox_clarity.setCurrentText("")
-        self.label_19.setText(QCoreApplication.translate("MainWindow", u"Whether it is DR?", None))
-        self.comboBox_is_dr.setItemText(0, QCoreApplication.translate("MainWindow", u"Yes", None))
-        self.comboBox_is_dr.setItemText(1, QCoreApplication.translate("MainWindow", u"No", None))
+        self.label_19.setText(QCoreApplication.translate("MainWindow", u"Are there any signs other than DR?", None))
+        self.comboBox_other_signs.setItemText(0, QCoreApplication.translate("MainWindow", u"No", None))
+        self.comboBox_other_signs.setItemText(1, QCoreApplication.translate("MainWindow", u"Yes", None))
 
         self.label_26.setText("")
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Other diagnoses:", None))
@@ -965,7 +965,8 @@ class Ui_MainWindow(object):
         self.spinBox_RH_quadrants.setSpecialValueText("")
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Hard Exudates (HE):", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Soft Exudates (SE):", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Intraretinal Microvascular Abnormalities (IRMA):", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Intraretinal Microvascular Abnormalities\n"
+"(IRMA):", None))
         self.label_32.setText("")
         self.label_HMA_4.setText(QCoreApplication.translate("MainWindow", u"IRMA Quadrants:", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Venous Beeding (VB):", None))
@@ -976,7 +977,8 @@ class Ui_MainWindow(object):
         self.label_34.setText("")
         self.label_HMA_6.setText(QCoreApplication.translate("MainWindow", u"NVE Quadrants:", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"Fibrous Proliferation (FP):", None))
-        self.label_12.setText(QCoreApplication.translate("MainWindow", u"Pre-retinal Haemorrhage-Vitreous Haemorrhage (PRH-VH):", None))
+        self.label_12.setText(QCoreApplication.translate("MainWindow", u"Pre-retinal Haemorrhage-Vitreous Haemorrhage\n"
+"(PRH-VH):", None))
         self.label_35.setText("")
         self.label_HMA_7.setText(QCoreApplication.translate("MainWindow", u"Extent of VH", None))
         self.comboBox_VH_extent.setItemText(0, QCoreApplication.translate("MainWindow", u"None", None))

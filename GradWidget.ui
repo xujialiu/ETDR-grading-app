@@ -385,7 +385,7 @@
             <item>
              <widget class="QLabel" name="label_19">
               <property name="text">
-               <string>Whether it is DR?</string>
+               <string>Are there any signs other than DR?</string>
               </property>
              </widget>
             </item>
@@ -403,7 +403,7 @@
              </spacer>
             </item>
             <item>
-             <widget class="QComboBox" name="comboBox_is_dr">
+             <widget class="QComboBox" name="comboBox_other_signs">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -427,12 +427,12 @@
               </property>
               <item>
                <property name="text">
-                <string>Yes</string>
+                <string>No</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>No</string>
+                <string>Yes</string>
                </property>
               </item>
              </widget>
@@ -816,7 +816,8 @@
               <item>
                <widget class="QLabel" name="label_7">
                 <property name="text">
-                 <string>Intraretinal Microvascular Abnormalities (IRMA):</string>
+                 <string>Intraretinal Microvascular Abnormalities
+(IRMA):</string>
                 </property>
                </widget>
               </item>
@@ -1104,7 +1105,8 @@
               <item>
                <widget class="QLabel" name="label_12">
                 <property name="text">
-                 <string>Pre-retinal Haemorrhage-Vitreous Haemorrhage (PRH-VH):</string>
+                 <string>Pre-retinal Haemorrhage-Vitreous Haemorrhage
+(PRH-VH):</string>
                 </property>
                </widget>
               </item>
