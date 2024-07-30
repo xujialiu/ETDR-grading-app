@@ -1376,7 +1376,7 @@ class MainWindowImpl(MainWindow):
             # general
             "is_gradable": self.grad.comboBox_gradable.currentText(),
             "clarity": self.grad.comboBox_clarity.currentText(),
-            "is_dr": self.grad.comboBox_other_signs.currentText(),
+            "other_signs": self.grad.comboBox_other_signs.currentText(),
             "combobox_diagnoses": self.grad.comboBox_diagnoses.currentText(),
             "other_diagnoses": self.grad.lineEdit_other_diagnoses.text(),
             "ICDR": self.grad.comboBox_ICDR.currentText(),

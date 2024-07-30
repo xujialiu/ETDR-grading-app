@@ -71,7 +71,7 @@ def load_or_create_df_database(filename=DF_DATABASE_PATH):
         # general
         "is_gradable",
         "clarity",
-        "is_dr",
+        "other_signs",
         "combobox_diagnoses",
         "other_diagnoses",
         "ICDR",
