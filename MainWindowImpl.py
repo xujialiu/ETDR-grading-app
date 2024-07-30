@@ -221,7 +221,7 @@ class MainWindowImpl(MainWindow):
         self.list_general_others = [
             self.grad.comboBox_gradable,
             self.grad.comboBox_clarity,
-            self.grad.comboBox_is_dr,
+            self.grad.comboBox_other_signs,
             self.grad.comboBox_diagnoses,
             self.grad.lineEdit_other_diagnoses,
             self.grad.comboBox_ICDR,
@@ -540,7 +540,7 @@ class MainWindowImpl(MainWindow):
 
         # set general and others to ''
         self.grad.comboBox_clarity.setCurrentIndex(-1)
-        self.grad.comboBox_is_dr.setCurrentIndex(-1)
+        self.grad.comboBox_other_signs.setCurrentIndex(-1)
         self.grad.comboBox_confident.setCurrentIndex(-1)
 
         self.grad.lineEdit_other_diagnoses.setText("")
@@ -552,7 +552,7 @@ class MainWindowImpl(MainWindow):
     def _set_enabled_all(self):
         # set general and others to correct text
         self.grad.comboBox_clarity.setCurrentText("No")
-        self.grad.comboBox_is_dr.setCurrentText("Yes")
+        self.grad.comboBox_other_signs.setCurrentText("No")
         self.grad.comboBox_confident.setCurrentText("Yes")
 
         # enable general and others
@@ -576,7 +576,6 @@ class MainWindowImpl(MainWindow):
         )
         if condition_lv_10:
             self.levels = "10"
-            # self._set_disabled_except(["MA", "RH"])
 
         # levels为14&15的情况
         condition_lv_14_15 = (self.grad.comboBox_MA.currentText() == "Absent") and (
@@ -584,7 +583,6 @@ class MainWindowImpl(MainWindow):
         )
         if condition_lv_14_15:
             self.levels = "14 & 15"
-            # self._set_disabled_except(["MA", "RH"])
 
         all_spinbox_status = []
         for spinBox in self.list_spinBox:
@@ -858,7 +856,7 @@ class MainWindowImpl(MainWindow):
     def on_data_inject_clicked(self):
         self.grad.comboBox_gradable.setCurrentText("Yes")
         self.grad.comboBox_clarity.setCurrentText("Clear")
-        self.grad.comboBox_is_dr.setCurrentText("Yes")
+        self.grad.comboBox_other_signs.setCurrentText("Yes")
         self.grad.comboBox_diagnoses.setCurrentText("AMD")
         self.grad.lineEdit_other_diagnoses.setText("test other diagnosis")
 
@@ -1013,7 +1011,7 @@ class MainWindowImpl(MainWindow):
             "Author: Xujia Liu<br>"
             "Email: xujialiuphd@gmail.com<br>"
             'Website: <a href="github.com/xujialiu/ETDR-grading-app">https://github.com/xujialiu/ETDR-grading-app</a><br>'
-            ''
+            ""
         )
         about_dialog.setIcon(QMessageBox.Information)
         about_dialog.exec()
@@ -1175,7 +1173,7 @@ class MainWindowImpl(MainWindow):
         # general
         self.grad.comboBox_gradable.setCurrentIndex(0)
         self.grad.comboBox_clarity.setCurrentIndex(-1)
-        self.grad.comboBox_is_dr.setCurrentText("Yes")
+        self.grad.comboBox_other_signs.setCurrentText("Yes")
         self.grad.comboBox_diagnoses.setCurrentIndex(-1)
         self.grad.lineEdit_other_diagnoses.setText("")
         self.grad.comboBox_ICDR.setCurrentIndex(-1)
@@ -1378,7 +1376,7 @@ class MainWindowImpl(MainWindow):
             # general
             "is_gradable": self.grad.comboBox_gradable.currentText(),
             "clarity": self.grad.comboBox_clarity.currentText(),
-            "is_dr": self.grad.comboBox_is_dr.currentText(),
+            "is_dr": self.grad.comboBox_other_signs.currentText(),
             "combobox_diagnoses": self.grad.comboBox_diagnoses.currentText(),
             "other_diagnoses": self.grad.lineEdit_other_diagnoses.text(),
             "ICDR": self.grad.comboBox_ICDR.currentText(),
