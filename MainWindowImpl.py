@@ -163,11 +163,10 @@ class MainWindowImpl(MainWindow):
         self.menu.data_inject = QAction("Data inject", self)
         self.menu.help_menu.addAction(self.menu.data_inject)
         self.menu.data_inject.triggered.connect(self.on_data_inject_clicked)
-
-    def closeEvent(self, event):
+        
+    def save_database(self):
         if not self.df_database.empty:
             with ThreadPoolExecutor() as executor:
-
                 executor.submit(self.save_parquet, DF_DATABASE_PATH, self.df_database)
                 executor.submit(
                     self.save_parquet,
@@ -175,6 +174,8 @@ class MainWindowImpl(MainWindow):
                     self.df_graded,
                 )
 
+    def closeEvent(self, event):
+        self.save_database()
         self.save_settings()
         event.accept()
 
@@ -842,12 +843,13 @@ class MainWindowImpl(MainWindow):
         self.menu.about.triggered.connect(self.on_about_clicked)
 
         self.df = pd.DataFrame()
-        self.menu.df.triggered.connect(partial(self.on_export_clicked, self.df))
+
+        self.menu.df.triggered.connect(lambda: self.on_export_clicked(self.df))
         self.menu.df_database.triggered.connect(
-            partial(self.on_export_clicked, self.df_database)
+            lambda: self.on_export_clicked(self.df_database)
         )
         self.menu.df_graded.triggered.connect(
-            partial(self.on_export_clicked, self.df_graded)
+            lambda: self.on_export_clicked(self.df_graded)
         )
 
         self.menu.register.setEnabled(False)
@@ -1082,6 +1084,7 @@ class MainWindowImpl(MainWindow):
         self.grad.pushButton_save.clicked.connect(self.get_img_path_list)
         self.grad.pushButton_save.clicked.connect(self.on_display_img)
         self.grad.pushButton_save.clicked.connect(self.displace_photo_number)
+        self.grad.pushButton_save.clicked.connect(self.save_database)
 
     def _init_df_database(self):
         self.df_database = load_or_create_df_database()
