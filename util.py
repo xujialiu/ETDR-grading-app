@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 import re
 import pandas as pd
@@ -23,28 +24,32 @@ def get_df_folder_contents(root_dir):
 
     date_pattern = re.compile(r"^\d{4}-\d{2}-\d{2}$")
     eye_pattern = re.compile(r"_Color_(L|R)_")
+    
+    img_pattern = re.compile(r"^(STDR\d+)_(\d{8})_(\d{6})_Color_([RL])_(\d{3})\.tif$")
 
     root_path = Path(root_dir)
 
+    # 需要重写这个逻辑
     # Walk through the directory structure
     for file_path in root_path.rglob("*"):
-        if file_path.is_file():
-            # Get the parent directories
-            parents = list(file_path.parents)
-            if len(parents) >= 2:  # Ensure there are at least 2 parts for dir1 and dir2
-                dir1 = parents[1].name
-                dir2 = parents[0].name
-                if date_pattern.match(dir2):  # Check if dir2 matches the date pattern
-                    patient_id_list.append(dir1)
-                    visit_date_list.append(dir2)
-                    file_path_list.append(str(file_path))
-
-                    # Extract 'L' or 'R' from the filename
-                    match = eye_pattern.search(file_path.name)
-                    if match:
-                        eye_list.append(match.group(1))
-                    else:
-                        eye_list.append(None)
+        file_name = Path(file_path).name
+        
+        file_name_match = re.match(img_pattern,file_name)
+        
+        
+        if file_name_match:=re.match(img_pattern, file_name):
+            
+            file_name = file_name_match.group(0)
+            patient_id = file_name_match.group(1)
+            date_string = file_name_match.group(2)
+            visit_date = datetime.strptime(date_string, r"%Y%m%d").strftime(r"%Y-%m-%d")
+            eye = file_name_match.group(4)
+            
+            patient_id_list.append(patient_id)
+            visit_date_list.append(visit_date)
+            eye_list.append(eye)
+            file_path_list.append(file_path)
+            
 
     # Create a DataFrame from the lists
     df = pd.DataFrame(
