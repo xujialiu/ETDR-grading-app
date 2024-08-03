@@ -85,6 +85,7 @@ def load_or_create_df_database(filename=DF_DATABASE_PATH):
         "RH",
         "RH_quadrants",
         "HE",
+        "CSME",
         "SE",
         "IRMA",
         "IRMA_quadrants",

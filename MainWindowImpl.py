@@ -2,12 +2,8 @@
 # TODO list
 # [[feat, priority low]]: 读取时使用多线程加速
 # [[feat, priority low]]: 增加eval mode, 当为eval mode时, 只有df_database和df_graded的交集, 界面出现列表, 点击患者, 显示各项评分
-# [[feat, priority high]]: 修改update_dict_results, update_df_database, update_df_graded, update_df的逻辑
-# [[feat, priority high]]: 增加qlabel, 显示macula和disc, 增加一个内部计数器
-# [[feat, priority high]]: 由于增加了项目, 需要需要修改util
 
 # 增加levels对应的DR严重程度
-
 
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -409,6 +405,7 @@ class MainWindowImpl(MainWindow):
             self.grad.comboBox_MA: self.options_MA,
             self.grad.comboBox_RH: self.options_RH,
             self.grad.comboBox_HE: self.options_HE,
+            self.grad.comboBox_CSME: self.options_CSME,
             self.grad.comboBox_SE: self.options_SE,
             self.grad.comboBox_IRMA: self.options_IRMA,
             self.grad.comboBox_VB: self.options_VB,
@@ -549,6 +546,9 @@ class MainWindowImpl(MainWindow):
 
         # disable etdr
         self._set_disabled_etdr_except([])
+        
+        # disable CSME
+        self.grad.comboBox_CSME.setEnabled(False)
 
     def _set_enabled_all(self):
         # set general and others to correct text
@@ -562,6 +562,9 @@ class MainWindowImpl(MainWindow):
 
         # enable etdr
         self._set_enabled_etdr()
+        
+        # enable CSME
+        self.grad.comboBox_CSME.setEnabled(True)
 
     def calculate_levels(self):
         # levels为 99 的情况
@@ -867,6 +870,7 @@ class MainWindowImpl(MainWindow):
         self.grad.comboBox_MA.setCurrentText("Present")
         self.grad.comboBox_RH.setCurrentIndex(1)
         self.grad.comboBox_HE.setCurrentIndex(0)
+        self.grad.comboBox_CSME.setCurrentIndex(0)
         self.grad.comboBox_SE.setCurrentIndex(0)
         self.grad.comboBox_IRMA.setCurrentIndex(0)
         self.grad.comboBox_VB.setCurrentIndex(0)
@@ -1425,6 +1429,8 @@ class MainWindowImpl(MainWindow):
         self.options_VEN = self._parse_options(options_data["VEN"])
         self.options_LASER = self._parse_options(options_data["LASER"])
         self.options_RD = self._parse_options(options_data["RD"])
+        
+        self.options_CSME = self._parse_options(options_data["CSME"])
 
     def _parse_options(self, options_dict):
         return {

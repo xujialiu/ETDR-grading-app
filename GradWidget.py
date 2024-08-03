@@ -459,6 +459,25 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_12.addLayout(self.horizontalLayout_SE)
 
+        self.horizontalLayout_36 = QHBoxLayout()
+        self.horizontalLayout_36.setObjectName(u"horizontalLayout_36")
+        self.label_13 = QLabel(self.centralwidget)
+        self.label_13.setObjectName(u"label_13")
+
+        self.horizontalLayout_36.addWidget(self.label_13)
+
+        self.horizontalSpacer_39 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_36.addItem(self.horizontalSpacer_39)
+
+        self.comboBox_CSME = QComboBox(self.centralwidget)
+        self.comboBox_CSME.setObjectName(u"comboBox_CSME")
+
+        self.horizontalLayout_36.addWidget(self.comboBox_CSME)
+
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_36)
+
         self.horizontalLayout_6 = QHBoxLayout()
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.label_6 = QLabel(self.centralwidget)
@@ -964,6 +983,8 @@ class Ui_MainWindow(object):
         self.label_HMA_2.setText(QCoreApplication.translate("MainWindow", u"Haemorrhage Quadrants:", None))
         self.spinBox_RH_quadrants.setSpecialValueText("")
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Hard Exudates (HE):", None))
+        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Clinically Significant Macular Edema\n"
+"(CSME):", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Soft Exudates (SE):", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Intraretinal Microvascular Abnormalities\n"
 "(IRMA):", None))

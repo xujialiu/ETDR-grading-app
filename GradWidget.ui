@@ -783,6 +783,34 @@
            </layout>
           </item>
           <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_36">
+            <item>
+             <widget class="QLabel" name="label_13">
+              <property name="text">
+               <string>Clinically Significant Macular Edema
+(CSME):</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_39">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboBox_CSME"/>
+            </item>
+           </layout>
+          </item>
+          <item>
            <layout class="QHBoxLayout" name="horizontalLayout_6">
             <item>
              <widget class="QLabel" name="label_6">

@@ -42,6 +42,20 @@
       "image": ".standards/HE/04_L Ring of Hard Exudate.jpg"
     }
   },
+  "CSME": {
+    "None": {
+      "score": 0,
+      "image": ""
+    },
+    "Hard exudates / Thickening within 1/3DD of the center of macula": {
+      "score": 1,
+      "image": ""
+    },
+    "Hard exudates / Thickening larger than 1DD, and within 1DD of the center of macula": {
+      "score": 2,
+      "image": ""
+    }
+  },
   "SE": {
     "None": {
       "score": 0,
