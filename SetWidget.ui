@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>993</width>
-    <height>871</height>
+    <width>999</width>
+    <height>884</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -206,33 +206,17 @@
           <item>
            <widget class="QPushButton" name="pushButton_return">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="text">
-             <string>Return</string>
+             <string>Return selected rows</string>
             </property>
            </widget>
           </item>
          </layout>
         </item>
         <item>
-         <widget class="QTableWidget" name="tableWidget_graded">
-          <column>
-           <property name="text">
-            <string>Patient ID</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Visit Date</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Eye</string>
-           </property>
-          </column>
-         </widget>
+         <widget class="QTableWidget" name="tableWidget_graded"/>
         </item>
         <item>
          <widget class="QLabel" name="label_4">
@@ -242,13 +226,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QTableWidget" name="tableWidget_database">
-          <column>
-           <property name="text">
-            <string>Patient ID</string>
-           </property>
-          </column>
-         </widget>
+         <widget class="QTableWidget" name="tableWidget_database"/>
         </item>
        </layout>
       </item>
@@ -261,7 +239,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>993</width>
+     <width>999</width>
      <height>22</height>
     </rect>
    </property>

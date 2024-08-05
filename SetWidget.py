@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(993, 871)
+        MainWindow.resize(999, 884)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_3 = QVBoxLayout(self.centralwidget)
@@ -146,7 +146,7 @@ class Ui_MainWindow(object):
 
         self.pushButton_return = QPushButton(self.centralwidget)
         self.pushButton_return.setObjectName(u"pushButton_return")
-        self.pushButton_return.setEnabled(False)
+        self.pushButton_return.setEnabled(True)
 
         self.horizontalLayout.addWidget(self.pushButton_return)
 
@@ -154,14 +154,6 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.tableWidget_graded = QTableWidget(self.centralwidget)
-        if (self.tableWidget_graded.columnCount() < 3):
-            self.tableWidget_graded.setColumnCount(3)
-        __qtablewidgetitem = QTableWidgetItem()
-        self.tableWidget_graded.setHorizontalHeaderItem(0, __qtablewidgetitem)
-        __qtablewidgetitem1 = QTableWidgetItem()
-        self.tableWidget_graded.setHorizontalHeaderItem(1, __qtablewidgetitem1)
-        __qtablewidgetitem2 = QTableWidgetItem()
-        self.tableWidget_graded.setHorizontalHeaderItem(2, __qtablewidgetitem2)
         self.tableWidget_graded.setObjectName(u"tableWidget_graded")
 
         self.verticalLayout.addWidget(self.tableWidget_graded)
@@ -172,10 +164,6 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.label_4)
 
         self.tableWidget_database = QTableWidget(self.centralwidget)
-        if (self.tableWidget_database.columnCount() < 1):
-            self.tableWidget_database.setColumnCount(1)
-        __qtablewidgetitem3 = QTableWidgetItem()
-        self.tableWidget_database.setHorizontalHeaderItem(0, __qtablewidgetitem3)
         self.tableWidget_database.setObjectName(u"tableWidget_database")
 
         self.verticalLayout.addWidget(self.tableWidget_database)
@@ -189,7 +177,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 993, 22))
+        self.menubar.setGeometry(QRect(0, 0, 999, 22))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -211,15 +199,7 @@ class Ui_MainWindow(object):
         ___qtreewidgetitem = self.treeWidget_patient.headerItem()
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"Patient ID / Visit Date", None));
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Graded list:", None))
-        self.pushButton_return.setText(QCoreApplication.translate("MainWindow", u"Return", None))
-        ___qtablewidgetitem = self.tableWidget_graded.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"Patient ID", None));
-        ___qtablewidgetitem1 = self.tableWidget_graded.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Visit Date", None));
-        ___qtablewidgetitem2 = self.tableWidget_graded.horizontalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Eye", None));
+        self.pushButton_return.setText(QCoreApplication.translate("MainWindow", u"Return selected rows", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Database: ", None))
-        ___qtablewidgetitem3 = self.tableWidget_database.horizontalHeaderItem(0)
-        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Patient ID", None));
     # retranslateUi
 
