@@ -11,3 +11,4 @@ dist/
 .samples/
 samples.zip
 .docs
+*trial*
