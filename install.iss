@@ -34,9 +34,9 @@ ChangesAssociations=yes
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 PrivilegesRequired=lowest
-OutputDir=C:\Users\xujia\Git projects\Master\ETDR-grading-app\.releases\{#MyAppVersion}
+OutputDir=C:\Users\xujia\Git-projects\Master\ETDR-grading-app\.releases\{#MyAppVersion}
 OutputBaseFilename=ETDR_grading_application_setup_{#MyAppVersion}
-SetupIconFile=C:\Users\xujia\Git projects\Master\ETDR-grading-app\.meta\icon.ico
+SetupIconFile=C:\Users\xujia\Git-projects\Master\ETDR-grading-app\.meta\icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -49,8 +49,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\xujia\Git projects\Master\ETDR-grading-app\dist\ETDR-grading-app\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\xujia\Git projects\Master\ETDR-grading-app\dist\ETDR-grading-app\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\xujia\Git-projects\Master\ETDR-grading-app\dist\ETDR-grading-app\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\xujia\Git-projects\Master\ETDR-grading-app\dist\ETDR-grading-app\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]

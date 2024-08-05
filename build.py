@@ -24,15 +24,16 @@ if __name__ == "__main__":
 
     # 清除上一次pyinstaller编译过程中的文件
     try:
-        shutil.rmtree(Path("dist"))
-        shutil.rmtree(Path("build"))
-        os.remove("main.spec")
+        shutil.rmtree(Path("./dist"))
+        shutil.rmtree(Path("./build"))
+        os.remove("ETDR-grading-app.spec")
     except:
         pass
 
     # pyinstaller
     cmd = r"pyinstaller main.py -y -w --icon=.meta/icon.ico -n ETDR-grading-app"
-    subprocess.run(cmd, shell=True, stdout=sys.stdout, stderr=sys.stderr)
+    sub_process = subprocess.Popen(cmd, shell=True)
+    sub_process.wait()
 
     # 复制.meta, .standards文件夹到dist/main
     copy_folder_recursively(".meta", "./dist/ETDR-grading-app/.meta")
@@ -45,4 +46,5 @@ if __name__ == "__main__":
     release_folder.mkdir(parents=True)
 
     cmd = f"ISCC install.iss /DMyAppVersion={VERSION}"
-    subprocess.run(cmd, shell=True, stdout=sys.stdout, stderr=sys.stderr)
+    sub_process = subprocess.Popen(cmd, shell=True, stdout=sys.stdout, stderr=sys.stderr)
+    sub_process.wait()
