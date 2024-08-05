@@ -18,6 +18,7 @@ import json
 from PySide6.QtCore import QEvent, QObject, QSettings, QSize, Qt, Signal, Slot
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import (
+    QButtonGroup,
     QFileDialog,
     QMenu,
     QMessageBox,
@@ -315,15 +316,30 @@ class MainWindowImpl(MainWindow):
         self.tabwidget = QTabWidget(self)
         self.right_dock.setWidget(self.tabwidget)
 
+    def _init_red_free_radiobutton(self):
+        self.img_dock.red_free_buttongroup = QButtonGroup()
+        self.img_dock.red_free_buttongroup.addButton(self.img_dock.radioButton_red_free)
+        self.img_dock.red_free_buttongroup.addButton(self.img_dock.radioButton_original)
+        self.img_dock.red_free_buttongroup.buttonClicked.connect(
+            self.on_red_free_buttongroup_clicked
+        )
+
+    def on_red_free_buttongroup_clicked(self, button):
+        self.img_path = self.list_img_path[self.img_index]
+        self.display_img(self.img_path)
+
     def _init_left_dock(self):
-        self._init_img_widget()
+
         self._init_imgdock()
+        self._init_img_widget()
         # set left dock
         self.left_dock.setWidget(self.img_dock.centralwidget)
         img_layout = self.img_dock.widget_img.parentWidget().layout()
         img_layout.replaceWidget(self.img_dock.widget_img, self.widget_img)
         setattr(self.img_dock, self.img_dock.widget_img.objectName(), self.widget_img)
         self.img_dock.widget_img = self.widget_img
+
+        self._init_red_free_radiobutton()
 
     def _init_img_widget(self):
         # 创建一个GraphicsLayoutWidget
@@ -348,9 +364,16 @@ class MainWindowImpl(MainWindow):
         self.plot_item.getViewBox().setAspectLocked(True)
 
     def display_img(self, path):
+        # 可以添加crop的功能, 用于放大图片
+
         self.img = Image.open(path)
 
-        # 可以添加crop的功能, 用于放大图片
+        if self.img_dock.radioButton_red_free.isChecked():
+
+            r, g, b = self.img.split()
+            g_weight = 0.587 / (0.587 + 0.114)
+            b_weight = 1 - g_weight
+            self.img = g_weight * np.array(g) + b_weight * np.array(b)
 
         self.img = np.array(self.img)
         self.img = np.rot90(self.img, -1)
