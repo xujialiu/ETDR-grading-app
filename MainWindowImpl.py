@@ -3,6 +3,9 @@
 # [[feat, priority low]]: 读取时使用多线程加速
 # [[feat, priority low]]: 增加eval mode, 当为eval mode时, 只有df_database和df_graded的交集, 界面出现列表, 点击患者, 显示各项评分
 
+# [[feat, priority high]]: 增加回退功能
+# [[feat, priority median]]: 对展示图片前先做预处理, 放大图片
+
 # 增加levels对应的DR严重程度
 
 from concurrent.futures import ThreadPoolExecutor
@@ -91,8 +94,10 @@ class MainWindowImpl(MainWindow):
     def init_ui_impl(self):
         # 初始化布局组件
         self._init_app()
+
         self._init_right_dock()
         self._init_left_dock()
+
         self._init_gradwidge()
         self._init_setwidge()
 
@@ -120,6 +125,7 @@ class MainWindowImpl(MainWindow):
         self._init_dr_severity_dict()
         self._init_combobox_gradable()
         self._init_combobox_ma()
+        self._init_return_button()
 
         # 初始化事件相关函数
         self.installEventFilter(self)
@@ -159,16 +165,71 @@ class MainWindowImpl(MainWindow):
         self.menu.data_inject = QAction("Data inject", self)
         self.menu.help_menu.addAction(self.menu.data_inject)
         self.menu.data_inject.triggered.connect(self.on_data_inject_clicked)
-        
+
     def save_database(self):
-        if not self.df_database.empty:
-            with ThreadPoolExecutor() as executor:
-                executor.submit(self.save_parquet, DF_DATABASE_PATH, self.df_database)
-                executor.submit(
-                    self.save_parquet,
-                    DF_GRADED_PATH,
-                    self.df_graded,
-                )
+        with ThreadPoolExecutor() as executor:
+            executor.submit(self.save_parquet, DF_DATABASE_PATH, self.df_database)
+            executor.submit(
+                self.save_parquet,
+                DF_GRADED_PATH,
+                self.df_graded,
+            )
+
+    def _init_return_button(self):
+        self.set.pushButton_return.clicked.connect(self.show_return_dialog)
+
+    def show_return_dialog(self):
+        dialog = QMessageBox(self)
+        dialog.setWindowTitle("Caution")
+        dialog.setText("Do you want to return selected rows?")
+        dialog.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        dialog.setIcon(QMessageBox.Information)
+
+        # 连接按钮事件
+        dialog.buttonClicked.connect(self.on_return_button_clicked)
+
+        dialog.exec()
+
+    def on_return_button_clicked(self, button):
+
+        if button.text() == "&Yes":
+            selected_rows = self.set.tableWidget_graded.selectionModel().selectedRows()
+
+            rows_data = []
+            for index in sorted(selected_rows, reverse=True):
+                row_data = []
+                for col in range(self.set.tableWidget_graded.columnCount()):
+                    item = self.set.tableWidget_graded.item(index.row(), col)
+                    if item:
+                        row_data.append(item.text())
+                rows_data.append(row_data)
+                # self.set.tableWidget_graded.removeRow(index.row())
+
+            return_rows_data = pd.DataFrame(
+                rows_data,
+                columns=["patient_id", "visit_date", "eye"],
+            )
+
+            self.df_database = self.get_df_difference(
+                self.df_database, return_rows_data
+            )
+            self.df_graded = self.get_df_difference(self.df_graded, return_rows_data)
+            self.get_df()
+
+            self.show_patients_tree()
+            self.find_and_activate_tree_item()
+            self.show_df_graded_df_database()
+            self.save_database()
+
+        elif button.text() == "&No":
+            pass
+
+    @staticmethod
+    def get_df_difference(df, df_subset):
+        df_merged = pd.merge(df, df_subset, how="left", indicator=True)
+        df_result = df_merged[df_merged["_merge"] == "left_only"]
+        df_result = df_result.drop("_merge", axis=1)
+        return df_result
 
     def closeEvent(self, event):
         self.save_database()
@@ -288,6 +349,9 @@ class MainWindowImpl(MainWindow):
 
     def display_img(self, path):
         self.img = Image.open(path)
+
+        # 可以添加crop的功能, 用于放大图片
+
         self.img = np.array(self.img)
         self.img = np.rot90(self.img, -1)
         self.img_item.setImage(self.img)
@@ -546,7 +610,7 @@ class MainWindowImpl(MainWindow):
 
         # disable etdr
         self._set_disabled_etdr_except([])
-        
+
         # disable CSME
         self.grad.comboBox_CSME.setEnabled(False)
 
@@ -562,7 +626,7 @@ class MainWindowImpl(MainWindow):
 
         # enable etdr
         self._set_enabled_etdr()
-        
+
         # enable CSME
         self.grad.comboBox_CSME.setEnabled(True)
 
@@ -844,8 +908,6 @@ class MainWindowImpl(MainWindow):
 
         self.menu.exit.triggered.connect(self.on_exit_clicked)
         self.menu.about.triggered.connect(self.on_about_clicked)
-
-        self.df = pd.DataFrame()
 
         self.menu.df.triggered.connect(lambda: self.on_export_clicked(self.df))
         self.menu.df_database.triggered.connect(
@@ -1145,23 +1207,26 @@ class MainWindowImpl(MainWindow):
 
     def show_patients_tree(self):
         self.set.treeWidget_patient.clear()
-        grouped = self.df.groupby("patient_id")
-        for patient_id, group in grouped:
-            # 创建顶级条目
-            patient_item = QTreeWidgetItem([patient_id])
-            self.set.treeWidget_patient.addTopLevelItem(patient_item)
+        try:
+            grouped = self.df.groupby("patient_id")
+            for patient_id, group in grouped:
+                # 创建顶级条目
+                patient_item = QTreeWidgetItem([patient_id])
+                self.set.treeWidget_patient.addTopLevelItem(patient_item)
 
-            # 获取 unique 的 visit_date 和 eye 组合
-            visit_date_eye_combinations = (
-                group[["visit_date", "eye"]].drop_duplicates().values
-            )
+                # 获取 unique 的 visit_date 和 eye 组合
+                visit_date_eye_combinations = (
+                    group[["visit_date", "eye"]].drop_duplicates().values
+                )
 
-            for visit_date, eye in visit_date_eye_combinations:
-                visit_date_eye_item = QTreeWidgetItem([f"{visit_date} {eye}"])
-                patient_item.addChild(visit_date_eye_item)
-                visit_date_eye_item.setData(0, 1, visit_date)
+                for visit_date, eye in visit_date_eye_combinations:
+                    visit_date_eye_item = QTreeWidgetItem([f"{visit_date} {eye}"])
+                    patient_item.addChild(visit_date_eye_item)
+                    visit_date_eye_item.setData(0, 1, visit_date)
 
-            self.set.treeWidget_patient.sortItems(0, Qt.AscendingOrder)
+                self.set.treeWidget_patient.sortItems(0, Qt.AscendingOrder)
+        except:
+            pass
 
     def on_visit_date_clicked(self, item, column):
         if item.childCount() == 0:  # 如果点击的是 visit_date (eye) item
@@ -1429,7 +1494,7 @@ class MainWindowImpl(MainWindow):
         self.options_VEN = self._parse_options(options_data["VEN"])
         self.options_LASER = self._parse_options(options_data["LASER"])
         self.options_RD = self._parse_options(options_data["RD"])
-        
+
         self.options_CSME = self._parse_options(options_data["CSME"])
 
     def _parse_options(self, options_dict):
