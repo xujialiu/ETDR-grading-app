@@ -321,10 +321,10 @@ class MainWindowImpl(MainWindow):
         self.img_dock.red_free_buttongroup.addButton(self.img_dock.radioButton_red_free)
         self.img_dock.red_free_buttongroup.addButton(self.img_dock.radioButton_original)
         self.img_dock.red_free_buttongroup.buttonClicked.connect(
-            self.on_red_free_buttongroup_clicked
+            self.handle_red_free_buttongroup_clicked
         )
 
-    def on_red_free_buttongroup_clicked(self, button):
+    def handle_red_free_buttongroup_clicked(self, button):
         self.img_path = self.list_img_path[self.img_index]
         self.display_img(self.img_path)
 
