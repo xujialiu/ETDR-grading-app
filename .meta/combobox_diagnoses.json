@@ -1,13 +1,10 @@
 {
     "diagnoses": [
-        "BRVO",
-        "CRVO",
-        "AMD",
-        "CNV",
-        "CSC",
-        "RP",
-        "Eales disease",
-        "Best disease",
-        "Stargardt disease"
+        "Floater",
+        "Large C/D ratio",
+        "Drusen",
+        "White threads vessels",
+        "RVO",
+        "RAO"
     ]
 }
