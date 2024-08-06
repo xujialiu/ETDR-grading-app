@@ -52,7 +52,8 @@ from pynput import keyboard
 from VERSION import VERSION
 
 
-ICON_PATH = ".meta/icon.png"
+ICON_PATH = ".meta/icon.ico"
+ICON_IMG_PATH = ".meta/icon.png"
 ROOT_USERNAME = "root"
 ROOT_PASSWORD = "root"
 TEST_MODE = True
@@ -357,7 +358,7 @@ class MainWindowImpl(MainWindow):
         self.plot_item.addItem(self.img_item)
 
         # 加载图像
-        self.display_img(ICON_PATH)
+        self.display_img(ICON_IMG_PATH)
 
         # 设置放大缩小功能
         self.plot_item.getViewBox().setMouseEnabled(x=True, y=True)
