@@ -15,15 +15,15 @@ class HoverLabel(QLabel):
         if not image_path:  # If image_path is empty, hide the label and return
             self.hide_image()
             return
-
-        pixmap = QPixmap(image_path)
-        max_width = 600  # Set the maximum width for the image
-        scaled_pixmap = pixmap.scaledToWidth(max_width, Qt.SmoothTransformation)
-        self.setPixmap(scaled_pixmap)
-        self.adjustSize()
-        # Adjust position to show image on the left side of the item rectangle
-        self.move(item_rect_top_left - QPoint(self.width() + 5, 0))
-        self.setVisible(True)
+        if image_path.is_file():
+            pixmap = QPixmap(image_path)
+            max_width = 600  # Set the maximum width for the image
+            scaled_pixmap = pixmap.scaledToWidth(max_width, Qt.SmoothTransformation)
+            self.setPixmap(scaled_pixmap)
+            self.adjustSize()
+            # Adjust position to show image on the left side of the item rectangle
+            self.move(item_rect_top_left - QPoint(self.width() + 5, 0))
+            self.setVisible(True)
 
     def hide_image(self):
         self.setVisible(False)

@@ -1,7 +1,9 @@
 from dataclasses import dataclass
 from datetime import datetime
+import os
 from pathlib import Path
 import re
+import sys
 import pandas as pd
 from pathlib import Path
 
@@ -127,3 +129,14 @@ def load_or_create_df_graded(filename=DF_GRADED_PATH):
     else:
         df = pd.DataFrame(columns=columns)
     return df
+
+
+def resource_path(relative_path):
+    """ 获取资源的绝对路径 """
+    try:
+        # PyInstaller 创建临时文件夹 sys._MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)

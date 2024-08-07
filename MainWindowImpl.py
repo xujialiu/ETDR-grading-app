@@ -40,6 +40,7 @@ from util import (
     get_df_folder_contents,
     load_or_create_df_database,
     load_or_create_df_graded,
+    resource_path,
 )
 from ComboboxWithHover import ComboBoxWithHover, HoverLabel
 import pandas as pd
@@ -51,12 +52,19 @@ from RegisterResetDialogImpl import RegisterDialog
 from pynput import keyboard
 from VERSION import VERSION
 
+META_PATH = resource_path(".meta")
+STANDARDS_PATH = resource_path(".standards")
 
-ICON_PATH = ".meta/icon.ico"
-ICON_IMG_PATH = ".meta/icon.png"
+COMBOBOX_DIAGNOSIS_PATH = f"{META_PATH}/combobox_diagnoses.json"
+USER_JSON_PATH = f"{META_PATH}/users.json"
+COMBOBOX_OPTION_PATH = f"{META_PATH}/combobox_options.json"
+ICON_PATH = f"{META_PATH}/icon.ico"
+ICON_IMG_PATH = f"{META_PATH}/icon.png"
+
 ROOT_USERNAME = "root"
 ROOT_PASSWORD = "root"
 TEST_MODE = True
+
 DATA_BASE_PATH = Path.home() / "ETDR-grading-app"
 DF_DATABASE_PATH = DATA_BASE_PATH / "df_database.parquet"
 DF_GRADED_PATH = DATA_BASE_PATH / "df_graded.parquet"
@@ -570,7 +578,7 @@ class MainWindowImpl(MainWindow):
 
     def _init_combobox_diagosis(self):
         checkable_combobox = CheckableComboBox()
-        with open(".meta/combobox_diagnoses.json", "r") as file:
+        with open(COMBOBOX_DIAGNOSIS_PATH, "r") as file:
             list_diagnoses = json.load(file)["diagnoses"]
         checkable_combobox.addItems(list_diagnoses)
         fixed_width = 150
@@ -1017,14 +1025,14 @@ class MainWindowImpl(MainWindow):
             QMessageBox.warning(self, "Registration Failed", "Username already exists.")
 
     def reset_user_password(self, username, password):
-        with open(".meta/users.json", "r") as file:
+        with open(USER_JSON_PATH, "r") as file:
             users = json.load(file)
 
         salt = Fernet.generate_key().decode()
         encrypted_password = hashlib.sha256((password + salt).encode()).hexdigest()
         users[username] = {"password": encrypted_password, "salt": salt}
 
-        with open(".meta/users.json", "w") as file:
+        with open(USER_JSON_PATH, "w") as file:
             json.dump(users, file)
 
         return True
@@ -1058,7 +1066,7 @@ class MainWindowImpl(MainWindow):
 
     def add_user_password(self, username, password):
         try:
-            with open(".meta/users.json", "r") as file:
+            with open(USER_JSON_PATH, "r") as file:
                 users = json.load(file)
         except FileNotFoundError:
             users = {}
@@ -1070,7 +1078,7 @@ class MainWindowImpl(MainWindow):
         encrypted_password = hashlib.sha256((password + salt).encode()).hexdigest()
         users[username] = {"password": encrypted_password, "salt": salt}
 
-        with open(".meta/users.json", "w") as file:
+        with open(USER_JSON_PATH, "w") as file:
             json.dump(users, file)
 
         return True
@@ -1215,7 +1223,7 @@ class MainWindowImpl(MainWindow):
             return True
 
         try:
-            with open(".meta/users.json", "r") as file:
+            with open(USER_JSON_PATH, "r") as file:
                 users = json.load(file)
         except FileNotFoundError:
             users = {}
@@ -1502,7 +1510,7 @@ class MainWindowImpl(MainWindow):
         self.df_database = pd.concat([self.df_database, df_data])
 
     def comboboxes_options(self):
-        with open(".meta/combobox_options.json", "r", encoding="utf-8") as f:
+        with open(COMBOBOX_OPTION_PATH, "r", encoding="utf-8") as f:
             options_data = json.load(f)
 
         self.options_MA = self._parse_options(options_data["MA"])
@@ -1523,7 +1531,7 @@ class MainWindowImpl(MainWindow):
 
     def _parse_options(self, options_dict):
         return {
-            key: OptionScoreImgPath(value["score"], value["image"])
+            key: OptionScoreImgPath(value["score"], Path(STANDARDS_PATH)/value["image"])
             for key, value in options_dict.items()
         }
 

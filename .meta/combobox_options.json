@@ -17,11 +17,11 @@
     },
     "≥ SP1, < SP2A": {
       "score": 2,
-      "image": ".standards/HMA/01_L Haem and MA.jpg"
+      "image": "HMA/01_L Haem and MA.jpg"
     },
     "≥ SP2A": {
       "score": 3,
-      "image": ".standards/HMA/02A_L Haem and MA.jpg"
+      "image": "HMA/02A_L Haem and MA.jpg"
     }
   },
   "HE": {
@@ -31,15 +31,15 @@
     },
     "< SP3": {
       "score": 1,
-      "image": ".standards/HE/01A_L 50 hard drusen.jpg"
+      "image": "HE/01A_L 50 hard drusen.jpg"
     },
     "≥ SP3, < SP4": {
       "score": 2,
-      "image": ".standards/HE/03_L Hard Exudate.jpg"
+      "image": "HE/03_L Hard Exudate.jpg"
     },
     "≥ SP4": {
       "score": 3,
-      "image": ".standards/HE/04_L Ring of Hard Exudate.jpg"
+      "image": "HE/04_L Ring of Hard Exudate.jpg"
     }
   },
   "CSME": {
@@ -63,7 +63,7 @@
     },
     "Definite": {
       "score": 1,
-      "image": ".standards/SE/08A_L soft exudate, irma.jpg"
+      "image": "SE/08A_L soft exudate, irma.jpg"
     }
   },
   "IRMA": {
@@ -81,7 +81,7 @@
     },
     "≥ SP8A": {
       "score": 3,
-      "image": ".standards/IRMA/08B_L irma.jpg"
+      "image": "IRMA/08B_L irma.jpg"
     }
   },
   "VB": {
@@ -95,7 +95,7 @@
     },
     "≥ SP6A": {
       "score": 2,
-      "image": ".standards/VB/06A_L Venous Beading.jpg"
+      "image": "VB/06A_L Venous Beading.jpg"
     }
   },
   "NVD": {
@@ -105,11 +105,11 @@
     },
     "< SP 10A": {
       "score": 1,
-      "image": ".standards/NVD/10A_L NVD.jpg"
+      "image": "NVD/10A_L NVD.jpg"
     },
     "≥ SP 10A": {
       "score": 2,
-      "image": ".standards/NVD/10C_L NVD.jpg"
+      "image": "NVD/10C_L NVD.jpg"
     }
   },
   "NVE": {
@@ -119,11 +119,11 @@
     },
     "< 1/2 Disc area": {
       "score": 1,
-      "image": ".standards/NVE/07_L NVE + other pathology.jpg"
+      "image": "NVE/07_L NVE + other pathology.jpg"
     },
     "≥ 1/2 Disc area": {
       "score": 2,
-      "image": ".standards/NVE/07_L NVE + other pathology.jpg"
+      "image": "NVE/07_L NVE + other pathology.jpg"
     }
   },
   "FP": {
@@ -133,11 +133,11 @@
     },
     "FPE only": {
       "score": 1,
-      "image": ".standards/FP/11_L Fibrous proliferation elsewhere, arteriolar narrowing.jpg"
+      "image": "FP/11_L Fibrous proliferation elsewhere, arteriolar narrowing.jpg"
     },
     "FPD only": {
       "score": 2,
-      "image": ".standards/FP/10B_L Fibrous proliferation of disc.jpg"
+      "image": "FP/10B_L Fibrous proliferation of disc.jpg"
     },
     "FPD + FPE": {
       "score": 3,
@@ -151,11 +151,11 @@
     },
     "< 1 Disc area": {
       "score": 1,
-      "image": ".standards/PRH-VH/13_L pre retinal haemorrhage.jpg"
+      "image": "PRH-VH/13_L pre retinal haemorrhage.jpg"
     },
     "≥ 1 Disc area": {
       "score": 2,
-      "image": ".standards/PRH-VH/13_L pre retinal haemorrhage.jpg"
+      "image": "PRH-VH/13_L pre retinal haemorrhage.jpg"
     }
   },
   "VEN": {

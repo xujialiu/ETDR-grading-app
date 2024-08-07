@@ -31,13 +31,13 @@ if __name__ == "__main__":
         pass
 
     # pyinstaller
-    cmd = r"pyinstaller main.py -y -w --icon=.meta/icon.ico -n ETDR-grading-app"
+    cmd = r"pyinstaller main.py -y -w --add-data ./.meta:./.meta --add-data ./.standards:./.standards --icon=.meta/icon.ico -n ETDR-grading-app"
     sub_process = subprocess.Popen(cmd, shell=True)
     sub_process.wait()
 
     # 复制.meta, .standards文件夹到dist/main
-    copy_folder_recursively(".meta", "./dist/ETDR-grading-app/.meta")
-    copy_folder_recursively(".standards", "./dist/ETDR-grading-app/.standards")
+    # copy_folder_recursively(".meta", "./dist/ETDR-grading-app/.meta")
+    # copy_folder_recursively(".standards", "./dist/ETDR-grading-app/.standards")
 
     # 创建setup.exe目录, 如.releases/1.0.0
     release_folder = Path(f".releases/{VERSION}")
